@@ -11,8 +11,6 @@ class NodeVisualizer : Application() {
     companion object {
         lateinit var stage: Stage
         val screen = Screen.getPrimary()
-        val bounds = Rectangle2D(screen.visualBounds.minX, screen.visualBounds.minY, screen.visualBounds.width, screen.visualBounds.height)
-
 
         @JvmStatic
         fun main(args: Array<String>) {
@@ -22,12 +20,17 @@ class NodeVisualizer : Application() {
     }
 
     override fun start(stage: Stage) {
+
+
         stage.title = "NodeVisualizer"
         NodeVisualizer.stage = stage
 
 
-        val borderPane = BorderPane(NodeSelector)
+        val borderPane = BorderPane()
+        borderPane.center = NodeSelector
+        borderPane.top = SectionSelector
 
+        val bounds = Rectangle2D(screen.visualBounds.minX, screen.visualBounds.minY, screen.visualBounds.width, screen.visualBounds.height)
         stage.scene = Scene(borderPane, bounds.width, bounds.height)
         stage.sizeToScene()
         stage.show()

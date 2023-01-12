@@ -20,42 +20,67 @@ object NodeSelector : HBox(5.0) {
     val seven = Button("")
     val eight = Button("")
     val nine = Button("")
-    val buttonSideLength: Double = 200.0
-    val spacerLeft = Region()
-    val spacerRight = Region()
+    val buttonSideLength: Double = NodeVisualizer.screen.visualBounds.height / 3.5
+    private val spacerLeft = Region()
+    private val spacerRight = Region()
 
 
     init {
         println("NodeSelector says hi!")
 
-
         spacerLeft.setPrefSize(9999.9, 0.0)
         spacerRight.setPrefSize(9999.9, 0.0)
 
         one.setMinSize(buttonSideLength, buttonSideLength)
-        one.setOnMousePressed { println("one") }
         one.style = "-fx-background-color: #FFFF00"
+        one.setOnMousePressed {
+
+        }
+
         two.setMinSize(buttonSideLength, buttonSideLength)
-        two.setOnMousePressed { println("two") }
         two.style = "-fx-background-color: #9900ffff"
+        two.setOnMousePressed {
+
+        }
+
         three.setMinSize(buttonSideLength, buttonSideLength)
-        three.setOnMousePressed { println("three") }
         three.style = "-fx-background-color: #FFFF00"
+        three.setOnMousePressed {
+
+        }
+
         four.setMinSize(buttonSideLength, buttonSideLength)
-        four.setOnMousePressed { println("four") }
         four.style = "-fx-background-color: #FFFF00"
+        four.setOnMousePressed {
+
+        }
+
         five.setMinSize(buttonSideLength, buttonSideLength)
-        five.setOnMousePressed { println("five") }
         five.style = "-fx-background-color: #9900ffff"
+        five.setOnMousePressed {
+
+        }
+
         six.setMinSize(buttonSideLength, buttonSideLength)
-        six.setOnMousePressed { println("six") }
         six.style = "-fx-background-color: #FFFF00"
-        seven.setMinSize(buttonSideLength, buttonSideLength)
-        seven.setOnMousePressed { println("seven") }
-        eight.setMinSize(buttonSideLength, buttonSideLength)
-        eight.setOnMousePressed { println("eight") }
-        nine.setMinSize(buttonSideLength, buttonSideLength)
-        nine.setOnMousePressed { println("nine") }
+        six.setOnMousePressed {
+
+        }
+
+        seven.setMinSize(buttonSideLength, buttonSideLength / 2)
+        seven.setOnMousePressed {
+
+        }
+
+        eight.setMinSize(buttonSideLength, buttonSideLength / 2)
+        eight.setOnMousePressed {
+
+        }
+
+        nine.setMinSize(buttonSideLength, buttonSideLength / 2)
+        nine.setOnMousePressed {
+
+        }
 
         lVbox.children.addAll(one, four, seven)
         cVbox.children.addAll(two, five, eight)
