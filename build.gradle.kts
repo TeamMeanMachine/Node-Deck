@@ -12,13 +12,8 @@ buildConfig {
     buildConfigField ("long", "BUILD_TIME", "${System.currentTimeMillis()}L")
 }
 
-val wpiLibVersion = "2023.1.1"
 repositories {
     mavenCentral()
-    maven { setUrl("https://frcmaven.wpi.edu/artifactory/release/")}
-    maven { setUrl("https://plugins.gradle.org/m2/")}
-    maven { setUrl("https://maven.ctr-electronics.com/release/") }
-    maven { setUrl("https://maven.revrobotics.com/") }
 }
 
 javafx {
@@ -30,17 +25,6 @@ application {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.20")
-    implementation("edu.wpi.first.ntcore:ntcore-java:$wpiLibVersion")
-    implementation("edu.wpi.first.ntcore:ntcore-jni:$wpiLibVersion:windowsx86-64")
-    implementation("edu.wpi.first.wpiutil:wpiutil-java:$wpiLibVersion")
-    implementation("edu.wpi.first.wpiutil:wpiutil-jni:$wpiLibVersion:windowsx86-64")
-    implementation("edu.wpi.first.wpimath:wpimath-java:$wpiLibVersion")
-    implementation("edu.wpi.first.wpilibj:wpilibj-java:$wpiLibVersion")
-//    implementation("org.team2471.lib:meanlib")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation("com.github.gmazzo.buildconfig:com.github.gmazzo.buildconfig.gradle.plugin:3.0.0")
-    implementation("com.google.code.gson:gson:2.8.9")
 }
 java {
     withSourcesJar()
