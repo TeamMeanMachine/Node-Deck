@@ -20,7 +20,7 @@ object NodeSelector : HBox(5.0) {
     val seven = Button("")
     val eight = Button("")
     val nine = Button("")
-    val buttonSideLength: Double = NodeVisualizer.screen.visualBounds.height / 3.5
+    val buttonSideLength: Double = NodeVisualizer.screen.visualBounds.height / 3
     private val spacerLeft = Region()
     private val spacerRight = Region()
 
@@ -68,16 +68,19 @@ object NodeSelector : HBox(5.0) {
         }
 
         seven.setMinSize(buttonSideLength, buttonSideLength / 2)
+        seven.style = "-fx-background-color: #595959"
         seven.setOnMousePressed {
 
         }
 
         eight.setMinSize(buttonSideLength, buttonSideLength / 2)
+        eight.style = "-fx-background-color: #595959"
         eight.setOnMousePressed {
 
         }
 
         nine.setMinSize(buttonSideLength, buttonSideLength / 2)
+        nine.style = "-fx-background-color: #595959"
         nine.setOnMousePressed {
 
         }

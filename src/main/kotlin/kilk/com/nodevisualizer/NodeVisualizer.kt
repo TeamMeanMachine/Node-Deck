@@ -27,6 +27,7 @@ class NodeVisualizer : Application() {
 
 
         val borderPane = BorderPane()
+        borderPane.style = "-fx-background-color: #a8a8a8"
         borderPane.center = NodeSelector
         borderPane.top = SectionSelector
 

@@ -8,7 +8,7 @@ object SectionSelector : HBox(5.0){
     val leftSection = Button("Left")
     val centerSection = Button("Co-op")
     val rightSection = Button("Right")
-    val buttonHeight = NodeVisualizer.screen.visualBounds.height / 6
+    val buttonHeight = NodeVisualizer.screen.visualBounds.height / 4
     val buttonWidth = NodeVisualizer.screen.visualBounds.width / 4
     val spacerLeft = Region()
     val spacerRight = Region()
