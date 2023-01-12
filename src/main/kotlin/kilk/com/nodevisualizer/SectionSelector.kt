@@ -14,6 +14,8 @@ object SectionSelector : HBox(5.0){
     val spacerRight = Region()
 
     init {
+        println("SectionSelector says hi!")
+
         spacerLeft.setPrefSize(9999.9, 0.0)
         spacerRight.setPrefSize(9999.9, 0.0)
 
