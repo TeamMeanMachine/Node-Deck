@@ -8,7 +8,7 @@ object SectionSelector : GridPane(){
     val leftSection = Button("Left")
     val centerSection = Button("Co-op")
     val rightSection = Button("Right")
-    val buttonHeight = 225.0
+    val buttonHeight = 200.0
     val buttonWidth = 400.0
 
     init {

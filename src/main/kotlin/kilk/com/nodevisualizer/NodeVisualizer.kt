@@ -25,14 +25,10 @@ class NodeVisualizer : Application() {
         stage.title = "NodeVisualizer"
         NodeVisualizer.stage = stage
 
-        val borderPane = BorderPane()
-        borderPane.style = "-fx-background-color: #a8a8a8"
-        borderPane.top = SectionSelector
-        borderPane.center = NodeSelector
-        borderPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+
 
         val bounds = Rectangle2D(screen.visualBounds.minX, screen.visualBounds.minY, screen.visualBounds.width, screen.visualBounds.height)
-        stage.scene = Scene(borderPane, bounds.width, bounds.height)
+        stage.scene = Scene(ColorOutline, bounds.width, bounds.height)
         stage.sizeToScene()
         stage.show()
     }
