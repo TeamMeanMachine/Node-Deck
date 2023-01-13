@@ -3,6 +3,7 @@ package kilk.com.nodevisualizer
 import javafx.application.Application
 import javafx.geometry.Rectangle2D
 import javafx.scene.Scene
+import javafx.scene.control.ScrollPane
 import javafx.scene.layout.BorderPane
 import javafx.stage.Screen
 import javafx.stage.Stage
@@ -28,8 +29,9 @@ class NodeVisualizer : Application() {
 
         val borderPane = BorderPane()
         borderPane.style = "-fx-background-color: #a8a8a8"
-        borderPane.center = NodeSelector
         borderPane.top = SectionSelector
+        borderPane.center = NodeSelector
+        borderPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
 
         val bounds = Rectangle2D(screen.visualBounds.minX, screen.visualBounds.minY, screen.visualBounds.width, screen.visualBounds.height)
         stage.scene = Scene(borderPane, bounds.width, bounds.height)

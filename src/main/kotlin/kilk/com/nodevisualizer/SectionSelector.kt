@@ -1,10 +1,12 @@
 package kilk.com.nodevisualizer
 
+import javafx.geometry.Pos
 import javafx.scene.control.Button
+import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Region
 
-object SectionSelector : HBox(5.0){
+object SectionSelector : GridPane(){
     val leftSection = Button("Left")
     val centerSection = Button("Co-op")
     val rightSection = Button("Right")
@@ -23,6 +25,8 @@ object SectionSelector : HBox(5.0){
         centerSection.setMinSize(buttonWidth, buttonHeight)
         rightSection.setMinSize(buttonWidth, buttonHeight)
 
-        SectionSelector.children.addAll(spacerLeft, leftSection, centerSection, rightSection, spacerRight)
+        SectionSelector.addRow(1, leftSection, centerSection, rightSection)
+        SectionSelector.alignment = Pos.TOP_CENTER
+
     }
 }

@@ -1,16 +1,14 @@
 package kilk.com.nodevisualizer
 
+import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Region
-import javafx.scene.layout.VBox
 
-object NodeSelector : HBox(5.0) {
-    val lVbox = VBox(5.0)
-    val cVbox = VBox(5.0)
-    val rVbox = VBox(5.0)
+object NodeSelector : GridPane() {
     val one = Button("", ImageView(Image("cone-icon.png")))
     val two = Button("", ImageView(Image("cube-icon.png")))
     val three = Button("", ImageView(Image("cone-icon.png")))
@@ -20,7 +18,7 @@ object NodeSelector : HBox(5.0) {
     val seven = Button("")
     val eight = Button("")
     val nine = Button("")
-    val buttonSideLength: Double = NodeVisualizer.screen.visualBounds.height / 3
+    val buttonSideLength: Double = 250.0
     private val spacerLeft = Region()
     private val spacerRight = Region()
 
@@ -28,8 +26,9 @@ object NodeSelector : HBox(5.0) {
     init {
         println("NodeSelector says hi!")
 
-        spacerLeft.setPrefSize(9999.9, 0.0)
-        spacerRight.setPrefSize(9999.9, 0.0)
+//        spacerLeft.setPrefSize(9999.9, 0.0)
+//        spacerRight.setPrefSize(9999.9, 0.0)
+        NodeSelector.
 
         one.setMinSize(buttonSideLength, buttonSideLength)
         one.style = "-fx-background-color: #FFFF00"
@@ -85,10 +84,10 @@ object NodeSelector : HBox(5.0) {
 
         }
 
-        lVbox.children.addAll(one, four, seven)
-        cVbox.children.addAll(two, five, eight)
-        rVbox.children.addAll(three, six, nine)
+        NodeSelector.addRow(1, one, two, three)
+        NodeSelector.addRow(2, four, five, six)
+        NodeSelector.addRow(3, seven, eight, nine)
 
-        NodeSelector.children.addAll(spacerLeft, lVbox, cVbox, rVbox, spacerRight)
+        NodeSelector.alignment = Pos.CENTER
     }
 }
