@@ -11,7 +11,6 @@ import javafx.stage.Stage
 class NodeVisualizer : Application() {
     companion object {
         lateinit var stage: Stage
-        val screen = Screen.getPrimary()
 
         @JvmStatic
         fun main(args: Array<String>) {
@@ -22,10 +21,10 @@ class NodeVisualizer : Application() {
 
     override fun start(stage: Stage) {
 
+        val screen = Screen.getPrimary()
 
         stage.title = "NodeVisualizer"
         NodeVisualizer.stage = stage
-
 
         val borderPane = BorderPane()
         borderPane.style = "-fx-background-color: #a8a8a8"

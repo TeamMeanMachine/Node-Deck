@@ -5,8 +5,6 @@ import javafx.scene.control.Button
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
-import javafx.scene.layout.HBox
-import javafx.scene.layout.Region
 
 object NodeSelector : GridPane() {
     val one = Button("", ImageView(Image("cone-icon.png")))
@@ -18,9 +16,7 @@ object NodeSelector : GridPane() {
     val seven = Button("")
     val eight = Button("")
     val nine = Button("")
-    val buttonSideLength: Double = 250.0
-    private val spacerLeft = Region()
-    private val spacerRight = Region()
+    val buttonSideLength: Double = 275.0
 
 
     init {
@@ -28,65 +24,64 @@ object NodeSelector : GridPane() {
 
 //        spacerLeft.setPrefSize(9999.9, 0.0)
 //        spacerRight.setPrefSize(9999.9, 0.0)
-        NodeSelector.
 
-        one.setMinSize(buttonSideLength, buttonSideLength)
+        one.setPrefSize(buttonSideLength, buttonSideLength)
         one.style = "-fx-background-color: #FFFF00"
         one.setOnMousePressed {
 
         }
 
-        two.setMinSize(buttonSideLength, buttonSideLength)
+        two.setPrefSize(buttonSideLength, buttonSideLength)
         two.style = "-fx-background-color: #9900ffff"
         two.setOnMousePressed {
 
         }
 
-        three.setMinSize(buttonSideLength, buttonSideLength)
+        three.setPrefSize(buttonSideLength, buttonSideLength)
         three.style = "-fx-background-color: #FFFF00"
         three.setOnMousePressed {
 
         }
 
-        four.setMinSize(buttonSideLength, buttonSideLength)
+        four.setPrefSize(buttonSideLength, buttonSideLength)
         four.style = "-fx-background-color: #FFFF00"
         four.setOnMousePressed {
 
         }
 
-        five.setMinSize(buttonSideLength, buttonSideLength)
+        five.setPrefSize(buttonSideLength, buttonSideLength)
         five.style = "-fx-background-color: #9900ffff"
         five.setOnMousePressed {
 
         }
 
-        six.setMinSize(buttonSideLength, buttonSideLength)
+        six.setPrefSize(buttonSideLength, buttonSideLength)
         six.style = "-fx-background-color: #FFFF00"
         six.setOnMousePressed {
 
         }
 
-        seven.setMinSize(buttonSideLength, buttonSideLength / 2)
+        seven.setPrefSize(buttonSideLength, buttonSideLength / 2)
         seven.style = "-fx-background-color: #595959"
         seven.setOnMousePressed {
 
         }
 
-        eight.setMinSize(buttonSideLength, buttonSideLength / 2)
+        eight.setPrefSize(buttonSideLength, buttonSideLength / 2)
         eight.style = "-fx-background-color: #595959"
         eight.setOnMousePressed {
 
         }
 
-        nine.setMinSize(buttonSideLength, buttonSideLength / 2)
+        nine.setPrefSize(buttonSideLength, buttonSideLength / 2)
         nine.style = "-fx-background-color: #595959"
         nine.setOnMousePressed {
 
         }
 
-        NodeSelector.addRow(1, one, two, three)
-        NodeSelector.addRow(2, four, five, six)
-        NodeSelector.addRow(3, seven, eight, nine)
+        NodeSelector.addRow(2, one, two, three)
+        NodeSelector.addRow(3, four, five, six)
+        NodeSelector.addRow(1, seven, eight, nine)
 
         NodeSelector.alignment = Pos.CENTER
     }
