@@ -38,7 +38,7 @@ object NodeSelector : GridPane() {
         }
 
         two.setPrefSize(buttonSideLength, buttonSideLength)
-        two.style = "-fx-background-color: #9900ffff"
+        two.style = "-fx-background-color: #9900ff"
         two.setOnMousePressed {
 
         }
@@ -56,7 +56,7 @@ object NodeSelector : GridPane() {
         }
 
         five.setPrefSize(buttonSideLength, buttonSideLength)
-        five.style = "-fx-background-color: #9900ffff"
+        five.style = "-fx-background-color: #9900ff"
         five.setOnMousePressed {
 
         }

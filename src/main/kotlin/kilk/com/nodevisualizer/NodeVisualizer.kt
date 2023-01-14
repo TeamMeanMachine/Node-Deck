@@ -3,7 +3,6 @@ package kilk.com.nodevisualizer
 import javafx.application.Application
 import javafx.geometry.Rectangle2D
 import javafx.scene.Scene
-import javafx.scene.layout.BorderPane
 import javafx.stage.Screen
 import javafx.stage.Stage
 
@@ -11,7 +10,6 @@ class NodeVisualizer : Application() {
     companion object {
         lateinit var stage: Stage
         var isRedAlliance: Boolean = true
-        var allianceColor: String = "#000000"
 
         @JvmStatic
         fun main(args: Array<String>) {
@@ -27,8 +25,6 @@ class NodeVisualizer : Application() {
 
         stage.title = "NodeVisualizer"
         NodeVisualizer.stage = stage
-
-
 
         val bounds = Rectangle2D(screen.visualBounds.minX, screen.visualBounds.minY, screen.visualBounds.width, screen.visualBounds.height)
         stage.scene = Scene(ColorOutline, bounds.width, bounds.height)
