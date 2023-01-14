@@ -10,6 +10,8 @@ import javafx.stage.Stage
 class NodeVisualizer : Application() {
     companion object {
         lateinit var stage: Stage
+        var isRedAlliance: Boolean = true
+        var allianceColor: String = "#000000"
 
         @JvmStatic
         fun main(args: Array<String>) {
@@ -19,6 +21,7 @@ class NodeVisualizer : Application() {
     }
 
     override fun start(stage: Stage) {
+        ColorOutline.checkAlliance()
 
         val screen = Screen.getPrimary()
 

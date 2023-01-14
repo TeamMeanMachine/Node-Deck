@@ -18,7 +18,7 @@ object SectionSelector : GridPane(){
         centerSection.setPrefSize(buttonWidth, buttonHeight)
         rightSection.setPrefSize(buttonWidth, buttonHeight)
 
-        SectionSelector.addRow(1, leftSection, centerSection, rightSection)
+        SectionSelector.addRow(0, leftSection, centerSection, rightSection)
         SectionSelector.alignment = Pos.TOP_CENTER
     }
 }

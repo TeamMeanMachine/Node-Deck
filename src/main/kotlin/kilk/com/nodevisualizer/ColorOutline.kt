@@ -15,7 +15,14 @@ object ColorOutline : GridPane() {
 
         ColorOutline.padding = Insets(0.0)
         ColorOutline.alignment = Pos.CENTER
-        ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #000000; -fx-border-width: 15 15 15 15"
         ColorOutline.add(borderPane, 0, 0)
+    }
+    fun checkAlliance(red: Boolean = NodeVisualizer.isRedAlliance) { //check network table color and change it into hex
+        if (red) {
+            ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ff0000; -fx-border-width: 10 10 10 10"
+        } else {
+            ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #0000ff; -fx-border-width: 10 10 10 10"
+        }
+
     }
 }

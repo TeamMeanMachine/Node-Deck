@@ -28,7 +28,13 @@ object NodeSelector : GridPane() {
         one.setPrefSize(buttonSideLength, buttonSideLength)
         one.style = "-fx-background-color: #FFFF00"
         one.setOnMousePressed {
-
+            if (NodeVisualizer.isRedAlliance) {
+                NodeVisualizer.isRedAlliance = false
+                ColorOutline.checkAlliance()
+            } else {
+                NodeVisualizer.isRedAlliance = true
+                ColorOutline.checkAlliance()
+            }
         }
 
         two.setPrefSize(buttonSideLength, buttonSideLength)
