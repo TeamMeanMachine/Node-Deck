@@ -8,7 +8,6 @@ object ColorOutline : GridPane() {
     init {
         println("ColorOutline says hi!")
 
-        ColorOutline.padding = Insets(0.0)
         ColorOutline.alignment = Pos.CENTER
         ColorOutline.add(SectionSelector, 0, 0)
         ColorOutline.add(NodeSelector, 0, 1)
