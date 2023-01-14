@@ -31,5 +31,6 @@ class NodeVisualizer : Application() {
         stage.scene = Scene(ColorOutline, bounds.width, bounds.height)
         stage.sizeToScene()
         stage.show()
+        stage.isFullScreen = true
     }
 }
