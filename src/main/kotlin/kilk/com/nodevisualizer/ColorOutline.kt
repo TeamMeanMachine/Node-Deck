@@ -1,6 +1,5 @@
 package kilk.com.nodevisualizer
 
-import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.layout.GridPane
 

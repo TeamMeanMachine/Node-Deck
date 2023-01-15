@@ -1,11 +1,8 @@
 package kilk.com.nodevisualizer
 
-import javafx.beans.value.ChangeListener
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
-import javafx.scene.control.Toggle
-import javafx.scene.control.ToggleButton
 import javafx.scene.layout.GridPane
 import javafx.scene.text.Font
 
