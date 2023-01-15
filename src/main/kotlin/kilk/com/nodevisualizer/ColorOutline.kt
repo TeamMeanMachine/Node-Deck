@@ -11,6 +11,7 @@ object ColorOutline : GridPane() {
         ColorOutline.alignment = Pos.CENTER
         ColorOutline.add(SectionSelector, 0, 0)
         ColorOutline.add(NodeSelector, 0, 1)
+        ColorOutline.add(InformationPanel, 1, 1)
     }
     fun checkAlliance(red: Boolean = NodeVisualizer.isRedAlliance) {
         if (red) {

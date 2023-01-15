@@ -18,6 +18,7 @@ object NodeSelector : GridPane() {
     val nine = Button("")
     val buttonSideLength: Double = 275.0
     private var selectedButton: Button = one
+    var selectedNode: Int = 1
 
 
     init {
@@ -26,78 +27,94 @@ object NodeSelector : GridPane() {
         one.setPrefSize(buttonSideLength, buttonSideLength)
         one.style = "-fx-background-color: #FFFF00"
         one.setOnMousePressed {
-            if (NodeVisualizer.isRedAlliance) {
-                NodeVisualizer.isRedAlliance = false
-                ColorOutline.checkAlliance()
-            } else {
-                NodeVisualizer.isRedAlliance = true
-                ColorOutline.checkAlliance()
-            }
-            changeSelectedButton(one)
+            selectedNode = 1
+            changeSelectedButtonColor(one)
+            InformationPanel.updateInfoPanel()
         }
 
         two.setPrefSize(buttonSideLength, buttonSideLength)
         two.style = "-fx-background-color: #9900ff"
         two.setOnMousePressed {
-            changeSelectedButton(two)
+            selectedNode = 2
+            changeSelectedButtonColor(two)
+            InformationPanel.updateInfoPanel()
         }
 
         three.setPrefSize(buttonSideLength, buttonSideLength)
         three.style = "-fx-background-color: #FFFF00"
         three.setOnMousePressed {
-            changeSelectedButton(three)
+            selectedNode = 3
+            changeSelectedButtonColor(three)
+            InformationPanel.updateInfoPanel()
         }
 
         four.setPrefSize(buttonSideLength, buttonSideLength)
         four.style = "-fx-background-color: #FFFF00"
         four.setOnMousePressed {
-            changeSelectedButton(four)
+            selectedNode = 4
+            changeSelectedButtonColor(four)
+            InformationPanel.updateInfoPanel()
         }
 
         five.setPrefSize(buttonSideLength, buttonSideLength)
         five.style = "-fx-background-color: #9900ff"
         five.setOnMousePressed {
-            changeSelectedButton(five)
+            selectedNode = 5
+            changeSelectedButtonColor(five)
+            InformationPanel.updateInfoPanel()
         }
 
         six.setPrefSize(buttonSideLength, buttonSideLength)
         six.style = "-fx-background-color: #FFFF00"
         six.setOnMousePressed {
-            changeSelectedButton(six)
+            selectedNode = 6
+            changeSelectedButtonColor(six)
+            InformationPanel.updateInfoPanel()
         }
 
-        seven.setPrefSize(buttonSideLength, buttonSideLength / 2)
+        seven.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         seven.style = "-fx-background-color: #595959"
         seven.setOnMousePressed {
-            changeSelectedButton(seven)
+            selectedNode = 7
+            changeSelectedButtonColor(seven)
+            InformationPanel.updateInfoPanel()
         }
 
-        eight.setPrefSize(buttonSideLength, buttonSideLength / 2)
+        eight.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         eight.style = "-fx-background-color: #595959"
         eight.setOnMousePressed {
-            changeSelectedButton(eight)
+            selectedNode = 8
+            changeSelectedButtonColor(eight)
+            InformationPanel.updateInfoPanel()
         }
 
-        nine.setPrefSize(buttonSideLength, buttonSideLength / 2)
+        nine.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         nine.style = "-fx-background-color: #595959"
         nine.setOnMousePressed {
-            changeSelectedButton(nine)
+            selectedNode = 9
+            changeSelectedButtonColor(nine)
+            InformationPanel.updateInfoPanel()
         }
 
-        NodeSelector.addRow(2, one, two, three)
-        NodeSelector.addRow(3, four, five, six)
-        NodeSelector.addRow(1, seven, eight, nine)
-
+        NodeSelector.addRow(1, nine, eight, seven)
+        NodeSelector.addRow(2, six, five, four)
+        NodeSelector.addRow(3, three, two, one)
         NodeSelector.alignment = Pos.CENTER
+
+        changeSelectedButtonColor(one)
     }
-    private fun changeSelectedButton(thisButton: Button) {
+    private fun changeSelectedButtonColor(thisButton: Button) {
         if (selectedButton == two || selectedButton == five) {
             selectedButton.style = "-fx-background-color: #9900ff"
+            selectedButton.graphic = ImageView(Image("cube-icon.png"))
         } else if (selectedButton == seven || selectedButton == eight || selectedButton == nine) {
             selectedButton.style = "-fx-background-color: #595959"
+            selectedButton.graphic = ImageView()
         } else {
             selectedButton.style = "-fx-background-color: #FFFF00"
+            selectedButton.graphic = ImageView(Image("cone-icon.png"))
         }
+        thisButton.graphic = ImageView(Image("mean-logo.png"))
         thisButton.style = "-fx-background-color: #ff0000"
         selectedButton = thisButton
     }
