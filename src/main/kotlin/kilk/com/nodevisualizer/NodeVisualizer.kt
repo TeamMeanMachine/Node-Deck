@@ -19,7 +19,6 @@ class NodeVisualizer : Application() {
     }
 
     override fun start(stage: Stage) {
-        ColorOutline.checkAlliance()
 
         val screen = Screen.getPrimary()
 
@@ -31,5 +30,7 @@ class NodeVisualizer : Application() {
         stage.sizeToScene()
         stage.show()
         stage.isFullScreen = true
+
+        ColorOutline.checkAlliance()
     }
 }

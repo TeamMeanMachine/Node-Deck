@@ -56,9 +56,11 @@ object SectionSelector : GridPane(){
         } else if (selectedButton == centerSection) {
             selectedButton.text = "Co-op"
         } else { selectedButton.text = "Right" }
+
         thisButton.text = ""
         thisButton.graphic = ImageView(Image("mean-logo.png"))
         thisButton.style = "-fx-background-color: #ff0000; -fx-text-fill: WHITE; -fx-font-weight: bold; -fx-font-size: 70px"
+
         selectedButton = thisButton
     }
 }

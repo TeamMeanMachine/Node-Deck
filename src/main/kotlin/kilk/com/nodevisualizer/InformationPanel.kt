@@ -14,10 +14,11 @@ object InformationPanel: GridPane() {
 
         InformationPanel.addRow(0, nodeLabel)
         InformationPanel.addRow(1, toggleAllianceButton)
+
         nodeLabel.alignment = Pos.CENTER
         nodeLabel.font = Font(20.0)
-        nodeLabel.setPrefSize(150.0, 25.0)
         nodeLabel.style = "-fx-background-color: #f0f0f0; -fx-font-weight: bold; -fx-font-size: 30px"
+        nodeLabel.setPrefSize(150.0, 25.0)
 
         toggleAllianceButton.setPrefSize(150.0, 50.0)
         toggleAllianceButton.setOnAction {
@@ -34,6 +35,5 @@ object InformationPanel: GridPane() {
     }
     fun updateInfoPanel() {
         nodeLabel.text = "Node #: ${NodeSelector.selectedNode + SectionSelector.selectedSection}"
-
     }
 }

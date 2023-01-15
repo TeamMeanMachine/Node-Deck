@@ -114,8 +114,10 @@ object NodeSelector : GridPane() {
             selectedButton.style = "-fx-background-color: #FFFF00"
             selectedButton.graphic = ImageView(Image("cone-icon.png"))
         }
+
         thisButton.graphic = ImageView(Image("mean-logo.png"))
         thisButton.style = "-fx-background-color: #ff0000"
+
         selectedButton = thisButton
     }
 }
