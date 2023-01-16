@@ -17,7 +17,7 @@ object NodeSelector : GridPane() {
     val eight = Button("")
     val nine = Button("")
     val buttonSideLength: Double = 400.0
-    private var selectedButton: Button = one
+    var selectedNodeButton: Button = one
     var selectedNode: Int = 1
 
 
@@ -27,8 +27,10 @@ object NodeSelector : GridPane() {
         one.setPrefSize(buttonSideLength, buttonSideLength)
         one.style = "-fx-background-color: #FFFF00"
         one.setOnMousePressed {
-            selectedNode = 1
-            changeSelectedButtonColor(one)
+            if (NodeDeck.isRedAlliance) {
+                selectedNode = 1
+            } else selectedNode = 3
+            changeSelectedNodeButton(one)
             InformationPanel.updateInfoPanel()
         }
 
@@ -36,23 +38,27 @@ object NodeSelector : GridPane() {
         two.style = "-fx-background-color: #9900ff"
         two.setOnMousePressed {
             selectedNode = 2
-            changeSelectedButtonColor(two)
+            changeSelectedNodeButton(two)
             InformationPanel.updateInfoPanel()
         }
 
         three.setPrefSize(buttonSideLength, buttonSideLength)
         three.style = "-fx-background-color: #FFFF00"
         three.setOnMousePressed {
-            selectedNode = 3
-            changeSelectedButtonColor(three)
+            if (NodeDeck.isRedAlliance) {
+                selectedNode = 3
+            } else selectedNode = 1
+            changeSelectedNodeButton(three)
             InformationPanel.updateInfoPanel()
         }
 
         four.setPrefSize(buttonSideLength, buttonSideLength)
         four.style = "-fx-background-color: #FFFF00"
         four.setOnMousePressed {
-            selectedNode = 4
-            changeSelectedButtonColor(four)
+            if (NodeDeck.isRedAlliance) {
+                selectedNode = 4
+            } else selectedNode = 6
+            changeSelectedNodeButton(four)
             InformationPanel.updateInfoPanel()
         }
 
@@ -60,23 +66,27 @@ object NodeSelector : GridPane() {
         five.style = "-fx-background-color: #9900ff"
         five.setOnMousePressed {
             selectedNode = 5
-            changeSelectedButtonColor(five)
+            changeSelectedNodeButton(five)
             InformationPanel.updateInfoPanel()
         }
 
         six.setPrefSize(buttonSideLength, buttonSideLength)
         six.style = "-fx-background-color: #FFFF00"
         six.setOnMousePressed {
-            selectedNode = 6
-            changeSelectedButtonColor(six)
+            if (NodeDeck.isRedAlliance) {
+                selectedNode = 6
+            } else selectedNode = 4
+            changeSelectedNodeButton(six)
             InformationPanel.updateInfoPanel()
         }
 
         seven.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         seven.style = "-fx-background-color: #595959"
         seven.setOnMousePressed {
-            selectedNode = 7
-            changeSelectedButtonColor(seven)
+            if (NodeDeck.isRedAlliance) {
+                selectedNode = 7
+            } else selectedNode = 9
+            changeSelectedNodeButton(seven)
             InformationPanel.updateInfoPanel()
         }
 
@@ -84,15 +94,17 @@ object NodeSelector : GridPane() {
         eight.style = "-fx-background-color: #595959"
         eight.setOnMousePressed {
             selectedNode = 8
-            changeSelectedButtonColor(eight)
+            changeSelectedNodeButton(eight)
             InformationPanel.updateInfoPanel()
         }
 
         nine.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         nine.style = "-fx-background-color: #595959"
         nine.setOnMousePressed {
-            selectedNode = 9
-            changeSelectedButtonColor(nine)
+            if (NodeDeck.isRedAlliance) {
+                selectedNode = 9
+            } else selectedNode = 7
+            changeSelectedNodeButton(nine)
             InformationPanel.updateInfoPanel()
         }
 
@@ -101,23 +113,23 @@ object NodeSelector : GridPane() {
         NodeSelector.addRow(3, three, two, one)
         NodeSelector.alignment = Pos.CENTER
 
-        changeSelectedButtonColor(one)
+        changeSelectedNodeButton(one)
     }
-    private fun changeSelectedButtonColor(thisButton: Button) {
-        if (selectedButton == two || selectedButton == five) {
-            selectedButton.style = "-fx-background-color: #9900ff"
-            selectedButton.graphic = ImageView(Image("cube-icon.png"))
-        } else if (selectedButton == seven || selectedButton == eight || selectedButton == nine) {
-            selectedButton.style = "-fx-background-color: #595959"
-            selectedButton.graphic = ImageView()
+    fun changeSelectedNodeButton(thisButton: Button) {
+        if (selectedNodeButton == two || selectedNodeButton == five) {
+            selectedNodeButton.style = "-fx-background-color: #9900ff"
+            selectedNodeButton.graphic = ImageView(Image("cube-icon.png"))
+        } else if (selectedNodeButton == seven || selectedNodeButton == eight || selectedNodeButton == nine) {
+            selectedNodeButton.style = "-fx-background-color: #595959"
+            selectedNodeButton.graphic = ImageView()
         } else {
-            selectedButton.style = "-fx-background-color: #FFFF00"
-            selectedButton.graphic = ImageView(Image("cone-icon.png"))
+            selectedNodeButton.style = "-fx-background-color: #FFFF00"
+            selectedNodeButton.graphic = ImageView(Image("cone-icon.png"))
         }
 
         thisButton.graphic = ImageView(Image("mean-logo.png"))
         thisButton.style = "-fx-background-color: #ff0000"
 
-        selectedButton = thisButton
+        selectedNodeButton = thisButton
     }
 }

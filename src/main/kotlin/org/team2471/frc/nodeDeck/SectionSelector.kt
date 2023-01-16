@@ -12,7 +12,7 @@ object SectionSelector : GridPane(){
     val rightSection = Button("Right")
     val buttonHeight = 200.0
     val buttonWidth = 600.0
-    var selectedButton: Button = rightSection
+    var selectedSectionButton: Button = rightSection
     var selectedSection: Int = 0
 
     init {
@@ -21,15 +21,19 @@ object SectionSelector : GridPane(){
         leftSection.setPrefSize(buttonWidth, buttonHeight)
         leftSection.style = "-fx-font-weight: bold; -fx-font-size: 60px"
         leftSection.setOnMousePressed {
-            changeSelectedButtonColor(leftSection)
-            selectedSection = 18
+            if (NodeDeck.isRedAlliance) {
+                selectedSection = 18
+            } else {
+                selectedSection = 0
+            }
+            changeSelectedSectionButton(leftSection)
             InformationPanel.updateInfoPanel()
 
         }
         centerSection.setPrefSize(buttonWidth, buttonHeight)
         centerSection.style = "-fx-font-weight: bold; -fx-font-size: 60px"
         centerSection.setOnMousePressed {
-            changeSelectedButtonColor(centerSection)
+            changeSelectedSectionButton(centerSection)
             selectedSection = 9
             InformationPanel.updateInfoPanel()
 
@@ -37,8 +41,12 @@ object SectionSelector : GridPane(){
         rightSection.setPrefSize(buttonWidth, buttonHeight)
         rightSection.style = "-fx-font-weight: bold; -fx-font-size: 60px"
         rightSection.setOnMousePressed {
-            changeSelectedButtonColor(rightSection)
-            selectedSection = 0
+            if (NodeDeck.isRedAlliance) {
+                selectedSection = 0
+            } else {
+                selectedSection = 18
+            }
+            changeSelectedSectionButton(rightSection)
             InformationPanel.updateInfoPanel()
 
         }
@@ -46,21 +54,21 @@ object SectionSelector : GridPane(){
         SectionSelector.addRow(0, leftSection, centerSection, rightSection)
         SectionSelector.alignment = Pos.TOP_CENTER
 
-        changeSelectedButtonColor(rightSection)
+        changeSelectedSectionButton(rightSection)
     }
-    private fun changeSelectedButtonColor(thisButton: Button) {
-        selectedButton.graphic = ImageView()
-        selectedButton.style = "-fx-font-weight: bold; -fx-font-size: 60px"
-        if (selectedButton == leftSection) {
-            selectedButton.text = "Left"
-        } else if (selectedButton == centerSection) {
-            selectedButton.text = "Co-op"
-        } else { selectedButton.text = "Right" }
+    fun changeSelectedSectionButton(thisButton: Button) {
+        selectedSectionButton.graphic = ImageView()
+        selectedSectionButton.style = "-fx-font-weight: bold; -fx-font-size: 60px"
+        if (selectedSectionButton == leftSection) {
+            selectedSectionButton.text = "Left"
+        } else if (selectedSectionButton == centerSection) {
+            selectedSectionButton.text = "Co-op"
+        } else { selectedSectionButton.text = "Right" }
 
         thisButton.text = ""
         thisButton.graphic = ImageView(Image("mean-logo.png"))
         thisButton.style = "-fx-background-color: #ff0000; -fx-text-fill: WHITE; -fx-font-weight: bold; -fx-font-size: 70px"
 
-        selectedButton = thisButton
+        selectedSectionButton = thisButton
     }
 }

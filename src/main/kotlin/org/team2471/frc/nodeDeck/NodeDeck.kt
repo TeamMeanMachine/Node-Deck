@@ -9,12 +9,13 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import kotlinx.coroutines.*
 import java.net.InetAddress
 import java.util.*
+import java.util.Timer
 
 class NodeDeck : Application() {
     companion object {
         lateinit var stage: Stage
-        var isRedAlliance: Boolean = true
         val networkTableInstance : NetworkTableInstance = NetworkTableInstance.create()
+        val isRedAllianceEntry = NetworkTableInstance.getDefault().getTable("FMSInfo").getEntry("isRedAlliance")
         private var connectionJob: Job? = null
         var ipAddress = "10.24.71.2"
 
