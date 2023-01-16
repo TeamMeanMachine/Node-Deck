@@ -28,8 +28,11 @@ application {
 }
 
 dependencies {
-    implementation("edu.wpi.first.ntcore:ntcore-java:$wpiLibVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("edu.wpi.first.ntcore:ntcore-java:$wpiLibVersion")
+    implementation("edu.wpi.first.ntcore:ntcore-jni:$wpiLibVersion:windowsx86-64")
+    implementation("edu.wpi.first.wpiutil:wpiutil-java:$wpiLibVersion")
+    implementation("edu.wpi.first.wpiutil:wpiutil-jni:$wpiLibVersion:windowsx86-64")
 }
 java {
     withSourcesJar()

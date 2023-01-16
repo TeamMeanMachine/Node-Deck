@@ -16,7 +16,7 @@ object NodeSelector : GridPane() {
     val seven = Button("")
     val eight = Button("")
     val nine = Button("")
-    val buttonSideLength: Double = 275.0
+    val buttonSideLength: Double = 400.0
     private var selectedButton: Button = one
     var selectedNode: Int = 1
 

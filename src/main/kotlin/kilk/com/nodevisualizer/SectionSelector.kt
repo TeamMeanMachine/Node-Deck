@@ -11,7 +11,7 @@ object SectionSelector : GridPane(){
     val centerSection = Button("Co-op")
     val rightSection = Button("Right")
     val buttonHeight = 200.0
-    val buttonWidth = 400.0
+    val buttonWidth = 600.0
     var selectedButton: Button = rightSection
     var selectedSection: Int = 0
 
