@@ -24,7 +24,7 @@ javafx {
     modules = "javafx.controls,javafx.fxml".split(",").toMutableList()
 }
 application {
-    mainClass.set("kilk.com.nodevisualizer.NodeVisualizer")
+    mainClass.set("org.team2471.frc.nodeDeck.NodeDeck")
 }
 
 dependencies {

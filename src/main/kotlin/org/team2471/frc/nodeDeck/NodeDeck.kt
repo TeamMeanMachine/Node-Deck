@@ -1,4 +1,4 @@
-package kilk.com.nodevisualizer
+package org.team2471.frc.nodeDeck
 
 import javafx.application.Application
 import javafx.geometry.Rectangle2D
@@ -8,7 +8,7 @@ import javafx.stage.Stage
 import edu.wpi.first.networktables.NetworkTableInstance
 import kotlinx.coroutines.*
 
-class NodeVisualizer : Application() {
+class NodeDeck : Application() {
     companion object {
         lateinit var stage: Stage
         var isRedAlliance: Boolean = true
@@ -17,8 +17,8 @@ class NodeVisualizer : Application() {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            println("Launching NodeVisualizer...")
-            launch(NodeVisualizer::class.java, *args)
+            println("Launching NodeDeck...")
+            launch(NodeDeck::class.java, *args)
         }
     }
 
@@ -26,8 +26,8 @@ class NodeVisualizer : Application() {
 
         val screen = Screen.getPrimary()
 
-        stage.title = "NodeVisualizer"
-        NodeVisualizer.stage = stage
+        stage.title = "NodeDeck"
+        Companion.stage = stage
 
         val bounds = Rectangle2D(screen.visualBounds.minX, screen.visualBounds.minY, screen.visualBounds.width, screen.visualBounds.height)
         stage.scene = Scene(ColorOutline, bounds.width, bounds.height)

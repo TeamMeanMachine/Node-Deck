@@ -1,4 +1,4 @@
-package kilk.com.nodevisualizer
+package org.team2471.frc.nodeDeck
 
 import javafx.geometry.Pos
 import javafx.scene.control.Button
@@ -22,11 +22,11 @@ object InformationPanel: GridPane() {
 
         toggleAllianceButton.setPrefSize(160.0, 50.0)
         toggleAllianceButton.setOnAction {
-            if (NodeVisualizer.isRedAlliance) {
-                NodeVisualizer.isRedAlliance = false
+            if (NodeDeck.isRedAlliance) {
+                NodeDeck.isRedAlliance = false
                 ColorOutline.checkAlliance()
             } else {
-                NodeVisualizer.isRedAlliance = true
+                NodeDeck.isRedAlliance = true
                 ColorOutline.checkAlliance()
             }
         }
