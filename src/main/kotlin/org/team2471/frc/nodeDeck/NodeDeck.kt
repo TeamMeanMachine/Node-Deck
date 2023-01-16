@@ -7,6 +7,8 @@ import javafx.stage.Screen
 import javafx.stage.Stage
 import edu.wpi.first.networktables.NetworkTableInstance
 import kotlinx.coroutines.*
+import java.net.InetAddress
+import java.util.*
 
 class NodeDeck : Application() {
     companion object {
@@ -35,29 +37,57 @@ class NodeDeck : Application() {
         stage.show()
         stage.isFullScreen = true
 
-        fun connect() {
-            val address = "10.24.71.2"
-            println("Connecting to address $address")
+        connect()
 
-            connectionJob?.cancel()
-
-            connectionJob = GlobalScope.launch {
-                // shut down previous server, if connected
-                if (networkTableInstance.isConnected) {
-                    networkTableInstance.stopDSClient()
-                    networkTableInstance.stopClient()
-                }
-
-                // reconnect with new address
-                networkTableInstance.startClient4("PathVisualizer")
-                if (address.matches("[1-9](\\d{1,3})?".toRegex())) {
-                    networkTableInstance.setServerTeam(address.toInt())
-                } else {
-                    networkTableInstance.setServer(address)
-                }
-            }
-        }
 
         ColorOutline.checkAlliance()
+    }
+
+    fun connect() {
+        val address = "10.24.71.2"
+        println("Connecting to address $address")
+
+        connectionJob?.cancel()
+
+        connectionJob = GlobalScope.launch {
+            // shut down previous server, if connected
+            if (networkTableInstance.isConnected) {
+                networkTableInstance.stopDSClient()
+                networkTableInstance.stopClient()
+            }
+
+            // reconnect with new address
+            networkTableInstance.startClient4("NodeDeck")
+            println("hello")
+            if (address.matches("[1-9](\\d{1,3})?".toRegex())) {
+                networkTableInstance.setServerTeam(address.toInt())
+                println("hello2")
+            } else {
+                networkTableInstance.setServer(address)
+                println("hello3")
+            }
+        }
+    }
+    private fun initConnectionStatusCheck(){
+        val updateFrequencyInSeconds = 5
+        val timer = Timer()
+        timer.schedule(object : TimerTask() {
+            override fun run() {
+                // check network table connection
+                if (InetAddress.getLocalHost().hostAddress.startsWith(ControlPanel.ipAddress.substringBeforeLast(".", "____"))){
+                    if (!ControlPanel.networkTableInstance.isConnected) {
+                        // attempt to connect
+                        println("found FRC network. Connecting to network table")
+                        ControlPanel.connect()
+                    }
+                } else {
+                    // stop client only for teams using the ip address format (10.24.71.2). for others don't attempt to stop client.
+                    // the main benefit is to reduce log spamming of failed connection errors, so leaving it in is not inherently harmful
+                    if (!ControlPanel.ipAddress.matches("[1-9](\\d{1,3})?".toRegex())) {
+                        ControlPanel.networkTableInstance.stopClient()
+                    }
+                }
+            }
+        }, 10, 1000L * updateFrequencyInSeconds)
     }
 }
