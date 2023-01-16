@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+val wpiLibVersion = "2023.2.1"
+
 
 plugins {
     java
@@ -14,6 +16,7 @@ buildConfig {
 
 repositories {
     mavenCentral()
+    maven { setUrl("https://frcmaven.wpi.edu/artifactory/release/")}
 }
 
 javafx {
@@ -25,6 +28,8 @@ application {
 }
 
 dependencies {
+    implementation("edu.wpi.first.ntcore:ntcore-java:$wpiLibVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
 }
 java {
     withSourcesJar()
