@@ -5,7 +5,6 @@ import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import javafx.scene.text.Font
-import java.awt.event.MouseEvent
 
 object InformationPanel: GridPane() {
     val nodeLabel = Label()
@@ -25,6 +24,7 @@ object InformationPanel: GridPane() {
         toggleAllianceButton.setOnAction {
             ColorOutline.checkAlliance()
             updateButtons()
+            TableCreator.checkAlliance()
         }
 
         updateInfoPanel()
@@ -35,6 +35,5 @@ object InformationPanel: GridPane() {
     fun updateButtons() {
 //        NodeSelector.selectedNodeButton.fireEvent(MouseEvent.MOUSE_CLICKED)
         SectionSelector.selectedSectionButton.fire()
-        println("bam")
     }
 }

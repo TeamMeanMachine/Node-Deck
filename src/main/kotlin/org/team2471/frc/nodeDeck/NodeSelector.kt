@@ -18,7 +18,7 @@ object NodeSelector : GridPane() {
     val nine = Button("")
     val buttonSideLength: Double = 400.0
     var selectedNodeButton: Button = one
-    var selectedNode: Int = 1
+    var selectedNode: Double = 1.0
 
 
     init {
@@ -27,9 +27,9 @@ object NodeSelector : GridPane() {
         one.setPrefSize(buttonSideLength, buttonSideLength)
         one.style = "-fx-background-color: #FFFF00"
         one.setOnMousePressed {
-            if (NodeDeck.isRedAlliance) {
-                selectedNode = 1
-            } else selectedNode = 3
+            if (TableCreator.isRedAlliance) {
+                selectedNode = 1.0
+            } else selectedNode = 3.0
             changeSelectedNodeButton(one)
             InformationPanel.updateInfoPanel()
         }
@@ -37,7 +37,7 @@ object NodeSelector : GridPane() {
         two.setPrefSize(buttonSideLength, buttonSideLength)
         two.style = "-fx-background-color: #9900ff"
         two.setOnMousePressed {
-            selectedNode = 2
+            selectedNode = 2.0
             changeSelectedNodeButton(two)
             InformationPanel.updateInfoPanel()
         }
@@ -45,9 +45,9 @@ object NodeSelector : GridPane() {
         three.setPrefSize(buttonSideLength, buttonSideLength)
         three.style = "-fx-background-color: #FFFF00"
         three.setOnMousePressed {
-            if (NodeDeck.isRedAlliance) {
-                selectedNode = 3
-            } else selectedNode = 1
+            if (TableCreator.isRedAlliance) {
+                selectedNode = 3.0
+            } else selectedNode = 1.0
             changeSelectedNodeButton(three)
             InformationPanel.updateInfoPanel()
         }
@@ -55,9 +55,9 @@ object NodeSelector : GridPane() {
         four.setPrefSize(buttonSideLength, buttonSideLength)
         four.style = "-fx-background-color: #FFFF00"
         four.setOnMousePressed {
-            if (NodeDeck.isRedAlliance) {
-                selectedNode = 4
-            } else selectedNode = 6
+            if (TableCreator.isRedAlliance) {
+                selectedNode = 4.0
+            } else selectedNode = 6.0
             changeSelectedNodeButton(four)
             InformationPanel.updateInfoPanel()
         }
@@ -65,7 +65,7 @@ object NodeSelector : GridPane() {
         five.setPrefSize(buttonSideLength, buttonSideLength)
         five.style = "-fx-background-color: #9900ff"
         five.setOnMousePressed {
-            selectedNode = 5
+            selectedNode = 5.0
             changeSelectedNodeButton(five)
             InformationPanel.updateInfoPanel()
         }
@@ -73,9 +73,9 @@ object NodeSelector : GridPane() {
         six.setPrefSize(buttonSideLength, buttonSideLength)
         six.style = "-fx-background-color: #FFFF00"
         six.setOnMousePressed {
-            if (NodeDeck.isRedAlliance) {
-                selectedNode = 6
-            } else selectedNode = 4
+            if (TableCreator.isRedAlliance) {
+                selectedNode = 6.0
+            } else selectedNode = 4.0
             changeSelectedNodeButton(six)
             InformationPanel.updateInfoPanel()
         }
@@ -83,9 +83,9 @@ object NodeSelector : GridPane() {
         seven.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         seven.style = "-fx-background-color: #595959"
         seven.setOnMousePressed {
-            if (NodeDeck.isRedAlliance) {
-                selectedNode = 7
-            } else selectedNode = 9
+            if (TableCreator.isRedAlliance) {
+                selectedNode = 7.0
+            } else selectedNode = 9.0
             changeSelectedNodeButton(seven)
             InformationPanel.updateInfoPanel()
         }
@@ -93,7 +93,7 @@ object NodeSelector : GridPane() {
         eight.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         eight.style = "-fx-background-color: #595959"
         eight.setOnMousePressed {
-            selectedNode = 8
+            selectedNode = 8.0
             changeSelectedNodeButton(eight)
             InformationPanel.updateInfoPanel()
         }
@@ -101,9 +101,9 @@ object NodeSelector : GridPane() {
         nine.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         nine.style = "-fx-background-color: #595959"
         nine.setOnMousePressed {
-            if (NodeDeck.isRedAlliance) {
-                selectedNode = 9
-            } else selectedNode = 7
+            if (TableCreator.isRedAlliance) {
+                selectedNode = 9.0
+            } else selectedNode = 7.0
             changeSelectedNodeButton(nine)
             InformationPanel.updateInfoPanel()
         }

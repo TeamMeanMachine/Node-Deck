@@ -14,10 +14,10 @@ import java.util.Timer
 class NodeDeck : Application() {
     companion object {
         lateinit var stage: Stage
-        val networkTableInstance : NetworkTableInstance = NetworkTableInstance.create()
-        val isRedAllianceEntry = NetworkTableInstance.getDefault().getTable("FMSInfo").getEntry("isRedAlliance")
+        val networkTableInstance: NetworkTableInstance = NetworkTableInstance.create()
         private var connectionJob: Job? = null
         var ipAddress = "10.24.71.2"
+
 
         @JvmStatic
         fun main(args: Array<String>) {
@@ -27,6 +27,9 @@ class NodeDeck : Application() {
     }
 
     override fun start(stage: Stage) {
+
+        initConnectionStatusCheck()
+
 
         val screen = Screen.getPrimary()
 
@@ -39,12 +42,10 @@ class NodeDeck : Application() {
         stage.show()
         stage.isFullScreen = true
 
-        initConnectionStatusCheck()
 
 
         ColorOutline.checkAlliance()
     }
-
     fun connect() {
         val address = ipAddress
         println("Connecting to address $address")
@@ -59,7 +60,7 @@ class NodeDeck : Application() {
             }
 
             // reconnect with new address
-            networkTableInstance.startClient4("NodeDeck")
+            networkTableInstance.startClient4("PathVisualizer")
             if (address.matches("[1-9](\\d{1,3})?".toRegex())) {
                 networkTableInstance.setServerTeam(address.toInt())
             } else {
@@ -67,14 +68,15 @@ class NodeDeck : Application() {
             }
         }
     }
-    private fun initConnectionStatusCheck(){
+
+    private fun initConnectionStatusCheck() {
         println("inside initConnectionStatusCheck")
         val updateFrequencyInSeconds = 5
         val timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
                 // check network table connection
-                if (InetAddress.getLocalHost().hostAddress.startsWith(ipAddress.substringBeforeLast(".", "____"))){
+                if (InetAddress.getLocalHost().hostAddress.startsWith(ipAddress.substringBeforeLast(".", "____"))) {
                     if (!networkTableInstance.isConnected) {
                         // attempt to connect
                         println("found FRC network. Connecting to network table")
