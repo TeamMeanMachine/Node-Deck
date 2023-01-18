@@ -87,7 +87,6 @@ class NodeDeck : Application() {
                     // the main benefit is to reduce log spamming of failed connection errors, so leaving it in is not inherently harmful
                     if (!ipAddress.matches("[1-9](\\d{1,3})?".toRegex())) {
                         networkTableInstance.stopClient()
-                        println("stopping")
                     }
                 }
             }
