@@ -12,8 +12,8 @@ object ColorOutline : GridPane() {
         ColorOutline.add(NodeSelector, 0, 1)
         ColorOutline.add(InformationPanel, 1, 1)
     }
-    fun checkAlliance(red: Boolean = TableCreator.isRedAlliance) {
-        println(TableCreator.isRedAlliance)
+    fun checkAlliance(red: Boolean = Client.isRed) {
+        println(Client.isRed)
         if (red) {
             ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ff0000; -fx-border-width: 10 10 10 10"
         } else {

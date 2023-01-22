@@ -27,7 +27,7 @@ object NodeSelector : GridPane() {
         one.setPrefSize(buttonSideLength, buttonSideLength)
         one.style = "-fx-background-color: #FFFF00"
         one.setOnMousePressed {
-            if (TableCreator.isRedAlliance) {
+            if (Client.isRed) {
                 selectedNode = 1
             } else selectedNode = 3
             changeSelectedNodeButton(one)
@@ -45,7 +45,7 @@ object NodeSelector : GridPane() {
         three.setPrefSize(buttonSideLength, buttonSideLength)
         three.style = "-fx-background-color: #FFFF00"
         three.setOnMousePressed {
-            if (TableCreator.isRedAlliance) {
+            if (Client.isRed) {
                 selectedNode = 3
             } else selectedNode = 1
             changeSelectedNodeButton(three)
@@ -55,7 +55,7 @@ object NodeSelector : GridPane() {
         four.setPrefSize(buttonSideLength, buttonSideLength)
         four.style = "-fx-background-color: #FFFF00"
         four.setOnMousePressed {
-            if (TableCreator.isRedAlliance) {
+            if (Client.isRed) {
                 selectedNode = 4
             } else selectedNode = 6
             changeSelectedNodeButton(four)
@@ -73,7 +73,7 @@ object NodeSelector : GridPane() {
         six.setPrefSize(buttonSideLength, buttonSideLength)
         six.style = "-fx-background-color: #FFFF00"
         six.setOnMousePressed {
-            if (TableCreator.isRedAlliance) {
+            if (Client.isRed) {
                 selectedNode = 6
             } else selectedNode = 4
             changeSelectedNodeButton(six)
@@ -83,7 +83,7 @@ object NodeSelector : GridPane() {
         seven.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         seven.style = "-fx-background-color: #595959"
         seven.setOnMousePressed {
-            if (TableCreator.isRedAlliance) {
+            if (Client.isRed) {
                 selectedNode = 7
             } else selectedNode = 9
             changeSelectedNodeButton(seven)
@@ -101,7 +101,7 @@ object NodeSelector : GridPane() {
         nine.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         nine.style = "-fx-background-color: #595959"
         nine.setOnMousePressed {
-            if (TableCreator.isRedAlliance) {
+            if (Client.isRed) {
                 selectedNode = 9
             } else selectedNode = 7
             changeSelectedNodeButton(nine)

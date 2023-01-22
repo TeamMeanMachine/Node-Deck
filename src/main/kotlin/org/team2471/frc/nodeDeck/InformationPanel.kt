@@ -24,7 +24,6 @@ object InformationPanel: GridPane() {
         toggleAllianceButton.setOnAction {
             ColorOutline.checkAlliance()
             updateButtons()
-            TableCreator.checkAlliance()
         }
 
         updateInfoPanel()

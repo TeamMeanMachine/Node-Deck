@@ -14,10 +14,7 @@ import java.util.Timer
 class NodeDeck : Application() {
     companion object {
         lateinit var stage: Stage
-        val networkTableInstance: NetworkTableInstance = NetworkTableInstance.create()
-        private var connectionJob: Job? = null
-        var ipAddress = "10.24.71.2"
-
+//        val networkTableInstance: NetworkTableInstance = NetworkTableInstance.create()
 
         @JvmStatic
         fun main(args: Array<String>) {

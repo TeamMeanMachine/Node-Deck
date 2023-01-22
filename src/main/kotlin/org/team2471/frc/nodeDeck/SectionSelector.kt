@@ -21,7 +21,7 @@ object SectionSelector : GridPane(){
         leftSection.setPrefSize(buttonWidth, buttonHeight)
         leftSection.style = "-fx-font-weight: bold; -fx-font-size: 60px"
         leftSection.setOnMousePressed {
-            if (TableCreator.isRedAlliance) {
+            if (Client.isRed) {
                 selectedSection = 18
             } else {
                 selectedSection = 0
@@ -41,7 +41,7 @@ object SectionSelector : GridPane(){
         rightSection.setPrefSize(buttonWidth, buttonHeight)
         rightSection.style = "-fx-font-weight: bold; -fx-font-size: 60px"
         rightSection.setOnMousePressed {
-            if (TableCreator.isRedAlliance) {
+            if (Client.isRed) {
                 selectedSection = 0
             } else {
                 selectedSection = 18

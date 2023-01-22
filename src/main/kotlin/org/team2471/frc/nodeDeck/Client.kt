@@ -7,34 +7,37 @@ import kotlinx.coroutines.launch
 import java.net.InetAddress
 import java.util.*
 
-class Client {
-    fun run() {
-        val inst = NetworkTableInstance.getDefault()
-        val table = inst.getTable("FMSinfo")
-        val isRedEntry = table.getBooleanTopic("isRedAlliance").subscribe(true)
-        var connectionJob: Job? = null
-        var ipAddress = "10.24.71.2"
-
+object Client {
+    val networkTableInstance = NetworkTableInstance.getDefault()
+    val table = networkTableInstance.getTable("FMSinfo")
+    val isRedEntry = table.getBooleanTopic("isRedAlliance").subscribe(true)
+    var isRed: Boolean = isRedEntry.get()
+    var connectionJob: Job? = null
+    var ipAddress = "10.24.71.2"
+    init {
+        initConnectionStatusCheck()
     }
     fun connect() {
-        val address = NodeDeck.ipAddress
+        val address = ipAddress
         println("Connecting to address $address")
 
         connectionJob?.cancel()
 
         connectionJob = GlobalScope.launch {
             // shut down previous server, if connected
-            if (NodeDeck.networkTableInstance.isConnected) {
-                NodeDeck.networkTableInstance.stopDSClient()
-                NodeDeck.networkTableInstance.stopClient()
+            if (networkTableInstance.isConnected) {
+                networkTableInstance.stopDSClient()
+                networkTableInstance.stopClient()
             }
 
             // reconnect with new address
-            NodeDeck.networkTableInstance.startClient4("PathVisualizer")
-            if (address.matches("[1-9](\\d{1,3})?".toRegex())) {
-                NodeDeck.networkTableInstance.setServerTeam(address.toInt())
+            networkTableInstance.startClient4("NodeDeck")
+            if (address.matches("[1-9](\\d{1,3})?".toRegex())) { //checks if ip is a team number
+                networkTableInstance.setServerTeam(address.toInt())
+                networkTableInstance.startDSClient()
             } else {
-                NodeDeck.networkTableInstance.setServer(address)
+                networkTableInstance.setServer(address)
+                networkTableInstance.startDSClient()
             }
         }
     }
@@ -46,8 +49,8 @@ class Client {
         timer.schedule(object : TimerTask() {
             override fun run() {
                 // check network table connection
-                if (InetAddress.getLocalHost().hostAddress.startsWith(NodeDeck.ipAddress.substringBeforeLast(".", "____"))) {
-                    if (!NodeDeck.networkTableInstance.isConnected) {
+                if (InetAddress.getLocalHost().hostAddress.startsWith(ipAddress.substringBeforeLast(".", "____"))) {
+                    if (!networkTableInstance.isConnected) {
                         // attempt to connect
                         println("found FRC network. Connecting to network table")
                         connect()
@@ -55,8 +58,8 @@ class Client {
                 } else {
                     // stop client only for teams using the ip address format (10.24.71.2). for others don't attempt to stop client.
                     // the main benefit is to reduce log spamming of failed connection errors, so leaving it in is not inherently harmful
-                    if (!NodeDeck.ipAddress.matches("[1-9](\\d{1,3})?".toRegex())) {
-                        NodeDeck.networkTableInstance.stopClient()
+                    if (!ipAddress.matches("[1-9](\\d{1,3})?".toRegex())) {
+                        networkTableInstance.stopClient()
                     }
                 }
             }
