@@ -9,14 +9,18 @@ import java.util.*
 
 object Client {
     val networkTableInstance = NetworkTableInstance.getDefault()
-    val table = networkTableInstance.getTable("FMSinfo")
-    val isRedEntry = table.getBooleanTopic("isRedAlliance").subscribe(true)
-    var isRed: Boolean = isRedEntry.get()
+    val table = networkTableInstance.getTable("FMSInfo")
+    val isRedEntry = table.getBooleanTopic("IsRedAlliance").subscribe(true)
+    val isRed: Boolean
+        get() = isRedEntry.get();
     var connectionJob: Job? = null
     var ipAddress = "10.24.71.2"
     init {
+        println("Client says hi!")
+//        connect()
         initConnectionStatusCheck()
     }
+
     fun connect() {
         val address = ipAddress
         println("Connecting to address $address")
@@ -49,18 +53,10 @@ object Client {
         timer.schedule(object : TimerTask() {
             override fun run() {
                 // check network table connection
-                if (InetAddress.getLocalHost().hostAddress.startsWith(ipAddress.substringBeforeLast(".", "____"))) {
-                    if (!networkTableInstance.isConnected) {
-                        // attempt to connect
-                        println("found FRC network. Connecting to network table")
-                        connect()
-                    }
-                } else {
-                    // stop client only for teams using the ip address format (10.24.71.2). for others don't attempt to stop client.
-                    // the main benefit is to reduce log spamming of failed connection errors, so leaving it in is not inherently harmful
-                    if (!ipAddress.matches("[1-9](\\d{1,3})?".toRegex())) {
-                        networkTableInstance.stopClient()
-                    }
+                if (!networkTableInstance.isConnected) {
+                    // attempt to connect
+                    println("Not Connected!!!! Connecting to network table...")
+                    connect()
                 }
             }
         }, 10, 1000L * updateFrequencyInSeconds)
