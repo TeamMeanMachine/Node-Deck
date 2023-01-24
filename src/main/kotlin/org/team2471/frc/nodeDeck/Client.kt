@@ -61,4 +61,7 @@ object Client {
             }
         }, 10, 1000L * updateFrequencyInSeconds)
     }
+    fun checkTopicConnection() {
+        println("isRedEntry = ${isRedEntry.exists()}")
+    }
 }

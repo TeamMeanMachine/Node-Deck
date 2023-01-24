@@ -23,6 +23,7 @@ object InformationPanel: GridPane() {
         toggleAllianceButton.setPrefSize(160.0, 50.0)
         toggleAllianceButton.setOnAction {
             ColorOutline.checkAlliance()
+            Client.checkTopicConnection()
             updateButtons()
         }
 
