@@ -4,7 +4,6 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.net.InetAddress
 import java.util.*
 
 object Client {
@@ -43,6 +42,7 @@ object Client {
                 networkTableInstance.setServer(address)
                 networkTableInstance.startDSClient()
             }
+            ColorOutline.checkAlliance()
         }
     }
 
@@ -56,12 +56,14 @@ object Client {
                 if (!networkTableInstance.isConnected) {
                     // attempt to connect
                     println("Not Connected!!!! Connecting to network table...")
+                    ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ffff00; -fx-border-width: 10 10 10 10"
                     connect()
                 }
+                ColorOutline.checkAlliance()
             }
         }, 10, 1000L * updateFrequencyInSeconds)
     }
-    fun checkTopicConnection() {
+    fun printNTTopicConnection() {
         println("isRedEntry = ${isRedEntry.exists()}")
     }
 }

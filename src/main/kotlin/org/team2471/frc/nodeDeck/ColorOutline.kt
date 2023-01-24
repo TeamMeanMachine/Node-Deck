@@ -13,12 +13,15 @@ object ColorOutline : GridPane() {
         ColorOutline.add(InformationPanel, 1, 1)
     }
     fun checkAlliance(red: Boolean = Client.isRed) {
-        println(Client.isRed)
-        if (red) {
-            ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ff0000; -fx-border-width: 10 10 10 10"
+        if (!Client.networkTableInstance.isConnected) {
+            ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ffff00; -fx-border-width: 10 10 10 10"
         } else {
-            ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #0000ff; -fx-border-width: 10 10 10 10"
+            if (red) {
+                ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ff0000; -fx-border-width: 10 10 10 10"
+            }
+            if (!red) {
+                ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #0000ff; -fx-border-width: 10 10 10 10"
+            }
         }
-
     }
 }
