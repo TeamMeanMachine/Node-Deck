@@ -1,7 +1,6 @@
 package org.team2471.frc.nodeDeck
 
 import javafx.geometry.Pos
-import javafx.scene.canvas.Canvas
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
@@ -23,9 +22,6 @@ object InformationPanel: GridPane() {
 
         toggleAllianceButton.setPrefSize(160.0, 50.0)
         toggleAllianceButton.setOnAction {
-//            ColorOutline.checkAlliance()
-//            Client.printNTTopicConnection()
-//            updateButtons()
             Client.printNTTopicConnection()
         }
 
@@ -33,9 +29,5 @@ object InformationPanel: GridPane() {
     }
     fun updateInfoPanel() {
         nodeLabel.text = "Node #: ${NodeSelector.selectedNode + SectionSelector.selectedSection}"
-    }
-    fun updateButtons() {
-//        NodeSelector.selectedNodeButton.fireEvent(MouseEvent.MOUSE_CLICKED)
-        SectionSelector.selectedSectionButton.fire()
     }
 }

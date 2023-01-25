@@ -22,6 +22,11 @@ object ColorOutline : GridPane() {
             if (!red) {
                 ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #0000ff; -fx-border-width: 10 10 10 10"
             }
+            updateButtons()
         }
+    }
+    fun updateButtons() {
+        SectionSelector.selectedSectionButton.fire()
+        NodeSelector.selectedNodeButton.fire()
     }
 }

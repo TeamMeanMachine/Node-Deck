@@ -5,16 +5,10 @@ import javafx.geometry.Rectangle2D
 import javafx.scene.Scene
 import javafx.stage.Screen
 import javafx.stage.Stage
-import edu.wpi.first.networktables.NetworkTableInstance
-import kotlinx.coroutines.*
-import java.net.InetAddress
-import java.util.*
-import java.util.Timer
 
 class NodeDeck : Application() {
     companion object {
         lateinit var stage: Stage
-//        val networkTableInstance: NetworkTableInstance = NetworkTableInstance.create()
 
         @JvmStatic
         fun main(args: Array<String>) {
@@ -24,9 +18,6 @@ class NodeDeck : Application() {
     }
 
     override fun start(stage: Stage) {
-
-
-
 
         val screen = Screen.getPrimary()
 

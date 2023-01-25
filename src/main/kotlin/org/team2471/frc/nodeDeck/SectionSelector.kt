@@ -20,7 +20,7 @@ object SectionSelector : GridPane(){
 
         leftSection.setPrefSize(buttonWidth, buttonHeight)
         leftSection.style = "-fx-font-weight: bold; -fx-font-size: 60px"
-        leftSection.setOnMousePressed {
+        leftSection.setOnAction {
             if (Client.isRed) {
                 selectedSection = 18
             } else {
@@ -32,7 +32,7 @@ object SectionSelector : GridPane(){
         }
         centerSection.setPrefSize(buttonWidth, buttonHeight)
         centerSection.style = "-fx-font-weight: bold; -fx-font-size: 60px"
-        centerSection.setOnMousePressed {
+        centerSection.setOnAction {
             changeSelectedSectionButton(centerSection)
             selectedSection = 9
             InformationPanel.updateInfoPanel()
@@ -40,7 +40,7 @@ object SectionSelector : GridPane(){
         }
         rightSection.setPrefSize(buttonWidth, buttonHeight)
         rightSection.style = "-fx-font-weight: bold; -fx-font-size: 60px"
-        rightSection.setOnMousePressed {
+        rightSection.setOnAction {
             if (Client.isRed) {
                 selectedSection = 0
             } else {

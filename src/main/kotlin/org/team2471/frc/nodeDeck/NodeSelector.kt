@@ -26,7 +26,7 @@ object NodeSelector : GridPane() {
 
         one.setPrefSize(buttonSideLength, buttonSideLength)
         one.style = "-fx-background-color: #FFFF00"
-        one.setOnMousePressed {
+        one.setOnAction {
             if (Client.isRed) {
                 selectedNode = 1
             } else selectedNode = 3
@@ -36,7 +36,7 @@ object NodeSelector : GridPane() {
 
         two.setPrefSize(buttonSideLength, buttonSideLength)
         two.style = "-fx-background-color: #9900ff"
-        two.setOnMousePressed {
+        two.setOnAction {
             selectedNode = 2
             changeSelectedNodeButton(two)
             InformationPanel.updateInfoPanel()
@@ -44,7 +44,7 @@ object NodeSelector : GridPane() {
 
         three.setPrefSize(buttonSideLength, buttonSideLength)
         three.style = "-fx-background-color: #FFFF00"
-        three.setOnMousePressed {
+        three.setOnAction {
             if (Client.isRed) {
                 selectedNode = 3
             } else selectedNode = 1
@@ -54,7 +54,7 @@ object NodeSelector : GridPane() {
 
         four.setPrefSize(buttonSideLength, buttonSideLength)
         four.style = "-fx-background-color: #FFFF00"
-        four.setOnMousePressed {
+        four.setOnAction {
             if (Client.isRed) {
                 selectedNode = 4
             } else selectedNode = 6
@@ -64,7 +64,7 @@ object NodeSelector : GridPane() {
 
         five.setPrefSize(buttonSideLength, buttonSideLength)
         five.style = "-fx-background-color: #9900ff"
-        five.setOnMousePressed {
+        five.setOnAction {
             selectedNode = 5
             changeSelectedNodeButton(five)
             InformationPanel.updateInfoPanel()
@@ -72,7 +72,7 @@ object NodeSelector : GridPane() {
 
         six.setPrefSize(buttonSideLength, buttonSideLength)
         six.style = "-fx-background-color: #FFFF00"
-        six.setOnMousePressed {
+        six.setOnAction {
             if (Client.isRed) {
                 selectedNode = 6
             } else selectedNode = 4
@@ -82,7 +82,7 @@ object NodeSelector : GridPane() {
 
         seven.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         seven.style = "-fx-background-color: #595959"
-        seven.setOnMousePressed {
+        seven.setOnAction {
             if (Client.isRed) {
                 selectedNode = 7
             } else selectedNode = 9
@@ -92,7 +92,7 @@ object NodeSelector : GridPane() {
 
         eight.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         eight.style = "-fx-background-color: #595959"
-        eight.setOnMousePressed {
+        eight.setOnAction {
             selectedNode = 8
             changeSelectedNodeButton(eight)
             InformationPanel.updateInfoPanel()
@@ -100,7 +100,7 @@ object NodeSelector : GridPane() {
 
         nine.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         nine.style = "-fx-background-color: #595959"
-        nine.setOnMousePressed {
+        nine.setOnAction {
             if (Client.isRed) {
                 selectedNode = 9
             } else selectedNode = 7
