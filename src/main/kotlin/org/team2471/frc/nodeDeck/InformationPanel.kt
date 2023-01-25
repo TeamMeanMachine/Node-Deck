@@ -18,9 +18,9 @@ object InformationPanel: GridPane() {
         nodeLabel.alignment = Pos.CENTER
         nodeLabel.font = Font(20.0)
         nodeLabel.style = "-fx-background-color: #f0f0f0; -fx-font-weight: bold; -fx-font-size: 30px"
-        nodeLabel.setMinSize(160.0, 25.0)
+        nodeLabel.setPrefSize(170.0, 25.0)
 
-        toggleAllianceButton.setPrefSize(160.0, 50.0)
+        toggleAllianceButton.setPrefSize(170.0, 50.0)
         toggleAllianceButton.setOnAction {
             Client.printNTTopicConnection()
         }
