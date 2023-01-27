@@ -1,6 +1,7 @@
 package org.team2471.frc.nodeDeck
 
 import edu.wpi.first.networktables.NetworkTableInstance
+import javafx.application.Platform
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -14,6 +15,7 @@ object Client {
         get() = isRedEntry.get();
     var connectionJob: Job? = null
     var ipAddress = "10.24.71.2"
+    // Todo: Add way to set IP address and reconnect. Use case is using simulator at "localhost".
     init {
         println("Client says hi!")
 //        connect()
