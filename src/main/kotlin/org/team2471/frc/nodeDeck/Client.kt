@@ -15,6 +15,7 @@ object Client {
         get() = isRedEntry.get();
     var connectionJob: Job? = null
     var ipAddress = "10.24.71.2"
+    // var ipAddress = "localhost"
     // Todo: Add way to set IP address and reconnect. Use case is using simulator at "localhost".
     init {
         println("Client says hi!")
@@ -50,7 +51,7 @@ object Client {
 
     private fun initConnectionStatusCheck() {
         println("inside initConnectionStatusCheck")
-        val updateFrequencyInSeconds = 5
+        var updateFrequencyInSeconds = 2
         val timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
@@ -61,7 +62,10 @@ object Client {
                     ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ffff00; -fx-border-width: 10 10 10 10"
                     connect()
                 }
-                ColorOutline.checkAlliance()
+
+                Platform.runLater {
+                    ColorOutline.checkAlliance()
+                }
             }
         }, 10, 1000L * updateFrequencyInSeconds)
     }

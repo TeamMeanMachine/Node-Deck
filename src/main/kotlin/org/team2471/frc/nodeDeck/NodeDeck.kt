@@ -25,12 +25,10 @@ class NodeDeck : Application() {
         Companion.stage = stage
 
         val bounds = Rectangle2D(screen.visualBounds.minX, screen.visualBounds.minY, screen.visualBounds.width, screen.visualBounds.height)
-        stage.scene = Scene(ColorOutline, bounds.width, bounds.height)
+        stage.scene = Scene(TabDeck, bounds.width, bounds.height)
         stage.sizeToScene()
         stage.show()
         stage.isFullScreen = true
-
-
 
         ColorOutline.checkAlliance()
     }
