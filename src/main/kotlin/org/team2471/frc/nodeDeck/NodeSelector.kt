@@ -7,15 +7,15 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
 
 object NodeSelector : GridPane() {
-    val one = Button("", ImageView(Image("cone-icon.png")))
-    val two = Button("", ImageView(Image("cube-icon.png")))
-    val three = Button("", ImageView(Image("cone-icon.png")))
-    val four = Button("", ImageView(Image("cone-icon.png")))
-    val five = Button("", ImageView(Image("cube-icon.png")))
-    val six = Button("", ImageView(Image("cone-icon.png")))
-    val seven = Button("")
-    val eight = Button("")
-    val nine = Button("")
+    private val one = Button("", ImageView(Image("cone-icon.png")))
+    private val two = Button("", ImageView(Image("cube-icon.png")))
+    private val three = Button("", ImageView(Image("cone-icon.png")))
+    private val four = Button("", ImageView(Image("cone-icon.png")))
+    private val five = Button("", ImageView(Image("cube-icon.png")))
+    private val six = Button("", ImageView(Image("cone-icon.png")))
+    private val seven = Button("")
+    private val eight = Button("")
+    private val nine = Button("")
     val buttonSideLength: Double = 400.0
     var selectedNodeButton: Button = one
     var selectedNode: Int = 1
@@ -27,7 +27,7 @@ object NodeSelector : GridPane() {
         one.setPrefSize(buttonSideLength, buttonSideLength)
         one.style = "-fx-background-color: #FFFF00"
         one.setOnAction {
-            if (Client.isRed) {
+            if (NTClient.isRed) {
                 selectedNode = 1
             } else selectedNode = 3
             changeSelectedNodeButton(one)
@@ -45,7 +45,7 @@ object NodeSelector : GridPane() {
         three.setPrefSize(buttonSideLength, buttonSideLength)
         three.style = "-fx-background-color: #FFFF00"
         three.setOnAction {
-            if (Client.isRed) {
+            if (NTClient.isRed) {
                 selectedNode = 3
             } else selectedNode = 1
             changeSelectedNodeButton(three)
@@ -55,7 +55,7 @@ object NodeSelector : GridPane() {
         four.setPrefSize(buttonSideLength, buttonSideLength)
         four.style = "-fx-background-color: #FFFF00"
         four.setOnAction {
-            if (Client.isRed) {
+            if (NTClient.isRed) {
                 selectedNode = 4
             } else selectedNode = 6
             changeSelectedNodeButton(four)
@@ -73,7 +73,7 @@ object NodeSelector : GridPane() {
         six.setPrefSize(buttonSideLength, buttonSideLength)
         six.style = "-fx-background-color: #FFFF00"
         six.setOnAction {
-            if (Client.isRed) {
+            if (NTClient.isRed) {
                 selectedNode = 6
             } else selectedNode = 4
             changeSelectedNodeButton(six)
@@ -83,7 +83,7 @@ object NodeSelector : GridPane() {
         seven.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         seven.style = "-fx-background-color: #595959"
         seven.setOnAction {
-            if (Client.isRed) {
+            if (NTClient.isRed) {
                 selectedNode = 7
             } else selectedNode = 9
             changeSelectedNodeButton(seven)
@@ -101,7 +101,7 @@ object NodeSelector : GridPane() {
         nine.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
         nine.style = "-fx-background-color: #595959"
         nine.setOnAction {
-            if (Client.isRed) {
+            if (NTClient.isRed) {
                 selectedNode = 9
             } else selectedNode = 7
             changeSelectedNodeButton(nine)

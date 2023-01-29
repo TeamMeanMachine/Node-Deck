@@ -26,7 +26,7 @@ class NodeDeck : Application() {
         Companion.stage = stage
 
         val bounds = Rectangle2D(screen.visualBounds.minX, screen.visualBounds.minY, screen.visualBounds.width, screen.visualBounds.height)
-        stage.scene = Scene(TabDeck, bounds.width, bounds.height)
+        stage.scene = Scene(ColorOutline, bounds.width, bounds.height)
         stage.sizeToScene()
         stage.show()
         stage.isFullScreen = true
@@ -35,7 +35,7 @@ class NodeDeck : Application() {
         // and timer keeps running. Needs further study. EK 1/28/23.
         stage.setOnCloseRequest {
             println("Bye from NodeDeck... ")
-            Client.disconnect()
+            NTClient.disconnect()
             Platform.runLater {
                 println("...bye (NodeDeck's runLater)")
                 Platform.exit()

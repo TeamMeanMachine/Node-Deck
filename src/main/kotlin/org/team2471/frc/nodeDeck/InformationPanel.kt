@@ -22,12 +22,12 @@ object InformationPanel: GridPane() {
 
         toggleAllianceButton.setPrefSize(170.0, 50.0)
         toggleAllianceButton.setOnAction {
-            Client.printNTTopicConnection()
+            NTClient.printNTTopicConnection()
         }
 
         updateInfoPanel()
     }
     fun updateInfoPanel() {
-        nodeLabel.text = "Node #: ${NodeSelector.selectedNode + SectionSelector.selectedSection}"
+        nodeLabel.text = "Node #: ${NodeSelector.selectedNode + GridSelector.selectedSection}"
     }
 }

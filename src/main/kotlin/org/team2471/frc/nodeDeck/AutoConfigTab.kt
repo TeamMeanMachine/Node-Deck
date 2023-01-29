@@ -8,7 +8,7 @@ import javafx.scene.control.ToggleGroup
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.Region
 
-object AutoConfig: GridPane() {
+object AutoConfigTab: GridPane() {
     val leftButton = ToggleButton("Left")
     val rightButton = ToggleButton("Right")
     val chargeButton = ToggleButton("Charge Up?")
@@ -19,7 +19,7 @@ object AutoConfig: GridPane() {
     val spacer2 = Region()
 
     init {
-        println("AutoConfig says hi!")
+        println("AutoConfigTab says hi!")
 
         leftButton.toggleGroup = startLeftOrRightGroup
         rightButton.toggleGroup = startLeftOrRightGroup
@@ -34,14 +34,14 @@ object AutoConfig: GridPane() {
         leftButton.setPrefSize(75.0, 50.0)
         rightButton.setPrefSize(75.0, 50.0)
 
-        AutoConfig.style = "-fx-background-color: #f0f0f0"
-        AutoConfig.alignment = Pos.TOP_CENTER
+        AutoConfigTab.style = "-fx-background-color: #f0f0f0"
+        AutoConfigTab.alignment = Pos.TOP_CENTER
 
-        AutoConfig.add(spacer, 0, 0)
-        AutoConfig.add(leftButton, 0, 1)
-        AutoConfig.add(rightButton, 1, 1)
-        AutoConfig.add(spacer2, 1, 2)
-        AutoConfig.add(amountOfPieces, 0, 3)
+        AutoConfigTab.add(spacer, 0, 0)
+        AutoConfigTab.add(leftButton, 0, 1)
+        AutoConfigTab.add(rightButton, 1, 1)
+        AutoConfigTab.add(spacer2, 1, 2)
+        AutoConfigTab.add(amountOfPieces, 0, 3)
     }
 }
 

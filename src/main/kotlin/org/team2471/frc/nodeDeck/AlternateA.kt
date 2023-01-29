@@ -16,7 +16,7 @@ object AlternateA: GridPane() {
             println("Bye from exitButton... ")
             Platform.runLater {
                 println("...bye (exitButton's runLater)")
-                Client.disconnect()
+                NTClient.disconnect()
                 Platform.exit()
                 println("...return (exitButton's runLater)")
             }

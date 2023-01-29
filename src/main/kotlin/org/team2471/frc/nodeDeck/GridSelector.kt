@@ -6,7 +6,7 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
 
-object SectionSelector : GridPane(){
+object GridSelector : GridPane(){
     val leftSection = Button("Left")
     val centerSection = Button("Co-op")
     val rightSection = Button("Right")
@@ -16,12 +16,12 @@ object SectionSelector : GridPane(){
     var selectedSection: Int = 0
 
     init {
-        println("SectionSelector says hi!")
+        println("GridSelector says hi!")
 
         leftSection.setPrefSize(buttonWidth, buttonHeight)
         leftSection.style = "-fx-font-weight: bold; -fx-font-size: 60px"
         leftSection.setOnAction {
-            if (Client.isRed) {
+            if (NTClient.isRed) {
                 selectedSection = 18
             } else {
                 selectedSection = 0
@@ -41,7 +41,7 @@ object SectionSelector : GridPane(){
         rightSection.setPrefSize(buttonWidth, buttonHeight)
         rightSection.style = "-fx-font-weight: bold; -fx-font-size: 60px"
         rightSection.setOnAction {
-            if (Client.isRed) {
+            if (NTClient.isRed) {
                 selectedSection = 0
             } else {
                 selectedSection = 18
@@ -51,8 +51,8 @@ object SectionSelector : GridPane(){
 
         }
 
-        SectionSelector.addRow(0, leftSection, centerSection, rightSection)
-        SectionSelector.alignment = Pos.TOP_CENTER
+        GridSelector.addRow(0, leftSection, centerSection, rightSection)
+        GridSelector.alignment = Pos.TOP_CENTER
 
         changeSelectedSectionButton(rightSection)
     }

@@ -12,12 +12,14 @@ object TabDeck: TabPane() {
     init {
         println("TabDeck says hi!")
 
+        TabDeck.setPrefSize(999.0, 999.9)
+
         tabMinHeight = 50.0
         tabMinWidth = 100.0
 
-        gridSelectionTab.content = ColorOutline
-        infoTab.content = InformationPanel
-        autoTab.content = AutoConfig
+        gridSelectionTab.content = NodeSelectionTab
+//        infoTab.content = InformationPanel
+        autoTab.content = AutoConfigTab
         alternateATab.content = AlternateA
 
         gridSelectionTab.isClosable = false
@@ -26,7 +28,7 @@ object TabDeck: TabPane() {
         alternateATab.isClosable = false
 
         tabs.add(gridSelectionTab)
-        tabs.add(infoTab)
+//        tabs.add(infoTab)
         tabs.add(autoTab)
         tabs.add(alternateATab)
     }

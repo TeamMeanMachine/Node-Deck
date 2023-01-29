@@ -7,7 +7,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
 
-object Client {
+object NTClient {
     val networkTableInstance = NetworkTableInstance.getDefault()
     val table = networkTableInstance.getTable("FMSInfo")
     val timer = Timer()
@@ -15,12 +15,12 @@ object Client {
     val isRed: Boolean
         get() = isRedEntry.get();
     var connectionJob: Job? = null
-    var ipAddress = "10.24.71.2"
+    var ipAddress = "127.0.0.1"
+
     // var ipAddress = "localhost"
     // Todo: Add way to set IP address and reconnect. Use case is using simulator at "localhost".
     init {
-        println("Client says hi!")
-//        connect()
+        println("NTClient says hi!")
         initConnectionStatusCheck()
     }
 
@@ -52,7 +52,7 @@ object Client {
 
     private fun initConnectionStatusCheck() {
         println("inside initConnectionStatusCheck")
-        var updateFrequencyInSeconds = 2
+        val updateFrequencyInSeconds = 2
         timer.schedule(object : TimerTask() {
             override fun run() {
                 // check network table connection
@@ -74,13 +74,13 @@ object Client {
     }
 
     fun disconnect() {
-        println("Client.disconnect")
+        println("NTClient.disconnect")
         timer.cancel()
         if (networkTableInstance.isConnected) {
-            println("Client.disconnect stopping networkTableInstance")
+            println("NTClient.disconnect stopping networkTableInstance")
             networkTableInstance.stopDSClient()
             networkTableInstance.stopClient()
         }
-        println("Client.disconnect return")
+        println("NTClient.disconnect return")
     }
 }
