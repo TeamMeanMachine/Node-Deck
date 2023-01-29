@@ -7,6 +7,7 @@ object TabDeck: TabPane() {
     val gridSelectionTab = Tab("Grid Selection")
     val infoTab = Tab("Node Info")
     val autoTab = Tab("Auto Options")
+    val alternateATab = Tab("Alternate A")
 
     init {
         println("TabDeck says hi!")
@@ -17,13 +18,16 @@ object TabDeck: TabPane() {
         gridSelectionTab.content = ColorOutline
         infoTab.content = InformationPanel
         autoTab.content = AutoConfig
+        alternateATab.content = AlternateA
 
         gridSelectionTab.isClosable = false
         infoTab.isClosable = false
         autoTab.isClosable = false
+        alternateATab.isClosable = false
 
         tabs.add(gridSelectionTab)
         tabs.add(infoTab)
         tabs.add(autoTab)
+        tabs.add(alternateATab)
     }
 }
