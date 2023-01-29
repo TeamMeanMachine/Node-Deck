@@ -10,20 +10,25 @@ import javafx.scene.layout.TilePane
 object SettingsTab : TilePane(Orientation.VERTICAL) {
     val ipInput = TextField("10.24.71.2")
     val connectButton = Button("Connect")
-    val defaultIpButton = Button("10.24.71.2")
+    val robotIpButton = Button("10.24.71.2")
+    val lHostButton = Button("localhost")
     val ipLabel = Label("roboRIO IP Address:")
 
     init {
         SettingsTab.alignment = Pos.TOP_CENTER
-        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, defaultIpButton)
+        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton)
         ipInput.setOnAction {
             NTClient.connect()
         }
         connectButton.setOnAction {
             NTClient.connect()
         }
-        defaultIpButton.setOnAction {
+        robotIpButton.setOnAction {
             ipInput.text = "10.24.71.2"
+            NTClient.connect()
+        }
+        lHostButton.setOnAction {
+            ipInput.text = "localhost"
             NTClient.connect()
         }
     }

@@ -43,6 +43,6 @@ class NodeDeck : Application() {
             }
         }
 
-        ColorOutline.checkAlliance()
+        NTClient.setTables()
     }
 }

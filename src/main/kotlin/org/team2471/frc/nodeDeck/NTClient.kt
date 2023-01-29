@@ -9,20 +9,18 @@ import java.util.*
 
 object NTClient {
     val networkTableInstance = NetworkTableInstance.getDefault()
-    val table = networkTableInstance.getTable("FMSInfo")
-    val timer = Timer()
-    val isRedEntry = table.getBooleanTopic("IsRedAlliance").subscribe(true)
+    val fmsTable = networkTableInstance.getTable("FMSInfo")
+    val nodeTable = networkTableInstance.getTable("NodeDeck")
+    val isRedEntry = fmsTable.getBooleanTopic("IsRedAlliance").subscribe(true)
+    val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
+    val isStartingLeftEntry = nodeTable.getBooleanTopic("IsStartingLeft").publish()
     val isRed: Boolean
-        get() = isRedEntry.get();
+        get() = isRedEntry.get()
+    val timer = Timer()
     var connectionJob: Job? = null
-    var ipAddress: String = "10.24.71.2" //simulator: 127.0.0.1
+    val ipAddress: String
         get() = SettingsTab.ipInput.text
-        set(value) {
-            field = value
-        }
 
-    // var ipAddress = "localhost"
-    // Todo: Add way to set IP address and reconnect. Use case is using simulator at "localhost".
     init {
         println("NTClient says hi!")
         initConnectionStatusCheck()
@@ -50,7 +48,7 @@ object NTClient {
                 networkTableInstance.setServer(address)
                 networkTableInstance.startDSClient()
             }
-            ColorOutline.checkAlliance()
+            setTables()
         }
     }
 
@@ -68,7 +66,7 @@ object NTClient {
                 }
 
                 Platform.runLater {
-                    ColorOutline.checkAlliance()
+                    setTables()
                 }
             }
         }, 10, 1000L * updateFrequencyInSeconds)
@@ -86,5 +84,10 @@ object NTClient {
             networkTableInstance.stopClient()
         }
         println("NTClient.disconnect return")
+    }
+    fun setTables() {
+        chargeInAutoEntry.set(AutoConfig.chargeButton.isSelected)
+        isStartingLeftEntry.set(AutoConfig.isStartingLeft)
+        ColorOutline.checkAlliance()
     }
 }
