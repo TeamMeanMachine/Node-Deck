@@ -35,6 +35,7 @@ class NodeDeck : Application() {
         // and timer keeps running. Needs further study. EK 1/28/23.
         stage.setOnCloseRequest {
             println("Bye from NodeDeck... ")
+            Client.disconnect()
             Platform.runLater {
                 println("...bye (NodeDeck's runLater)")
                 Platform.exit()

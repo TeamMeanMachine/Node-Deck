@@ -10,6 +10,7 @@ import java.util.*
 object Client {
     val networkTableInstance = NetworkTableInstance.getDefault()
     val table = networkTableInstance.getTable("FMSInfo")
+    val timer = Timer()
     val isRedEntry = table.getBooleanTopic("IsRedAlliance").subscribe(true)
     val isRed: Boolean
         get() = isRedEntry.get();
@@ -52,7 +53,6 @@ object Client {
     private fun initConnectionStatusCheck() {
         println("inside initConnectionStatusCheck")
         var updateFrequencyInSeconds = 2
-        val timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
                 // check network table connection
@@ -71,5 +71,16 @@ object Client {
     }
     fun printNTTopicConnection() {
         println("isRedEntry = ${isRedEntry.exists()}")
+    }
+
+    fun disconnect() {
+        println("Client.disconnect")
+        timer.cancel()
+        if (networkTableInstance.isConnected) {
+            println("Client.disconnect stopping networkTableInstance")
+            networkTableInstance.stopDSClient()
+            networkTableInstance.stopClient()
+        }
+        println("Client.disconnect return")
     }
 }
