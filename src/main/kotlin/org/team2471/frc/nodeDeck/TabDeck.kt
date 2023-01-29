@@ -5,7 +5,7 @@ import javafx.scene.control.TabPane
 
 object TabDeck: TabPane() {
     val gridSelectionTab = Tab("Grid Selection")
-    val infoTab = Tab("Node Info")
+    val settingsTab = Tab("Settings")
     val autoTab = Tab("Auto Options")
     val alternateATab = Tab("Alternate A")
 
@@ -18,18 +18,18 @@ object TabDeck: TabPane() {
         tabMinWidth = 100.0
 
         gridSelectionTab.content = NodeSelectionTab
-//        infoTab.content = InformationPanel
-        autoTab.content = AutoConfigTab
+        settingsTab.content = SettingsTab
+        autoTab.content = AutoConfig
         alternateATab.content = AlternateA
 
         gridSelectionTab.isClosable = false
-        infoTab.isClosable = false
+        settingsTab.isClosable = false
         autoTab.isClosable = false
         alternateATab.isClosable = false
 
         tabs.add(gridSelectionTab)
-//        tabs.add(infoTab)
         tabs.add(autoTab)
+        tabs.add(settingsTab)
         tabs.add(alternateATab)
     }
 }

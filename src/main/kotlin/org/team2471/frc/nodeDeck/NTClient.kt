@@ -15,7 +15,11 @@ object NTClient {
     val isRed: Boolean
         get() = isRedEntry.get();
     var connectionJob: Job? = null
-    var ipAddress = "127.0.0.1"
+    var ipAddress: String = "10.24.71.2" //simulator: 127.0.0.1
+        get() = SettingsTab.ipInput.text
+        set(value) {
+            field = value
+        }
 
     // var ipAddress = "localhost"
     // Todo: Add way to set IP address and reconnect. Use case is using simulator at "localhost".
