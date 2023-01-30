@@ -76,14 +76,12 @@ object NTClient {
     }
 
     fun disconnect() {
-        println("NTClient.disconnect")
         timer.cancel()
         if (networkTableInstance.isConnected) {
             println("NTClient.disconnect stopping networkTableInstance")
             networkTableInstance.stopDSClient()
             networkTableInstance.stopClient()
         }
-        println("NTClient.disconnect return")
     }
     fun setTables() {
         chargeInAutoEntry.set(AutoConfig.chargeButton.isSelected)
