@@ -19,7 +19,7 @@ object GridSelector : GridPane(){
         println("GridSelector says hi!")
 
         leftSection.setPrefSize(buttonWidth, buttonHeight)
-        leftSection.style = "-fx-font-weight: bold; -fx-font-size: 60px"
+        leftSection.style = "-fx-font-weight: bold; -fx-font-size: 60px; -fx-border-width: 2 2 2 2; -fx-border-color: black"
         leftSection.setOnAction {
             if (NTClient.isRed) {
                 selectedSection = 18
@@ -31,7 +31,7 @@ object GridSelector : GridPane(){
 
         }
         centerSection.setPrefSize(buttonWidth, buttonHeight)
-        centerSection.style = "-fx-font-weight: bold; -fx-font-size: 60px"
+        centerSection.style = "-fx-font-weight: bold; -fx-font-size: 60px; -fx-border-width: 2 2 2 2; -fx-border-color: black"
         centerSection.setOnAction {
             changeSelectedSectionButton(centerSection)
             selectedSection = 9
@@ -39,7 +39,7 @@ object GridSelector : GridPane(){
 
         }
         rightSection.setPrefSize(buttonWidth, buttonHeight)
-        rightSection.style = "-fx-font-weight: bold; -fx-font-size: 60px"
+        rightSection.style = "-fx-font-weight: bold; -fx-font-size: 60px; -fx-border-width: 2 2 2 2; -fx-border-color: black"
         rightSection.setOnAction {
             if (NTClient.isRed) {
                 selectedSection = 0
@@ -58,16 +58,16 @@ object GridSelector : GridPane(){
     }
     fun changeSelectedSectionButton(thisButton: Button) {
         selectedSectionButton.graphic = ImageView()
-        selectedSectionButton.style = "-fx-font-weight: bold; -fx-font-size: 60px"
+        selectedSectionButton.style = "-fx-font-weight: bold; -fx-font-size: 60px; -fx-border-color: black"
         if (selectedSectionButton == leftSection) {
             selectedSectionButton.text = "Left"
         } else if (selectedSectionButton == centerSection) {
             selectedSectionButton.text = "Co-op"
         } else { selectedSectionButton.text = "Right" }
 
-        thisButton.text = ""
-        thisButton.graphic = ImageView(Image("mean-logo.png"))
-        thisButton.style = "-fx-background-color: #ff0000; -fx-text-fill: WHITE; -fx-font-weight: bold; -fx-font-size: 70px"
+//        thisButton.text = ""
+//        thisButton.graphic = ImageView(Image("mean-logo.png"))
+        thisButton.style = "-fx-font-weight: bold; -fx-font-size: 70px; -fx-border-color: red; -fx-border-width: 20 20 20 20"
 
         selectedSectionButton = thisButton
     }
