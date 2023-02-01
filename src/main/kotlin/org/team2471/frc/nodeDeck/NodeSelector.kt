@@ -131,5 +131,6 @@ object NodeSelector : GridPane() {
         thisButton.style = thisButton.style + "; -fx-border-color: red; -fx-border-width: 20 20 20 20"
 
         selectedNodeButton = thisButton
+        NTClient.setTables()
     }
 }

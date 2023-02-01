@@ -70,5 +70,6 @@ object GridSelector : GridPane(){
         thisButton.style = "-fx-font-weight: bold; -fx-font-size: 70px; -fx-border-color: red; -fx-border-width: 20 20 20 20"
 
         selectedSectionButton = thisButton
+        NTClient.setTables()
     }
 }

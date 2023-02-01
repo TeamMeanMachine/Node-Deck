@@ -14,6 +14,7 @@ object NTClient {
     val isRedEntry = fmsTable.getBooleanTopic("IsRedAlliance").subscribe(true)
     val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
     val isStartingLeftEntry = nodeTable.getBooleanTopic("IsStartingLeft").publish()
+    val selectedNodeEntry = nodeTable.getIntegerTopic("Selected Node").publish()
     val isRed: Boolean
         get() = isRedEntry.get()
     val timer = Timer()
@@ -86,6 +87,7 @@ object NTClient {
     fun setTables() {
         chargeInAutoEntry.set(AutoConfig.chargeButton.isSelected)
         isStartingLeftEntry.set(AutoConfig.isStartingLeft)
+        selectedNodeEntry.set((NodeSelector.selectedNode + GridSelector.selectedSection).toLong())
         ColorOutline.checkAlliance()
     }
 }
