@@ -49,7 +49,7 @@ object NTClient {
                 networkTableInstance.setServer(address)
                 networkTableInstance.startDSClient()
             }
-            setTables()
+//            setTables()
         }
     }
 
