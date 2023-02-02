@@ -25,7 +25,7 @@ object NodeSelector : GridPane() {
         println("NodeSelector says hi!")
 
         one.setPrefSize(buttonSideLength, buttonSideLength)
-        one.style = "-fx-background-color: #FFFF00; -fx-border-width: 2 2 2 2; -fx-border-color: black"
+        one.style = "-fx-background-color: #FFFF00; -fx-border-width: ${GridSelector.buttonBorderSize}; -fx-border-color: black"
         one.setOnAction {
             if (NTClient.isRed) {
                 selectedNode = 1
@@ -35,7 +35,7 @@ object NodeSelector : GridPane() {
         }
 
         two.setPrefSize(buttonSideLength, buttonSideLength)
-        two.style = "-fx-background-color: #9900ff; -fx-border-width: 2 2 2 2; -fx-border-color: black"
+        two.style = "-fx-background-color: #9900ff; -fx-border-width: ${GridSelector.buttonBorderSize}; -fx-border-color: black"
         two.setOnAction {
             selectedNode = 2
             changeSelectedNodeButton(two)
@@ -43,7 +43,7 @@ object NodeSelector : GridPane() {
         }
 
         three.setPrefSize(buttonSideLength, buttonSideLength)
-        three.style = "-fx-background-color: #FFFF00; -fx-border-width: 2 2 2 2; -fx-border-color: black"
+        three.style = "-fx-background-color: #FFFF00; -fx-border-width: ${GridSelector.buttonBorderSize}; -fx-border-color: black"
         three.setOnAction {
             if (NTClient.isRed) {
                 selectedNode = 3
@@ -53,7 +53,7 @@ object NodeSelector : GridPane() {
         }
 
         four.setPrefSize(buttonSideLength, buttonSideLength)
-        four.style = "-fx-background-color: #FFFF00; -fx-border-width: 2 2 2 2; -fx-border-color: black"
+        four.style = "-fx-background-color: #FFFF00; -fx-border-width: ${GridSelector.buttonBorderSize}; -fx-border-color: black"
         four.setOnAction {
             if (NTClient.isRed) {
                 selectedNode = 4
@@ -63,7 +63,7 @@ object NodeSelector : GridPane() {
         }
 
         five.setPrefSize(buttonSideLength, buttonSideLength)
-        five.style = "-fx-background-color: #9900ff; -fx-border-width: 2 2 2 2; -fx-border-color: black"
+        five.style = "-fx-background-color: #9900ff; -fx-border-width: ${GridSelector.buttonBorderSize}; -fx-border-color: black"
         five.setOnAction {
             selectedNode = 5
             changeSelectedNodeButton(five)
@@ -71,7 +71,7 @@ object NodeSelector : GridPane() {
         }
 
         six.setPrefSize(buttonSideLength, buttonSideLength)
-        six.style = "-fx-background-color: #FFFF00; -fx-border-width: 2 2 2 2; -fx-border-color: black"
+        six.style = "-fx-background-color: #FFFF00; -fx-border-width: ${GridSelector.buttonBorderSize}; -fx-border-color: black"
         six.setOnAction {
             if (NTClient.isRed) {
                 selectedNode = 6
@@ -81,7 +81,7 @@ object NodeSelector : GridPane() {
         }
 
         seven.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
-        seven.style = "-fx-background-color: #595959; -fx-border-width: 2 2 2 2; -fx-border-color: black"
+        seven.style = "-fx-background-color: #595959; -fx-border-width: ${GridSelector.buttonBorderSize}; -fx-border-color: black"
         seven.setOnAction {
             if (NTClient.isRed) {
                 selectedNode = 7
@@ -91,7 +91,7 @@ object NodeSelector : GridPane() {
         }
 
         eight.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
-        eight.style = "-fx-background-color: #595959; -fx-border-width: 2 2 2 2; -fx-border-color: black"
+        eight.style = "-fx-background-color: #595959; -fx-border-width: ${GridSelector.buttonBorderSize}; -fx-border-color: black"
         eight.setOnAction {
             selectedNode = 8
             changeSelectedNodeButton(eight)
@@ -99,7 +99,7 @@ object NodeSelector : GridPane() {
         }
 
         nine.setPrefSize(buttonSideLength, buttonSideLength / 2 + 33.7)
-        nine.style = "-fx-background-color: #595959; -fx-border-width: 2 2 2 2; -fx-border-color: black"
+        nine.style = "-fx-background-color: #595959; -fx-border-width: ${GridSelector.buttonBorderSize}; -fx-border-color: black"
         nine.setOnAction {
             if (NTClient.isRed) {
                 selectedNode = 9
@@ -117,13 +117,13 @@ object NodeSelector : GridPane() {
     }
     fun changeSelectedNodeButton(thisButton: Button) {
         if (selectedNodeButton == two || selectedNodeButton == five) {
-            selectedNodeButton.style = "-fx-background-color: #9900ff; -fx-border-width: 2 2 2 2; -fx-border-color: black"
+            selectedNodeButton.style = "-fx-background-color: #9900ff; -fx-border-width: ${GridSelector.buttonBorderSize}; -fx-border-color: black"
             selectedNodeButton.graphic = ImageView(Image("cube-icon.png"))
         } else if (selectedNodeButton == seven || selectedNodeButton == eight || selectedNodeButton == nine) {
-            selectedNodeButton.style = "-fx-background-color: #595959; -fx-border-width: 2 2 2 2; -fx-border-color: black"
+            selectedNodeButton.style = "-fx-background-color: #595959; -fx-border-width: ${GridSelector.buttonBorderSize}; -fx-border-color: black"
             selectedNodeButton.graphic = ImageView()
         } else {
-            selectedNodeButton.style = "-fx-background-color: #FFFF00; -fx-border-width: 2 2 2 2; -fx-border-color: black"
+            selectedNodeButton.style = "-fx-background-color: #FFFF00; -fx-border-width: ${GridSelector.buttonBorderSize}; -fx-border-color: black"
             selectedNodeButton.graphic = ImageView(Image("cone-icon.png"))
         }
 

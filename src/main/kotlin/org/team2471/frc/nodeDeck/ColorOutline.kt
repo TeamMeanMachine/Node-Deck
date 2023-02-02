@@ -9,8 +9,6 @@ object ColorOutline : VBox() {
 
         ColorOutline.alignment = Pos.TOP_CENTER
         ColorOutline.children.addAll(TabDeck)
-//        ColorOutline.add(GridSelector, 0, 1)
-//        ColorOutline.add(NodeSelector, 0, 2)
     }
     fun checkAlliance(red: Boolean = NTClient.isRed) {
         if (!NTClient.networkTableInstance.isConnected) {

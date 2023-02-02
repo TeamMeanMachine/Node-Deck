@@ -40,7 +40,6 @@ object AutoConfig: TilePane(Orientation.VERTICAL) {
             NTClient.setTables()
         }
 
-        AutoConfig.style = "-fx-background-color: #f0f0f0"
         AutoConfig.alignment = Pos.TOP_CENTER
         AutoConfig.children.addAll(leftOrRightLabel, piecesLabel, chargeLabel, saveButton)
     }
