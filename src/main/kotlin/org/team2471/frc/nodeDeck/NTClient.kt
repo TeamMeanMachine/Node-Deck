@@ -68,6 +68,7 @@ object NTClient {
 
                 Platform.runLater {
                     setTables()
+                    ColorOutline.checkAlliance()
                 }
             }
         }, 10, 1000L * updateFrequencyInSeconds)
@@ -88,6 +89,5 @@ object NTClient {
         chargeInAutoEntry.set(AutoConfig.chargeButton.isSelected)
         isStartingLeftEntry.set(AutoConfig.isStartingLeft)
         selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
-        ColorOutline.checkAlliance()
     }
 }

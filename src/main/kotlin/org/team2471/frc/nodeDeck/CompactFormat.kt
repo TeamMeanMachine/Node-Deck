@@ -192,7 +192,6 @@ object CompactFormat : GridPane() {
         thisButton.style = thisButton.style + "; -fx-border-color: red; -fx-border-width: $selectedButtonBorderSize"
 
         selectedNodeButton = thisButton
-        NTClient.setTables()
     }
     fun changeSelectedGridButton(thisButton: Button) {
         selectedGridButton.style = "-fx-font-weight: bold; -fx-font-size: 60px; -fx-border-color: black; -fx-border-width: $buttonBorderSize"
@@ -202,5 +201,6 @@ object CompactFormat : GridPane() {
     fun updateInfoPanel() {
         NodeDeck.selectedNode = selectedGrid * 9 + selectedNodeInGrid
         nodeLabel.text = "Node #: ${NodeDeck.selectedNode}"
+        NTClient.setTables()
     }
 }
