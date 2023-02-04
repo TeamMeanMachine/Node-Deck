@@ -34,13 +34,14 @@ object CompactFormat : GridPane() {
     val gridButtonHeight: Double = 200.0
     val gridButtonWidth: Double = 600.0
     val nodeButtonSideLength: Double = 400.0
-    val buttonBorderSize = " 2 2 2 2" //format in " ## ## ## ##"
+    val buttonBorderSize = " 2 2 2 2" //format in " ## ## ## ##" Top Right Bottom Left
     val selectedButtonBorderSize = " 20 20 20 20"
 
     var selectedNodeButton: Button = one
     var selectedGridButton: Button = rightGrid
-    var selectedGrid: Int = 0
-    var selectedNode: Int = 0
+
+    var selectedNodeInGrid = 1
+    var selectedGrid = 0
     init {
 
         //configure all buttons
@@ -48,7 +49,7 @@ object CompactFormat : GridPane() {
         leftGrid.style = "-fx-font-weight: bold; -fx-font-size: 60px; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
         leftGrid.setOnAction {
             if (NTClient.isRed) {
-                selectedGrid = 18
+                selectedGrid = 2
             } else selectedGrid = 0
             changeSelectedGridButton(leftGrid)
             updateInfoPanel()
@@ -57,7 +58,7 @@ object CompactFormat : GridPane() {
         centerGrid.style = "-fx-font-weight: bold; -fx-font-size: 60px; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
         centerGrid.setOnAction {
             changeSelectedGridButton(centerGrid)
-            selectedGrid = 9
+            selectedGrid = 1
             updateInfoPanel()
         }
         rightGrid.setPrefSize(gridButtonWidth, gridButtonHeight)
@@ -65,7 +66,7 @@ object CompactFormat : GridPane() {
         rightGrid.setOnAction {
             if (NTClient.isRed) {
                 selectedGrid = 0
-            } else selectedGrid = 18
+            } else selectedGrid = 2
             changeSelectedGridButton(rightGrid)
             updateInfoPanel()
         }
@@ -74,15 +75,15 @@ object CompactFormat : GridPane() {
         one.style = "-fx-background-color: #FFFF00; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         one.setOnAction {
             if (NTClient.isRed) {
-                selectedNode = 1
-            } else selectedNode = 3
+                selectedNodeInGrid = 1
+            } else selectedNodeInGrid = 3
             changeSelectedNodeButton(one)
             updateInfoPanel()
         }
         two.setPrefSize(nodeButtonSideLength, nodeButtonSideLength)
         two.style = "-fx-background-color: #9900ff; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         two.setOnAction {
-            selectedNode = 2
+            selectedNodeInGrid = 2
             changeSelectedNodeButton(two)
             updateInfoPanel()
         }
@@ -90,8 +91,8 @@ object CompactFormat : GridPane() {
         three.style = "-fx-background-color: #FFFF00; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         three.setOnAction {
             if (NTClient.isRed) {
-                selectedNode = 3
-            } else selectedNode = 1
+                selectedNodeInGrid = 3
+            } else selectedNodeInGrid = 1
             changeSelectedNodeButton(three)
             updateInfoPanel()
         }
@@ -99,15 +100,15 @@ object CompactFormat : GridPane() {
         four.style = "-fx-background-color: #FFFF00; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         four.setOnAction {
             if (NTClient.isRed) {
-                selectedNode = 4
-            } else selectedNode = 6
+                selectedNodeInGrid = 4
+            } else selectedNodeInGrid = 6
             changeSelectedNodeButton(four)
             updateInfoPanel()
         }
         five.setPrefSize(nodeButtonSideLength, nodeButtonSideLength)
         five.style = "-fx-background-color: #9900ff; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         five.setOnAction {
-            selectedNode = 5
+            selectedNodeInGrid = 5
             changeSelectedNodeButton(five)
             updateInfoPanel()
         }
@@ -115,8 +116,8 @@ object CompactFormat : GridPane() {
         six.style = "-fx-background-color: #FFFF00; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         six.setOnAction {
             if (NTClient.isRed) {
-                selectedNode = 6
-            } else selectedNode = 4
+                selectedNodeInGrid = 6
+            } else selectedNodeInGrid = 4
             changeSelectedNodeButton(six)
             updateInfoPanel()
         }
@@ -124,15 +125,15 @@ object CompactFormat : GridPane() {
         seven.style = "-fx-background-color: #595959; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         seven.setOnAction {
             if (NTClient.isRed) {
-                selectedNode = 7
-            } else selectedNode = 9
+                selectedNodeInGrid = 7
+            } else selectedNodeInGrid = 9
             changeSelectedNodeButton(seven)
             updateInfoPanel()
         }
         eight.setPrefSize(nodeButtonSideLength, nodeButtonSideLength / 2 + 33.7)
         eight.style = "-fx-background-color: #595959; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         eight.setOnAction {
-            selectedNode = 8
+            selectedNodeInGrid = 8
             changeSelectedNodeButton(eight)
             updateInfoPanel()
         }
@@ -140,8 +141,8 @@ object CompactFormat : GridPane() {
         nine.style = "-fx-background-color: #595959; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         nine.setOnAction {
             if (NTClient.isRed) {
-                selectedNode = 9
-            } else selectedNode = 7
+                selectedNodeInGrid = 9
+            } else selectedNodeInGrid = 7
             changeSelectedNodeButton(nine)
             updateInfoPanel()
         }
@@ -199,6 +200,7 @@ object CompactFormat : GridPane() {
         selectedGridButton = thisButton
     }
     fun updateInfoPanel() {
-        nodeLabel.text = "Node #: ${selectedNode + selectedGrid}"
+        NodeDeck.selectedNode = selectedGrid * 9 + selectedNodeInGrid
+        nodeLabel.text = "Node #: ${NodeDeck.selectedNode}"
     }
 }

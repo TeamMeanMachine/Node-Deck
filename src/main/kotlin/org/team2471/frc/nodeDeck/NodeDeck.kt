@@ -9,6 +9,7 @@ import javafx.stage.Stage
 class NodeDeck : Application() {
     companion object {
         lateinit var stage: Stage
+        var selectedNode = 0
 
         @JvmStatic
         fun main(args: Array<String>) {

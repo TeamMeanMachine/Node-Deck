@@ -22,7 +22,7 @@ object TabDeck: TabPane() {
         settingsTab.content = SettingsTab
         autoTab.content = AutoConfig
         alternateATab.content = AlternateA
-        longTab.content = FormatLong
+        longTab.content = LongFormat
 
         gridSelectionTab.isClosable = false
         settingsTab.isClosable = false
