@@ -201,6 +201,7 @@ object CompactFormat : GridPane() {
     fun updateInfoPanel() {
         NodeDeck.selectedNode = selectedGrid * 9 + selectedNodeInGrid
         nodeLabel.text = "Node #: ${NodeDeck.selectedNode}"
+        println("AHHHHHHHHHHHHH")
         NTClient.setTables()
     }
 }
