@@ -87,7 +87,7 @@ object NTClient {
     fun setTables() {
         chargeInAutoEntry.set(AutoConfig.chargeButton.isSelected)
         isStartingLeftEntry.set(AutoConfig.isStartingLeft)
-        selectedNodeEntry.set((NodeSelector.selectedNode + GridSelector.selectedSection).toLong())
+        selectedNodeEntry.set((CompactFormat.selectedNode + CompactFormat.selectedGrid).toLong())
         ColorOutline.checkAlliance()
     }
 }

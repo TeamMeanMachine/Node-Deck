@@ -24,7 +24,7 @@ object ColorOutline : VBox() {
         }
     }
     fun updateButtons() {
-        GridSelector.selectedSectionButton.fire()
-        NodeSelector.selectedNodeButton.fire()
+        CompactFormat.selectedGridButton.fire()
+        CompactFormat.selectedNodeButton.fire()
     }
 }

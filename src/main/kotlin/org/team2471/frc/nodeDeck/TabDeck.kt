@@ -18,7 +18,7 @@ object TabDeck: TabPane() {
         tabMinHeight = 50.0
         tabMinWidth = 100.0
 
-        gridSelectionTab.content = NodeSelectionTab
+        gridSelectionTab.content = CompactFormat
         settingsTab.content = SettingsTab
         autoTab.content = AutoConfig
         alternateATab.content = AlternateA
