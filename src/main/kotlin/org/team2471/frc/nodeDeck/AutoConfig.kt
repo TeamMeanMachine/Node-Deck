@@ -17,11 +17,16 @@ object AutoConfig: VBox(10.0) {
     val chargeButton = ToggleButton("Charge Up?")
     private val startLeftOrRightGroup = ToggleGroup()
     private val leftOrRightGrid = GridPane()
-    private val amountOfPiecesSelector = ComboBox<String>()
+    val amountOfPiecesSelector = ComboBox<String>()
     private val piecesLabel = Label("Amount of game pieces to score.", amountOfPiecesSelector)
     private val leftOrRightLabel = Label("Is the robot starting on the left or right?", leftOrRightGrid)
     private val chargeLabel = Label("End the auto on charge station?", chargeButton)
     private val saveButton = Button("Save")
+    val piece1 = AutoPiecesGrid("#1", true)
+    val piece2 = AutoPiecesGrid("#2")
+    val piece3 = AutoPiecesGrid("#3")
+    val piece4 = AutoPiecesGrid("#4")
+    val piece5 = AutoPiecesGrid("#5")
     val piecesGrid = GridPane()
     val isStartingLeft: Boolean
         get() = leftButton.isSelected
@@ -32,8 +37,12 @@ object AutoConfig: VBox(10.0) {
         leftButton.toggleGroup = startLeftOrRightGroup
         rightButton.toggleGroup = startLeftOrRightGroup
 
-        amountOfPiecesSelector.items.addAll("1", "2", "3", "4")
-        amountOfPiecesSelector.setOnAction { showPiecesGrid() }
+        amountOfPiecesSelector.items.addAll("1", "2", "3", "4", "5")
+        amountOfPiecesSelector.selectionModel.selectFirst()
+        amountOfPiecesSelector.setOnAction {
+            showPiecesGrid()
+            NTClient.setTables()
+        }
 
         leftButton.setPrefSize(75.0, 50.0)
         rightButton.setPrefSize(75.0, 50.0)
@@ -51,7 +60,27 @@ object AutoConfig: VBox(10.0) {
     }
 
     fun showPiecesGrid() {
+        if (amountOfPiecesSelector.value == "1") {
+            piecesGrid.children.removeAll(piece1, piece2, piece3, piece4, piece5)
+            piecesGrid.addRow(0, piece1)
+
+        } else if (amountOfPiecesSelector.value == "2") {
+            piecesGrid.children.removeAll(piece1, piece2, piece3, piece4, piece5)
+            piecesGrid.addRow(0, piece1, piece2)
+
+        } else if (amountOfPiecesSelector.value == "3") {
+            piecesGrid.children.removeAll(piece1, piece2, piece3, piece4, piece5)
+            piecesGrid.addRow(0, piece1, piece2, piece3)
+
+        } else if (amountOfPiecesSelector.value == "4") {
+            piecesGrid.children.removeAll(piece1, piece2, piece3, piece4, piece5)
+            piecesGrid.addRow(0, piece1, piece2, piece3, piece4)
+
+        } else if (amountOfPiecesSelector.value == "5") {
+            piecesGrid.children.removeAll(piece1, piece2, piece3, piece4, piece5)
+            piecesGrid.addRow(0, piece1, piece2, piece3, piece4, piece5)
+        }
     }
 }
 
-//todo: grid of scoring 1st 2nd 3rd 4th? 5th? Top/Mid/Bottom
+//todo: bigger text, invalid auto detector, mini grid that shows what is being placed

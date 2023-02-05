@@ -21,3 +21,5 @@ class AutoPiecesGrid(title: String, preLoaded: Boolean = false): GridPane() {
         setPrefSize(100.0, 100.0)
     }
 }
+
+//todo: Button selector instead of dropdown, color coding, bigger text

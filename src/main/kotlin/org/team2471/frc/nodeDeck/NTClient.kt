@@ -15,6 +15,7 @@ object NTClient {
     private val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
     private val isStartingLeftEntry = nodeTable.getBooleanTopic("IsStartingLeft").publish()
     private val selectedNodeEntry = nodeTable.getIntegerTopic("Selected Node").publish()
+    private val piecesInAutoEntry = nodeTable.getIntegerTopic("PiecesInAuto").publish()
     val isRed: Boolean
         get() = isRedEntry.get()
     private val timer = Timer()
@@ -88,6 +89,7 @@ object NTClient {
         chargeInAutoEntry.set(AutoConfig.chargeButton.isSelected)
         isStartingLeftEntry.set(AutoConfig.isStartingLeft)
         selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
+        piecesInAutoEntry.set(AutoConfig.amountOfPiecesSelector.value.toLong())
     }
     fun reflectNodeNumbers(n: Int): Int {
         var r: Int = n
