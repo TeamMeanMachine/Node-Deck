@@ -7,7 +7,6 @@ import javafx.scene.layout.GridPane
 import javafx.scene.text.Font
 
 object LongFormat: GridPane() {
-
     private val leftNodeSelectorGrid = GridPane()
     private val middleNodeSelectorGrid = GridPane()
     private val rightNodeSelectorGrid = GridPane()
@@ -59,7 +58,10 @@ object LongFormat: GridPane() {
             val thisButtonNode = assignedButtonNode
             button.setPrefSize(151.0, 151.0)
             button.setOnAction {
-                NodeDeck.selectedNode = thisButtonNode
+                if (!NTClient.isRed) {
+                    NodeDeck.selectedNode = NTClient.reflectNodeNumbers(thisButtonNode)
+                } else NodeDeck.selectedNode = thisButtonNode
+
                 changeSelectedNodeButton(button)
                 updateInfoPanel()
             }

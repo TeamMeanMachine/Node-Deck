@@ -49,7 +49,6 @@ object NTClient {
                 networkTableInstance.setServer(address)
                 networkTableInstance.startDSClient()
             }
-//            setTables()
         }
     }
 
@@ -89,5 +88,36 @@ object NTClient {
         chargeInAutoEntry.set(AutoConfig.chargeButton.isSelected)
         isStartingLeftEntry.set(AutoConfig.isStartingLeft)
         selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
+    }
+    fun reflectNodeNumbers(n: Int): Int {
+        var r: Int = n
+        if (n == 1) r = 21
+        if (n == 2) r = 20
+        if (n == 3) r = 19
+        if (n == 4) r = 24
+        if (n == 5) r = 23
+        if (n == 6) r = 22
+        if (n == 7) r = 27
+        if (n == 8) r = 26
+        if (n == 9) r = 25
+        if (n == 10) r = 12
+        if (n == 11) r = 11
+        if (n == 12) r = 10
+        if (n == 13) r = 15
+        if (n == 14) r = 14
+        if (n == 15) r = 13
+        if (n == 16) r = 18
+        if (n == 17) r = 17
+        if (n == 18) r = 16
+        if (n == 19) r = 3
+        if (n == 20) r = 2
+        if (n == 21) r = 1
+        if (n == 22) r = 6
+        if (n == 23) r = 5
+        if (n == 24) r = 4
+        if (n == 25) r = 9
+        if (n == 26) r = 8
+        if (n == 27) r = 7
+        return r
     }
 }
