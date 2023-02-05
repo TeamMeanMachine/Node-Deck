@@ -9,21 +9,21 @@ import java.util.*
 
 object NTClient {
     val networkTableInstance = NetworkTableInstance.getDefault()
-    val fmsTable = networkTableInstance.getTable("FMSInfo")
-    val nodeTable = networkTableInstance.getTable("NodeDeck")
-    val isRedEntry = fmsTable.getBooleanTopic("IsRedAlliance").subscribe(true)
-    val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
-    val isStartingLeftEntry = nodeTable.getBooleanTopic("IsStartingLeft").publish()
-    val selectedNodeEntry = nodeTable.getIntegerTopic("Selected Node").publish()
+    private val fmsTable = networkTableInstance.getTable("FMSInfo")
+    private val nodeTable = networkTableInstance.getTable("NodeDeck")
+    private val isRedEntry = fmsTable.getBooleanTopic("IsRedAlliance").subscribe(true)
+    private val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
+    private val isStartingLeftEntry = nodeTable.getBooleanTopic("IsStartingLeft").publish()
+    private val selectedNodeEntry = nodeTable.getIntegerTopic("Selected Node").publish()
     val isRed: Boolean
         get() = isRedEntry.get()
-    val timer = Timer()
-    var connectionJob: Job? = null
+    private val timer = Timer()
+    private var connectionJob: Job? = null
     val ipAddress: String
         get() = SettingsTab.ipInput.text
 
     init {
-        println("NTClient says hi!")
+        println("NTClient says hi!!")
         initConnectionStatusCheck()
     }
 

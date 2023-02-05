@@ -40,7 +40,7 @@ object LongFormat: GridPane() {
     private val twentyFive = Button()
     private val twentySix = Button()
     private val twentySeven = Button()
-    val buttonSideLength: Double = 400.0
+    val buttonSideLength: Double = 150.0
     var selectedNodeButton: Button = one
     val buttonBorderSize = " 2 2 2 2" //format in " ## ## ## ##" Top Right Bottom Left
     val selectedButtonBorderSize = " 10 10 10 10"
@@ -51,12 +51,13 @@ object LongFormat: GridPane() {
     val allCubeButtons = listOf<Button>(two, five, eleven, fourteen, twenty, twentyThree)
 
     init {
+        println("LongFormat says hi")
 
         var assignedButtonNode = 0
         for (button in allButtons) {
             assignedButtonNode += 1
             val thisButtonNode = assignedButtonNode
-            button.setPrefSize(151.0, 151.0)
+            button.setPrefSize(buttonSideLength, buttonSideLength)
             button.setOnAction {
                 if (!NTClient.isRed) {
                     NodeDeck.selectedNode = NTClient.reflectNodeNumbers(thisButtonNode)

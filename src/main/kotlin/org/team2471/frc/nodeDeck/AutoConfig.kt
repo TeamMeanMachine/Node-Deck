@@ -9,18 +9,20 @@ import javafx.scene.control.ToggleButton
 import javafx.scene.control.ToggleGroup
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.TilePane
+import javafx.scene.layout.VBox
 
-object AutoConfig: TilePane(Orientation.VERTICAL) {
-    val leftButton = ToggleButton("Left")
-    val rightButton = ToggleButton("Right")
+object AutoConfig: VBox(10.0) {
+    private val leftButton = ToggleButton("Left")
+    private val rightButton = ToggleButton("Right")
     val chargeButton = ToggleButton("Charge Up?")
-    val startLeftOrRightGroup = ToggleGroup()
-    val leftOrRightGrid = GridPane()
-    val amountOfPiecesSelector = ComboBox<String>()
-    val piecesLabel = Label("Amount of game pieces to score.", amountOfPiecesSelector)
-    val leftOrRightLabel = Label("Is the robot starting on the left or right?", leftOrRightGrid)
-    val chargeLabel = Label("End the auto on charge station?", chargeButton)
-    val saveButton = Button("Save")
+    private val startLeftOrRightGroup = ToggleGroup()
+    private val leftOrRightGrid = GridPane()
+    private val amountOfPiecesSelector = ComboBox<String>()
+    private val piecesLabel = Label("Amount of game pieces to score.", amountOfPiecesSelector)
+    private val leftOrRightLabel = Label("Is the robot starting on the left or right?", leftOrRightGrid)
+    private val chargeLabel = Label("End the auto on charge station?", chargeButton)
+    private val saveButton = Button("Save")
+    val piecesGrid = GridPane()
     val isStartingLeft: Boolean
         get() = leftButton.isSelected
 
@@ -31,6 +33,7 @@ object AutoConfig: TilePane(Orientation.VERTICAL) {
         rightButton.toggleGroup = startLeftOrRightGroup
 
         amountOfPiecesSelector.items.addAll("1", "2", "3", "4")
+        amountOfPiecesSelector.setOnAction { showPiecesGrid() }
 
         leftButton.setPrefSize(75.0, 50.0)
         rightButton.setPrefSize(75.0, 50.0)
@@ -40,8 +43,14 @@ object AutoConfig: TilePane(Orientation.VERTICAL) {
             NTClient.setTables()
         }
 
+        piecesGrid.alignment = Pos.CENTER
+
+
         AutoConfig.alignment = Pos.TOP_CENTER
-        AutoConfig.children.addAll(leftOrRightLabel, piecesLabel, chargeLabel, saveButton)
+        AutoConfig.children.addAll(leftOrRightLabel, piecesLabel, piecesGrid, chargeLabel, saveButton)
+    }
+
+    fun showPiecesGrid() {
     }
 }
 

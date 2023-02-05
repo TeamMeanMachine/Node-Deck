@@ -43,6 +43,7 @@ object CompactFormat : GridPane() {
     var selectedNodeInGrid = 1
     var selectedGrid = 0
     init {
+        println("CompactFormat says hi")
 
         //configure all buttons
         leftGrid.setPrefSize(gridButtonWidth, gridButtonHeight)
@@ -201,7 +202,7 @@ object CompactFormat : GridPane() {
     fun updateInfoPanel() {
         NodeDeck.selectedNode = selectedGrid * 9 + selectedNodeInGrid
         nodeLabel.text = "Node #: ${NodeDeck.selectedNode}"
-        println("AHHHHHHHHHHHHH")
+//        println("AHHHHHHHHHHHHH")
         NTClient.setTables()
     }
 }

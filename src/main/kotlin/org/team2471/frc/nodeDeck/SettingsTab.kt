@@ -15,6 +15,8 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
     val ipLabel = Label("roboRIO IP Address:")
 
     init {
+        println("SettingsTab says hi")
+
         SettingsTab.alignment = Pos.TOP_CENTER
         SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton)
         ipInput.setOnAction {
