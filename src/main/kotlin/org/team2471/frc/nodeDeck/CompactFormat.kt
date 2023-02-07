@@ -40,7 +40,7 @@ object CompactFormat : GridPane() {
     var selectedNodeButton: Button = one
     var selectedGridButton: Button = rightGrid
 
-    var selectedNodeInGrid = 1
+    var selectedNodeInGrid = 0
     var selectedGrid = 0
     init {
         println("CompactFormat says hi")
@@ -72,12 +72,12 @@ object CompactFormat : GridPane() {
             updateInfoPanel()
         }
 
-        zero.setPrefSize(nodeButtonSideLength, nodeButtonSideLength / 2 + 33.7)
-        zero.style = "-fx-background-color: #595959; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
+        zero.setPrefSize(nodeButtonSideLength, nodeButtonSideLength)
+        zero.style = "-fx-background-color: #FFFF00; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         zero.setOnAction {
             if (NTClient.isRed) {
                 selectedNodeInGrid = 0
-            } else selectedNodeInGrid = 7
+            } else selectedNodeInGrid = 27
             changeSelectedNodeButton(zero)
             updateInfoPanel()
         }
@@ -86,39 +86,43 @@ object CompactFormat : GridPane() {
         one.setOnAction {
             if (NTClient.isRed) {
                 selectedNodeInGrid = 1
-            } else selectedNodeInGrid = 3
+            } else selectedNodeInGrid = 28
             changeSelectedNodeButton(one)
             updateInfoPanel()
         }
-        two.setPrefSize(nodeButtonSideLength, nodeButtonSideLength)
-        two.style = "-fx-background-color: #9900ff; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
+        two.setPrefSize(nodeButtonSideLength, nodeButtonSideLength / 2 + 33.7)
+        two.style = "-fx-background-color: #595959; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         two.setOnAction {
-            selectedNodeInGrid = 2
+            if (NTClient.isRed) {
+                selectedNodeInGrid = 2
+            } else selectedNodeInGrid = 29
             changeSelectedNodeButton(two)
             updateInfoPanel()
         }
         three.setPrefSize(nodeButtonSideLength, nodeButtonSideLength)
-        three.style = "-fx-background-color: #FFFF00; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
+        three.style = "-fx-background-color: #9900ff; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         three.setOnAction {
             if (NTClient.isRed) {
                 selectedNodeInGrid = 3
-            } else selectedNodeInGrid = 1
+            } else selectedNodeInGrid = 30
             changeSelectedNodeButton(three)
             updateInfoPanel()
         }
         four.setPrefSize(nodeButtonSideLength, nodeButtonSideLength)
-        four.style = "-fx-background-color: #FFFF00; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
+        four.style = "-fx-background-color: #9900ff; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         four.setOnAction {
             if (NTClient.isRed) {
                 selectedNodeInGrid = 4
-            } else selectedNodeInGrid = 6
+            } else selectedNodeInGrid = 31
             changeSelectedNodeButton(four)
             updateInfoPanel()
         }
-        five.setPrefSize(nodeButtonSideLength, nodeButtonSideLength)
-        five.style = "-fx-background-color: #9900ff; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
+        five.setPrefSize(nodeButtonSideLength, nodeButtonSideLength / 2 + 33.7)
+        five.style = "-fx-background-color: #595959; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         five.setOnAction {
-            selectedNodeInGrid = 5
+            if (NTClient.isRed) {
+                selectedNodeInGrid = 5
+            } else selectedNodeInGrid = 32
             changeSelectedNodeButton(five)
             updateInfoPanel()
         }
@@ -127,23 +131,25 @@ object CompactFormat : GridPane() {
         six.setOnAction {
             if (NTClient.isRed) {
                 selectedNodeInGrid = 6
-            } else selectedNodeInGrid = 4
+            } else selectedNodeInGrid = 33
             changeSelectedNodeButton(six)
             updateInfoPanel()
         }
-        seven.setPrefSize(nodeButtonSideLength, nodeButtonSideLength / 2 + 33.7)
-        seven.style = "-fx-background-color: #595959; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
+        seven.setPrefSize(nodeButtonSideLength, nodeButtonSideLength)
+        seven.style = "-fx-background-color: #FFFF00; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         seven.setOnAction {
             if (NTClient.isRed) {
                 selectedNodeInGrid = 7
-            } else selectedNodeInGrid = 9
+            } else selectedNodeInGrid = 34
             changeSelectedNodeButton(seven)
             updateInfoPanel()
         }
         eight.setPrefSize(nodeButtonSideLength, nodeButtonSideLength / 2 + 33.7)
         eight.style = "-fx-background-color: #595959; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         eight.setOnAction {
-            selectedNodeInGrid = 8
+            if (NTClient.isRed) {
+                selectedNodeInGrid = 8
+            } else selectedNodeInGrid = 35
             changeSelectedNodeButton(eight)
             updateInfoPanel()
         }
@@ -164,9 +170,9 @@ object CompactFormat : GridPane() {
         infoPane.addRow(1, toggleAllianceButton)
         infoPane.setMinSize(170.0, 50.0)
 
-        nodeSelectorPane.addRow(1, zero, eight, seven)
-        nodeSelectorPane.addRow(2, six, five, four)
-        nodeSelectorPane.addRow(3, three, two, one)
+        nodeSelectorPane.addRow(1, eight, five, two)
+        nodeSelectorPane.addRow(2, seven, four, one)
+        nodeSelectorPane.addRow(3, six, three, zero)
         nodeSelectorPane.alignment = Pos.CENTER
 
         gridSelectorPane.addRow(0, leftGrid, centerGrid, rightGrid)
@@ -178,14 +184,14 @@ object CompactFormat : GridPane() {
         CompactFormat.add(infoPane, 1, 1)
 
         changeSelectedGridButton(rightGrid)
-        changeSelectedNodeButton(one)
+        changeSelectedNodeButton(zero)
         updateInfoPanel()
     }
     fun changeSelectedNodeButton(thisButton: Button) {
         //checks if previous button was cone or cube then sets its style
-        if (selectedNodeButton == two || selectedNodeButton == five) {
+        if (selectedNodeButton == three || selectedNodeButton == four) {
             selectedNodeButton.style = "-fx-background-color: #9900ff; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
-        } else if (selectedNodeButton == seven || selectedNodeButton == eight || selectedNodeButton == zero) {
+        } else if (selectedNodeButton == two || selectedNodeButton == five || selectedNodeButton == eight) {
             selectedNodeButton.style = "-fx-background-color: #595959; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"
         } else {
             selectedNodeButton.style = "-fx-background-color: #FFFF00; -fx-border-width: ${buttonBorderSize}; -fx-border-color: black"

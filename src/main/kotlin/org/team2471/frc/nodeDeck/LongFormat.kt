@@ -13,6 +13,7 @@ object LongFormat: GridPane() {
     private val infoPane = GridPane()
     private val nodeLabel = Label()
 
+    private val zero = Button()
     private val one = Button()
     private val two = Button()
     private val three = Button()
@@ -39,28 +40,28 @@ object LongFormat: GridPane() {
     private val twentyFour = Button()
     private val twentyFive = Button()
     private val twentySix = Button()
-    private val twentySeven = Button()
+
     val buttonSideLength: Double = 150.0
     var selectedNodeButton: Button = one
     val buttonBorderSize = " 2 2 2 2" //format in " ## ## ## ##" Top Right Bottom Left
     val selectedButtonBorderSize = " 10 10 10 10"
 
-    val allButtons = listOf<Button>(one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty, twentyOne, twentyTwo, twentyThree, twentyFour, twentyFive, twentySix, twentySeven)
-    val allFloorButtons = listOf<Button>(seven, eight, nine, sixteen, seventeen, eighteen, twentyFive, twentySix, twentySeven)
-    val allConeButtons = listOf<Button>(one, three, four, six, ten, twelve, thirteen, fifteen, nineteen, twentyOne, twentyTwo, twentyFour)
-    val allCubeButtons = listOf<Button>(two, five, eleven, fourteen, twenty, twentyThree)
+    val allButtons = listOf<Button>(zero, one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty, twentyOne, twentyTwo, twentyThree, twentyFour, twentyFive, twentySix)
+    val allFloorButtons = listOf<Button>(two, five, eight, eleven, fourteen, seventeen, twenty, twentyThree, twentySix)
+    val allConeButtons = listOf<Button>(zero, one, six, seven, nine, ten, fifteen, sixteen, eighteen, nineteen, twentyFour, twentyFive)
+    val allCubeButtons = listOf<Button>(three, four, twelve, thirteen, twentyOne, twentyTwo)
 
     init {
         println("LongFormat says hi")
 
-        var assignedButtonNode = 0
+        var assignedButtonNode = -1
         for (button in allButtons) {
             assignedButtonNode += 1
             val thisButtonNode = assignedButtonNode
             button.setPrefSize(buttonSideLength, buttonSideLength)
             button.setOnAction {
                 if (!NTClient.isRed) {
-                    NodeDeck.selectedNode = NTClient.reflectNodeNumbers(thisButtonNode)
+                    NodeDeck.selectedNode = thisButtonNode + 26
                 } else NodeDeck.selectedNode = thisButtonNode
 
                 changeSelectedNodeButton(button)
@@ -77,17 +78,17 @@ object LongFormat: GridPane() {
             button.style = "-fx-background-color: #595959; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
         }
 
-        leftNodeSelectorGrid.addRow(1, one, two, three)
-        leftNodeSelectorGrid.addRow(2, four, five, six)
-        leftNodeSelectorGrid.addRow(3, seven, eight, nine)
+        leftNodeSelectorGrid.addColumn(1, zero, one, two)
+        leftNodeSelectorGrid.addColumn(2, three, four, five)
+        leftNodeSelectorGrid.addColumn(3, six, seven, eight)
         leftNodeSelectorGrid.alignment = Pos.CENTER_LEFT
-        middleNodeSelectorGrid.addRow(1, ten, eleven, twelve)
-        middleNodeSelectorGrid.addRow(2, thirteen, fourteen, fifteen)
-        middleNodeSelectorGrid.addRow(3, sixteen, seventeen, eighteen)
+        middleNodeSelectorGrid.addColumn(1, nine, ten, eleven)
+        middleNodeSelectorGrid.addColumn(2,twelve, thirteen, fourteen)
+        middleNodeSelectorGrid.addColumn(3, fifteen, sixteen, seventeen)
         middleNodeSelectorGrid.alignment = Pos.CENTER
-        rightNodeSelectorGrid.addRow(1, nineteen, twenty, twentyOne)
-        rightNodeSelectorGrid.addRow(2, twentyTwo, twentyThree, twentyFour)
-        rightNodeSelectorGrid.addRow(3, twentyFive, twentySix, twentySeven)
+        rightNodeSelectorGrid.addColumn(1, eighteen, nineteen, twenty)
+        rightNodeSelectorGrid.addColumn(2, twentyOne, twentyTwo, twentyThree)
+        rightNodeSelectorGrid.addColumn(3, twentyFour, twentyFive, twentySix)
         rightNodeSelectorGrid.alignment = Pos.CENTER_RIGHT
 
         nodeLabel.alignment = Pos.CENTER
@@ -104,7 +105,7 @@ object LongFormat: GridPane() {
         LongFormat.add(infoPane, 1, 2)
         LongFormat.alignment = Pos.TOP_CENTER
 
-        changeSelectedNodeButton(one)
+        changeSelectedNodeButton(zero)
         updateInfoPanel()
     }
     fun changeSelectedNodeButton(thisButton: Button) {
