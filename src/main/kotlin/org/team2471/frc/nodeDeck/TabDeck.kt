@@ -5,9 +5,9 @@ import javafx.scene.control.TabPane
 
 object TabDeck: TabPane() {
     val gridSelectionTab = Tab("Grid Selection")
-    val settingsTab = Tab("Settings")
-    val autoTab = Tab("Auto Options")
-    val alternateATab = Tab("Alternate A")
+    val settingsTab = Tab("General Settings")
+    val autoTab = Tab("Robot Auto")
+    val testTab = Tab("Test")
     val longTab = Tab("Long Format")
 
     init {
@@ -15,25 +15,25 @@ object TabDeck: TabPane() {
 
         TabDeck.setPrefSize(999.0, 999.9)
 
-        tabMinHeight = 50.0
+        tabMinHeight = 75.0
         tabMinWidth = 100.0
 
-        gridSelectionTab.content = CompactFormat
-        settingsTab.content = SettingsTab
-        autoTab.content = AutoConfig
-        alternateATab.content = AlternateA
         longTab.content = LongFormat
+        gridSelectionTab.content = CompactFormat
+        autoTab.content = AutoConfig
+        settingsTab.content = SettingsTab
+        testTab.content = TestTab
 
         gridSelectionTab.isClosable = false
         settingsTab.isClosable = false
         autoTab.isClosable = false
-        alternateATab.isClosable = false
+        testTab.isClosable = false
         longTab.isClosable = false
 
+        tabs.add(longTab)
         tabs.add(gridSelectionTab)
         tabs.add(autoTab)
+        tabs.add(testTab)
         tabs.add(settingsTab)
-        tabs.add(alternateATab)
-        tabs.add(longTab)
     }
 }

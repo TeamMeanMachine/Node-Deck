@@ -41,10 +41,12 @@ object LongFormat: GridPane() {
     private val twentyFive = Button()
     private val twentySix = Button()
 
-    val buttonSideLength: Double = 150.0
+    val buttonHeight: Double = 220.0
+    val buttonWidth: Double = 205.0
     var selectedNodeButton: Button = one
     val buttonBorderSize = " 2 2 2 2" //format in " ## ## ## ##" Top Right Bottom Left
-    val selectedButtonBorderSize = " 10 10 10 10"
+    val selectedButtonBorderSize = " 15 15 15 15"
+    val fontSize = 50
 
     val allButtons = listOf<Button>(zero, one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty, twentyOne, twentyTwo, twentyThree, twentyFour, twentyFive, twentySix)
     val allFloorButtons = listOf<Button>(two, five, eight, eleven, fourteen, seventeen, twenty, twentyThree, twentySix)
@@ -58,7 +60,7 @@ object LongFormat: GridPane() {
         for (button in allButtons) {
             assignedButtonNode += 1
             val thisButtonNode = assignedButtonNode
-            button.setPrefSize(buttonSideLength, buttonSideLength)
+            button.setPrefSize(buttonWidth, buttonHeight)
             button.setOnAction {
                 if (!NTClient.isRed) {
                     NodeDeck.selectedNode = thisButtonNode + 26
@@ -93,11 +95,11 @@ object LongFormat: GridPane() {
 
         nodeLabel.alignment = Pos.CENTER
         nodeLabel.font = Font(20.0)
-        nodeLabel.style = "-fx-background-color: #f0f0f0; -fx-font-weight: bold; -fx-font-size: 30px"
-        nodeLabel.setPrefSize(190.0, 25.0)
+        nodeLabel.style = "-fx-background-color: #f0f0f0; -fx-font-weight: bold; -fx-font-size: $fontSize px"
+        nodeLabel.setPrefSize(300.0, 25.0)
 
         infoPane.addRow(0, nodeLabel)
-        infoPane.setMinSize(480.0, 50.0)
+        infoPane.setMinSize(buttonWidth * 3 + 30, 50.0)
         infoPane.alignment = Pos.TOP_CENTER
 
         LongFormat.setMinSize(1400.0, 1400.0)

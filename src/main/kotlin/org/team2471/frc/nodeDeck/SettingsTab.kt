@@ -12,13 +12,24 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
     val connectButton = Button("Connect")
     val robotIpButton = Button("10.24.71.2")
     val lHostButton = Button("localhost")
+    val fullscreenButton = Button("Fullscreen application")
     val ipLabel = Label("roboRIO IP Address:")
+    val ndSettingsLabel = Label("NodeDeck Settings:")
+    val fontSize = 30
 
     init {
         println("SettingsTab says hi")
 
+        ipLabel.style = "-fx-font-weight: bold; -fx-font-size: $fontSize px"
+        ipInput.style = "-fx-font-size: $fontSize px"
+        connectButton.style = "-fx-font-size: $fontSize px"
+        robotIpButton.style = "-fx-font-size: $fontSize px"
+        lHostButton.style = "-fx-font-size: $fontSize px"
+        fullscreenButton.style = "-fx-font-size: $fontSize px"
+        ndSettingsLabel.style = "-fx-font-size: $fontSize px"
+
         SettingsTab.alignment = Pos.TOP_CENTER
-        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton)
+        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton, ndSettingsLabel, fullscreenButton)
         ipInput.setOnAction {
             NTClient.connect()
         }
@@ -32,6 +43,9 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
         lHostButton.setOnAction {
             ipInput.text = "localhost"
             NTClient.connect()
+        }
+        fullscreenButton.setOnAction {
+            NodeDeck.stage.isFullScreen = true
         }
     }
 }

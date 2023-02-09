@@ -3,14 +3,14 @@ package org.team2471.frc.nodeDeck
 import javafx.scene.control.Button
 import javafx.scene.layout.GridPane
 
-object AlternateA: GridPane() {
+object TestTab: GridPane() {
 
-    val testButton = Button("Exit App")
+    val testButton = Button("test")
 
     init {
 
         testButton.setOnAction {
-            println(NTClient.reflectNodeNumbers(1))
+
         }
 
 //        // The following doesn't work. Button gives a IllegalStateException

@@ -15,24 +15,39 @@ object AutoConfig: VBox(10.0) {
     private val leftButton = ToggleButton("Left")
     private val rightButton = ToggleButton("Right")
     val chargeButton = ToggleButton("Charge Up?")
+    val amountOfPiecesSelector = ComboBox<String>()
+
     private val startLeftOrRightGroup = ToggleGroup()
     private val leftOrRightGrid = GridPane()
-    val amountOfPiecesSelector = ComboBox<String>()
+
     private val piecesLabel = Label("Amount of game pieces to score.", amountOfPiecesSelector)
     private val leftOrRightLabel = Label("Is the robot starting on the left or right?", leftOrRightGrid)
     private val chargeLabel = Label("End the auto on charge station?", chargeButton)
     private val saveButton = Button("Save")
+
     val piece1 = AutoPiecesGrid("#1", true)
     val piece2 = AutoPiecesGrid("#2")
     val piece3 = AutoPiecesGrid("#3")
     val piece4 = AutoPiecesGrid("#4")
     val piece5 = AutoPiecesGrid("#5")
     val piecesGrid = GridPane()
+
+    val fontSize = 50
+
     val isStartingLeft: Boolean
         get() = leftButton.isSelected
 
     init {
         println("AutoConfig says hi!")
+
+        saveButton.style = "-fx-font-size: $fontSize px"
+        chargeLabel.style = "-fx-font-size: $fontSize px"
+        leftOrRightLabel.style = "-fx-font-size: $fontSize px"
+        piecesLabel.style = "-fx-font-size: $fontSize px"
+        leftButton.style = "-fx-font-size: $fontSize px"
+        rightButton.style = "-fx-font-size: $fontSize px"
+        amountOfPiecesSelector.style = "-fx-font-size: $fontSize px"
+        chargeButton.style = "-fx-font-size: $fontSize px"
 
         leftButton.toggleGroup = startLeftOrRightGroup
         rightButton.toggleGroup = startLeftOrRightGroup
@@ -44,8 +59,8 @@ object AutoConfig: VBox(10.0) {
             NTClient.setTables()
         }
 
-        leftButton.setPrefSize(75.0, 50.0)
-        rightButton.setPrefSize(75.0, 50.0)
+        leftButton.setPrefSize(200.0, 50.0)
+        rightButton.setPrefSize(200.0, 50.0)
         leftOrRightGrid.addRow(0, leftButton, rightButton)
 
         saveButton.setOnAction {
@@ -57,6 +72,8 @@ object AutoConfig: VBox(10.0) {
 
         AutoConfig.alignment = Pos.TOP_CENTER
         AutoConfig.children.addAll(leftOrRightLabel, piecesLabel, piecesGrid, chargeLabel, saveButton)
+
+        showPiecesGrid()
     }
 
     fun showPiecesGrid() {
