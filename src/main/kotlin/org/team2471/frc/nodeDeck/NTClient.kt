@@ -16,7 +16,8 @@ object NTClient {
     private val isStartingLeftEntry = nodeTable.getBooleanTopic("IsStartingLeft").publish()
     private val selectedNodeEntry = nodeTable.getIntegerTopic("Selected Node").publish()
     private val piecesInAutoEntry = nodeTable.getIntegerTopic("PiecesInAuto").publish()
-    private val toggleArmModeEntry = nodeTable.getBooleanTopic("toggleArmMode").publish()
+    private val shoulderCoastModeEntry = nodeTable.getBooleanTopic("setShoulderCoastMode").publish()
+    private val shoulderBrakeModeEntry = nodeTable.getBooleanTopic("setShoulderBrakeMode").publish()
 
     val isRed: Boolean
         get() = isRedEntry.get()
@@ -92,6 +93,7 @@ object NTClient {
         isStartingLeftEntry.set(AutoConfig.isStartingLeft)
         selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
         piecesInAutoEntry.set(AutoConfig.amountOfPiecesSelector.value.toLong())
-        toggleArmModeEntry.set(SettingsTab.changeArmMode)
+        shoulderCoastModeEntry.set(SettingsTab.coastArmMotor)
+        shoulderBrakeModeEntry.set(SettingsTab.brakeArmMotor)
     }
 }

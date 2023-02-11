@@ -6,7 +6,10 @@ import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
+import javafx.scene.control.ToggleGroup
+import javafx.scene.layout.GridPane
 import javafx.scene.layout.TilePane
+import javax.swing.ButtonGroup
 
 object SettingsTab : TilePane(Orientation.VERTICAL) {
     val ipInput = TextField("10.24.71.2")
@@ -14,14 +17,18 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
     val robotIpButton = Button("10.24.71.2")
     val lHostButton = Button("localhost")
     val fullscreenButton = Button("Fullscreen application")
-    val armModeButton = Button("Toggle Arm Mode")
-    val armModeLabel = Label("Toggles between coast and break mode on the arm", armModeButton)
+    val armCoastButton = Button("Coast")
+    val armBrakeButtton = Button("Brake")
+    val armModeGroup = ToggleGroup()
+    val armModeGrid = GridPane()
+    val armModeLabel = Label("sets the arm shoulder motor to coast mode", armCoastButton)
     val ipLabel = Label("roboRIO IP Address:")
     val ndSettingsLabel = Label("NodeDeck Settings:")
     val robotSettingsLabel = Label("Robot Settings:")
     val fontSize = 30
 
-    var changeArmMode = false
+    var coastArmMotor = false
+    var brakeArmMotor = false
 
     init {
         println("SettingsTab says hi")
@@ -35,9 +42,17 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
         ndSettingsLabel.style = "-fx-font-size: $fontSize px"
         robotSettingsLabel.style = "-fx-font-size: $fontSize px"
         armModeLabel.style = "-fx-font-size: $fontSize px"
+        armCoastButton.style = "-fx-font-size: $fontSize px"
+        armBrakeButtton.style = "-fx-font-size: $fontSize px"
+
+//        armBrakeButtton.toggleGroup = armModeGroup
+//        armCoastButton.toggleGroup = armModeGroup
+
+        armModeGrid.addRow(0, armBrakeButtton, armCoastButton)
+        armModeGrid.alignment = Pos.CENTER
 
         SettingsTab.alignment = Pos.TOP_CENTER
-        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton, ndSettingsLabel, fullscreenButton, robotSettingsLabel, armModeLabel)
+        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton, ndSettingsLabel, fullscreenButton, robotSettingsLabel, armModeGrid)
         ipInput.setOnAction {
             NTClient.connect()
         }
@@ -55,8 +70,15 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
         fullscreenButton.setOnAction {
             NodeDeck.stage.isFullScreen = true
         }
-        armModeButton.setOnAction {
-            changeArmMode = true
+        armCoastButton.setOnAction {
+            coastArmMotor = true
+            println(coastArmMotor)
+            NTClient.setTables()
+        }
+        armBrakeButtton.setOnAction {
+            brakeArmMotor = true
+            println(brakeArmMotor)
+            NTClient.setTables()
         }
     }
 }
