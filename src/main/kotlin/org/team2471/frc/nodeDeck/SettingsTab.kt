@@ -19,9 +19,10 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
     val fullscreenButton = Button("Fullscreen application")
     val armCoastButton = Button("Coast")
     val armBrakeButtton = Button("Brake")
+    val armModeLabel = Label()
     val armModeGroup = ToggleGroup()
     val armModeGrid = GridPane()
-    val armModeLabel = Label("sets the arm shoulder motor to coast mode", armCoastButton)
+//    val armModeLabel = Label("sets the arm shoulder motor to coast mode", armCoastButton)
     val ipLabel = Label("roboRIO IP Address:")
     val ndSettingsLabel = Label("NodeDeck Settings:")
     val robotSettingsLabel = Label("Robot Settings:")
@@ -48,7 +49,7 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
 //        armBrakeButtton.toggleGroup = armModeGroup
 //        armCoastButton.toggleGroup = armModeGroup
 
-        armModeGrid.addRow(0, armBrakeButtton, armCoastButton)
+        armModeGrid.addRow(0, armBrakeButtton, armCoastButton, armModeLabel)
         armModeGrid.alignment = Pos.CENTER
 
         SettingsTab.alignment = Pos.TOP_CENTER
@@ -71,14 +72,28 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
             NodeDeck.stage.isFullScreen = true
         }
         armCoastButton.setOnAction {
-            coastArmMotor = true
-            println(coastArmMotor)
-            NTClient.setTables()
+            if (NTClient.networkTableInstance.isConnected) {
+                coastArmMotor = true
+                println(coastArmMotor)
+                NTClient.setTables()
+                updateArmModeLabel()
+            }
         }
         armBrakeButtton.setOnAction {
-            brakeArmMotor = true
-            println(brakeArmMotor)
-            NTClient.setTables()
+            if (NTClient.networkTableInstance.isConnected) {
+                brakeArmMotor = true
+                println(brakeArmMotor)
+                NTClient.setTables()
+                updateArmModeLabel()
+            }
         }
+    }
+    fun updateArmModeLabel() {
+        if (brakeArmMotor)
+            armModeLabel.text = "In brake mode"
+        if (coastArmMotor)
+            armModeLabel.text = "In coast mode"
+        if (brakeArmMotor && coastArmMotor)
+            armModeLabel.text = "i might be breaking..."
     }
 }
