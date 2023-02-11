@@ -5,6 +5,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
+import javafx.scene.control.ToggleButton
 import javafx.scene.layout.TilePane
 
 object SettingsTab : TilePane(Orientation.VERTICAL) {
@@ -13,9 +14,14 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
     val robotIpButton = Button("10.24.71.2")
     val lHostButton = Button("localhost")
     val fullscreenButton = Button("Fullscreen application")
+    val armModeButton = Button("Toggle Arm Mode")
+    val armModeLabel = Label("Toggles between coast and break mode on the arm", armModeButton)
     val ipLabel = Label("roboRIO IP Address:")
     val ndSettingsLabel = Label("NodeDeck Settings:")
+    val robotSettingsLabel = Label("Robot Settings:")
     val fontSize = 30
+
+    var changeArmMode = false
 
     init {
         println("SettingsTab says hi")
@@ -27,9 +33,11 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
         lHostButton.style = "-fx-font-size: $fontSize px"
         fullscreenButton.style = "-fx-font-size: $fontSize px"
         ndSettingsLabel.style = "-fx-font-size: $fontSize px"
+        robotSettingsLabel.style = "-fx-font-size: $fontSize px"
+        armModeLabel.style = "-fx-font-size: $fontSize px"
 
         SettingsTab.alignment = Pos.TOP_CENTER
-        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton, ndSettingsLabel, fullscreenButton)
+        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton, ndSettingsLabel, fullscreenButton, robotSettingsLabel, armModeLabel)
         ipInput.setOnAction {
             NTClient.connect()
         }
@@ -46,6 +54,9 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
         }
         fullscreenButton.setOnAction {
             NodeDeck.stage.isFullScreen = true
+        }
+        armModeButton.setOnAction {
+            changeArmMode = true
         }
     }
 }
