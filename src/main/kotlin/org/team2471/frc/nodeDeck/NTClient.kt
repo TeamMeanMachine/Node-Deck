@@ -11,6 +11,7 @@ object NTClient {
     val networkTableInstance = NetworkTableInstance.getDefault()
     private val fmsTable = networkTableInstance.getTable("FMSInfo")
     private val nodeTable = networkTableInstance.getTable("NodeDeck")
+
     private val isRedEntry = fmsTable.getBooleanTopic("IsRedAlliance").subscribe(true)
     private val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
     private val isStartingLeftEntry = nodeTable.getBooleanTopic("IsStartingLeft").publish()
@@ -18,6 +19,12 @@ object NTClient {
     private val piecesInAutoEntry = nodeTable.getIntegerTopic("PiecesInAuto").publish()
     private val shoulderCoastModeEntry = nodeTable.getBooleanTopic("setShoulderCoastMode").publish()
     private val shoulderBrakeModeEntry = nodeTable.getBooleanTopic("setShoulderBrakeMode").publish()
+    private val amountOfPiecesInAutoEntry = nodeTable.getIntegerTopic("amountOfPiecesInAuto").publish()
+    private val autoOneEntry = nodeTable.getIntegerTopic("1").publish()
+    private val autoTwoEntry = nodeTable.getIntegerTopic("2").publish()
+    private val autoThreeEntry = nodeTable.getIntegerTopic("3").publish()
+    private val autoFourEntry = nodeTable.getIntegerTopic("4").publish()
+    private val autoFiveEntry = nodeTable.getIntegerTopic("5").publish()
 
     val isRed: Boolean
         get() = isRedEntry.get()
@@ -95,5 +102,11 @@ object NTClient {
         piecesInAutoEntry.set(AutoConfig.amountOfPiecesSelector.value.toLong())
         shoulderCoastModeEntry.set(SettingsTab.coastArmMotor)
         shoulderBrakeModeEntry.set(SettingsTab.brakeArmMotor)
+        amountOfPiecesInAutoEntry.set(AutoConfig.amountOfPiecesSelector.value.toLong())
+        autoOneEntry.set(AutoConfig.piece1.nodeValue.toLong())
+        autoTwoEntry.set(AutoConfig.piece2.nodeValue.toLong())
+        autoThreeEntry.set(AutoConfig.piece3.nodeValue.toLong())
+        autoFourEntry.set(AutoConfig.piece4.nodeValue.toLong())
+        autoFiveEntry.set(AutoConfig.piece5.nodeValue.toLong())
     }
 }
