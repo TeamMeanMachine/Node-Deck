@@ -28,6 +28,7 @@ class AutoPiecesGrid(title: String, preLoaded: Boolean = false): GridPane() {
     }
     fun nodeValue(): Int {
         var n = 0
+        //logic to find out the node value for autos
         if (!NTClient.isRed) {
             n += 27
         }

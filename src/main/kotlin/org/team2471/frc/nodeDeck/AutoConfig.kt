@@ -100,4 +100,4 @@ object AutoConfig: VBox(10.0) {
     }
 }
 
-//todo: bigger text, invalid auto detector, mini grid that shows what is being placed
+//todo: Node # textbox/override, invalid auto detector, mini grid that shows what is being placed
