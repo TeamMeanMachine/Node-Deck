@@ -74,6 +74,7 @@ object AutoConfig: VBox(10.0) {
         AutoConfig.children.addAll(leftOrRightLabel, piecesLabel, piecesGrid, chargeLabel, saveButton)
 
         showPiecesGrid()
+        rightButton.fire()
     }
 
     fun showPiecesGrid() {

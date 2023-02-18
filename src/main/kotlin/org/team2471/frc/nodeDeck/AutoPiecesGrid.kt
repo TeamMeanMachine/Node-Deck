@@ -5,10 +5,12 @@ import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 
 class AutoPiecesGrid(title: String, preLoaded: Boolean = false): GridPane() {
+
     val coneOrCubeSelector = ComboBox<String>()
     val locationSelector = ComboBox<String>()
     val titleLabel = Label(title)
-    var nodeValue:Int = nodeValue()
+    val nodeValue: Int
+        get() = nodeValue()
 
     var fontSize = 40
 

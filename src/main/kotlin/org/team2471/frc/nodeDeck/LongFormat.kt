@@ -89,18 +89,7 @@ object LongFormat: GridPane() {
             switchOrientation()
         }
 
-        leftNodeSelectorGrid.addColumn(1, zero, one, two)
-        leftNodeSelectorGrid.addColumn(2, three, four, five)
-        leftNodeSelectorGrid.addColumn(3, six, seven, eight)
-        leftNodeSelectorGrid.alignment = Pos.CENTER_LEFT
-        middleNodeSelectorGrid.addColumn(1, nine, ten, eleven)
-        middleNodeSelectorGrid.addColumn(2,twelve, thirteen, fourteen)
-        middleNodeSelectorGrid.addColumn(3, fifteen, sixteen, seventeen)
-        middleNodeSelectorGrid.alignment = Pos.CENTER
-        rightNodeSelectorGrid.addColumn(1, eighteen, nineteen, twenty)
-        rightNodeSelectorGrid.addColumn(2, twentyOne, twentyTwo, twentyThree)
-        rightNodeSelectorGrid.addColumn(3, twentyFour, twentyFive, twentySix)
-        rightNodeSelectorGrid.alignment = Pos.CENTER_RIGHT
+        switchOrientation()
 
         nodeLabel.alignment = Pos.CENTER
         nodeLabel.font = Font(20.0)
@@ -112,7 +101,7 @@ object LongFormat: GridPane() {
         infoPane.alignment = Pos.TOP_CENTER
 
         LongFormat.setMinSize(1400.0, 1400.0)
-        LongFormat.addRow(1, leftNodeSelectorGrid, middleNodeSelectorGrid, rightNodeSelectorGrid)
+//        LongFormat.addRow(1, leftNodeSelectorGrid, middleNodeSelectorGrid, rightNodeSelectorGrid)
         LongFormat.add(infoPane, 1, 2)
         LongFormat.alignment = Pos.TOP_CENTER
 
