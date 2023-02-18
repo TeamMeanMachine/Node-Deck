@@ -101,11 +101,11 @@ object NTClient {
         selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
         piecesInAutoEntry.set(AutoConfig.amountOfPiecesSelector.value.toLong())
         amountOfPiecesInAutoEntry.set(AutoConfig.amountOfPiecesSelector.value.toLong())
-        autoOneEntry.set(AutoConfig.piece1.nodeValue.toLong())
-        autoTwoEntry.set(AutoConfig.piece2.nodeValue.toLong())
-        autoThreeEntry.set(AutoConfig.piece3.nodeValue.toLong())
-        autoFourEntry.set(AutoConfig.piece4.nodeValue.toLong())
-        autoFiveEntry.set(AutoConfig.piece5.nodeValue.toLong())
+        AutoConfig.piece1.nodeValue?.let { autoOneEntry.set(it.toLong()) }
+        AutoConfig.piece2.nodeValue?.let { autoTwoEntry.set(it.toLong()) }
+        AutoConfig.piece3.nodeValue?.let { autoThreeEntry.set(it.toLong()) }
+        AutoConfig.piece4.nodeValue?.let { autoFourEntry.set(it.toLong()) }
+        AutoConfig.piece5.nodeValue?.let { autoFiveEntry.set(it.toLong()) }
         SettingsTab.updateArmModeLabel()
     }
 }
