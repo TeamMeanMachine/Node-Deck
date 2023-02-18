@@ -29,7 +29,9 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
     val fontSize = 30
 
     var coastArmMotor = false
+        get() = NTClient.shoulderCoastModeEntry.get()
     var brakeArmMotor = false
+        get() = NTClient.shoulderBrakeModeEntry.get()
 
     init {
         println("SettingsTab says hi")
@@ -73,7 +75,7 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
         }
         armCoastButton.setOnAction {
             if (NTClient.networkTableInstance.isConnected) {
-                coastArmMotor = true
+                NTClient.shoulderCoastModeEntry.set(true)
                 println(coastArmMotor)
                 NTClient.setTables()
                 updateArmModeLabel()
@@ -81,7 +83,7 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
         }
         armBrakeButtton.setOnAction {
             if (NTClient.networkTableInstance.isConnected) {
-                brakeArmMotor = true
+                NTClient.shoulderBrakeModeEntry.set(true)
                 println(brakeArmMotor)
                 NTClient.setTables()
                 updateArmModeLabel()
