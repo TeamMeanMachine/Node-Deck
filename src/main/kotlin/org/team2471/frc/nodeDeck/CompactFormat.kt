@@ -43,6 +43,7 @@ object CompactFormat : GridPane() {
 
     var selectedNodeInGrid = 0
     var selectedGrid = 0
+
     init {
         println("CompactFormat says hi")
 

@@ -13,7 +13,7 @@ object TabDeck: TabPane() {
     init {
         println("TabDeck says hi!")
 
-        TabDeck.setPrefSize(999.0, 999.9)
+//        TabDeck.setPrefSize(1000.0, 2000.0)
 
         tabMinHeight = 75.0
         tabMinWidth = 100.0

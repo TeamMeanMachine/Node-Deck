@@ -72,7 +72,7 @@ object NTClient {
                 if (!networkTableInstance.isConnected) {
                     // attempt to connect
                     println("Not Connected!!!! Connecting to network table...")
-                    ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ffff00; -fx-border-width: 10 10 10 10"
+                    ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ffff00; -fx-border-width: ${ColorOutline.borderWidth}"
                     connect()
                 }
 

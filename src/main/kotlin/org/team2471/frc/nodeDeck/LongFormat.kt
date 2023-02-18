@@ -4,6 +4,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
+import javafx.scene.layout.Region
 import javafx.scene.text.Font
 
 object LongFormat: GridPane() {
@@ -12,6 +13,7 @@ object LongFormat: GridPane() {
     private val rightNodeSelectorGrid = GridPane()
     private val infoPane = GridPane()
     private val nodeLabel = Label()
+    private val spacer = Region()
 
     private val zero = Button()
     private val one = Button()
@@ -47,7 +49,7 @@ object LongFormat: GridPane() {
     val buttonWidth: Double = 205.0
     var selectedNodeButton: Button = one
     val buttonBorderSize = " 2 2 2 2" //format in " ## ## ## ##" Top Right Bottom Left
-    val selectedButtonBorderSize = " 15 15 15 15"
+    val selectedButtonBorderSize = " 20 20 20 20"
     val fontSize = 50
     var flipped = false
 
@@ -59,6 +61,7 @@ object LongFormat: GridPane() {
     init {
         println("LongFormat says hi")
 
+        //assigns all buttons their values
         var assignedButtonNode = -1
         for (button in allButtons) {
             assignedButtonNode += 1
@@ -82,6 +85,8 @@ object LongFormat: GridPane() {
         for (button in allFloorButtons) {
             button.style = "-fx-background-color: #595959; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
         }
+
+
         flipButton.setPrefSize(300.0, 25.0)
         flipButton.font = Font(20.0)
         flipButton.setOnAction {
@@ -96,14 +101,15 @@ object LongFormat: GridPane() {
         nodeLabel.style = "-fx-background-color: #f0f0f0; -fx-font-weight: bold; -fx-font-size: $fontSize px"
         nodeLabel.setPrefSize(300.0, 25.0)
 
-        infoPane.addColumn(0, nodeLabel, flipButton)
+        spacer.setPrefSize(0.0, 25.0)
+
+        infoPane.addColumn(0, nodeLabel, flipButton, spacer)
         infoPane.setMinSize(buttonWidth * 3 + 30, 50.0)
         infoPane.alignment = Pos.TOP_CENTER
 
-        LongFormat.setMinSize(1400.0, 1400.0)
-//        LongFormat.addRow(1, leftNodeSelectorGrid, middleNodeSelectorGrid, rightNodeSelectorGrid)
+        LongFormat.setPrefSize(1400.0, 1400.0)
         LongFormat.add(infoPane, 1, 2)
-        LongFormat.alignment = Pos.TOP_CENTER
+        LongFormat.alignment = Pos.BOTTOM_CENTER
 
         changeSelectedNodeButton(zero)
         updateInfoPanel()
@@ -129,32 +135,32 @@ object LongFormat: GridPane() {
     fun switchOrientation() {
         clearGrids()
         if (flipped) {
-            leftNodeSelectorGrid.addColumn(1, zero, one, two)
-            leftNodeSelectorGrid.addColumn(2, three, four, five)
-            leftNodeSelectorGrid.addColumn(3, six, seven, eight)
+            leftNodeSelectorGrid.addColumn(0, zero, one, two)
+            leftNodeSelectorGrid.addColumn(1, three, four, five)
+            leftNodeSelectorGrid.addColumn(2, six, seven, eight)
             leftNodeSelectorGrid.alignment = Pos.CENTER_LEFT
-            middleNodeSelectorGrid.addColumn(1, nine, ten, eleven)
-            middleNodeSelectorGrid.addColumn(2,twelve, thirteen, fourteen)
-            middleNodeSelectorGrid.addColumn(3, fifteen, sixteen, seventeen)
+            middleNodeSelectorGrid.addColumn(0, nine, ten, eleven)
+            middleNodeSelectorGrid.addColumn(1,twelve, thirteen, fourteen)
+            middleNodeSelectorGrid.addColumn(2, fifteen, sixteen, seventeen)
             middleNodeSelectorGrid.alignment = Pos.CENTER
-            rightNodeSelectorGrid.addColumn(1, eighteen, nineteen, twenty)
-            rightNodeSelectorGrid.addColumn(2, twentyOne, twentyTwo, twentyThree)
-            rightNodeSelectorGrid.addColumn(3, twentyFour, twentyFive, twentySix)
+            rightNodeSelectorGrid.addColumn(0, eighteen, nineteen, twenty)
+            rightNodeSelectorGrid.addColumn(1, twentyOne, twentyTwo, twentyThree)
+            rightNodeSelectorGrid.addColumn(2, twentyFour, twentyFive, twentySix)
             rightNodeSelectorGrid.alignment = Pos.CENTER_RIGHT
-            LongFormat.addRow(1, leftNodeSelectorGrid, middleNodeSelectorGrid, rightNodeSelectorGrid)
+            LongFormat.addRow(0, leftNodeSelectorGrid, middleNodeSelectorGrid, rightNodeSelectorGrid)
             flipped = false
         } else {
-            leftNodeSelectorGrid.addColumn(3, two, one, zero)
-            leftNodeSelectorGrid.addColumn(2, five, four, three)
-            leftNodeSelectorGrid.addColumn(1, eight, seven, six)
+            leftNodeSelectorGrid.addColumn(2, two, one, zero)
+            leftNodeSelectorGrid.addColumn(1, five, four, three)
+            leftNodeSelectorGrid.addColumn(0, eight, seven, six)
             leftNodeSelectorGrid.alignment = Pos.CENTER_LEFT
-            middleNodeSelectorGrid.addColumn(3, eleven, ten, nine)
-            middleNodeSelectorGrid.addColumn(2, fourteen, thirteen, twelve)
-            middleNodeSelectorGrid.addColumn(1, seventeen, sixteen, fifteen)
+            middleNodeSelectorGrid.addColumn(2, eleven, ten, nine)
+            middleNodeSelectorGrid.addColumn(1, fourteen, thirteen, twelve)
+            middleNodeSelectorGrid.addColumn(0, seventeen, sixteen, fifteen)
             middleNodeSelectorGrid.alignment = Pos.CENTER
-            rightNodeSelectorGrid.addColumn(3, twenty, nineteen, eighteen)
-            rightNodeSelectorGrid.addColumn(2, twentyThree, twentyTwo, twentyOne)
-            rightNodeSelectorGrid.addColumn(1, twentySix, twentyFive, twentyFour)
+            rightNodeSelectorGrid.addColumn(2, twenty, nineteen, eighteen)
+            rightNodeSelectorGrid.addColumn(1, twentyThree, twentyTwo, twentyOne)
+            rightNodeSelectorGrid.addColumn(0, twentySix, twentyFive, twentyFour)
             rightNodeSelectorGrid.alignment = Pos.CENTER_RIGHT
             LongFormat.addRow(1, rightNodeSelectorGrid, middleNodeSelectorGrid, leftNodeSelectorGrid)
             flipped = true
