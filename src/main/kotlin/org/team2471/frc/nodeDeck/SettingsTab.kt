@@ -5,11 +5,8 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
-import javafx.scene.control.ToggleButton
-import javafx.scene.control.ToggleGroup
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.TilePane
-import javax.swing.ButtonGroup
 
 object SettingsTab : TilePane(Orientation.VERTICAL) {
     val ipInput = TextField("10.24.71.2")
@@ -20,7 +17,6 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
     val armCoastButton = Button("Coast")
     val armBrakeButtton = Button("Brake")
     val armModeLabel = Label()
-    val armModeGroup = ToggleGroup()
     val armModeGrid = GridPane()
 //    val armModeLabel = Label("sets the arm shoulder motor to coast mode", armCoastButton)
     val ipLabel = Label("roboRIO IP Address:")
@@ -28,9 +24,9 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
     val robotSettingsLabel = Label("Robot Settings:")
     val fontSize = 30
 
-    var coastArmMotor = false
+    val coastArmMotor
         get() = NTClient.shoulderCoastModeEntry.get()
-    var brakeArmMotor = false
+    val brakeArmMotor
         get() = NTClient.shoulderBrakeModeEntry.get()
 
     init {

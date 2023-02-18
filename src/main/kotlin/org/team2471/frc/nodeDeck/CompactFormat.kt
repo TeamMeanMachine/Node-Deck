@@ -14,7 +14,7 @@ object CompactFormat : GridPane() {
     private val infoPane = GridPane()
 
     private val nodeLabel = Label()
-    private val toggleAllianceButton = Button("Check Team Color")
+    private val flipButton = Button("Flip Buttons")
 
     private val leftGrid = Button("Left")
     private val centerGrid = Button("Co-op")
@@ -36,6 +36,7 @@ object CompactFormat : GridPane() {
     val nodeButtonSideLength: Double = 400.0
     val buttonBorderSize = " 2 2 2 2" //format in " ## ## ## ##" Top Right Bottom Left
     val selectedButtonBorderSize = " 20 20 20 20"
+    var flipped = false
 
     var selectedNodeButton: Button = one
     var selectedGridButton: Button = rightGrid
@@ -155,9 +156,9 @@ object CompactFormat : GridPane() {
         }
 
 
-        toggleAllianceButton.setPrefSize(190.0, 50.0)
-        toggleAllianceButton.setOnAction {
-            NTClient.printNTTopicConnection()
+        flipButton.setPrefSize(190.0, 50.0)
+        flipButton.setOnAction {
+            flipButtons()
         }
 
         nodeLabel.alignment = Pos.CENTER
@@ -167,7 +168,7 @@ object CompactFormat : GridPane() {
 
         //put buttons and labels into GridPanes
         infoPane.addRow(0, nodeLabel)
-        infoPane.addRow(1, toggleAllianceButton)
+        infoPane.addRow(1, flipButton)
         infoPane.setMinSize(170.0, 50.0)
 
         nodeSelectorPane.addRow(1, eight, five, two)
@@ -211,5 +212,29 @@ object CompactFormat : GridPane() {
         nodeLabel.text = "Node #: ${NodeDeck.selectedNode}"
 //        println("AHHHHHHHHHHHHH")
         NTClient.setTables()
+    }
+    fun flipButtons() {
+        clearGrid()
+        if (flipped) {
+            nodeSelectorPane.addRow(1, eight, five, two)
+            nodeSelectorPane.addRow(2, seven, four, one)
+            nodeSelectorPane.addRow(3, six, three, zero)
+            rightGrid.text = "Right"
+            leftGrid.text = "Left"
+            gridSelectorPane.addRow(0, leftGrid, centerGrid, rightGrid)
+            flipped = false
+        } else {
+            nodeSelectorPane.addRow(1, zero, three, six)
+            nodeSelectorPane.addRow(2, one, four, seven)
+            nodeSelectorPane.addRow(3, two, five, eight)
+            rightGrid.text = "Left"
+            leftGrid.text = "Right"
+            gridSelectorPane.addRow(0, rightGrid, centerGrid, leftGrid)
+            flipped = true
+        }
+    }
+    fun clearGrid() {
+        nodeSelectorPane.children.removeAll(zero, one, two, three, four, five, six, seven, eight)
+        gridSelectorPane.children.removeAll(rightGrid, centerGrid, leftGrid)
     }
 }
