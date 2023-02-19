@@ -72,7 +72,7 @@ object AutoConfig: VBox(10.0) {
         leftOrRightGrid.addRow(0, leftButton, rightButton) //adding L/R buttons to the same grid
 
         AutoConfig.alignment = Pos.TOP_CENTER
-        AutoConfig.children.addAll(leftOrRightLabel, piecesLabel, piecesGrid, chargeLabel, saveButton, validAutoLabel) //Labels are "labeling" a Node. (see initializer)
+        AutoConfig.children.addAll(leftOrRightLabel, piecesLabel, piecesGrid, chargeLabel, saveButton, validAutoLabel, AutoVisualizer) //Labels are "labeling" a Node. (see initializer)
 
         showPiecesGrid()
         rightButton.fire()
@@ -108,7 +108,7 @@ object AutoConfig: VBox(10.0) {
         if ((((piece4.nodeValue == piece1.nodeValue || piece4.nodeValue == piece2.nodeValue || piece4.nodeValue == piece3.nodeValue) && piece4.isReady) || !piece4.isReady) && amountOfPiecesSelector.value.toInt() >= 4) v = false
         if ((((piece5.nodeValue == piece1.nodeValue || piece5.nodeValue == piece2.nodeValue || piece5.nodeValue == piece3.nodeValue || piece5.nodeValue == piece4.nodeValue) && piece5.isReady) || !piece5.isReady) && amountOfPiecesSelector.value.toInt() >= 5) v = false
 
-        println(amountOfPiecesSelector.value.toInt())
+//        println(amountOfPiecesSelector.value.toInt())
         return v
     }
     fun updateValidAutoLabel() {
