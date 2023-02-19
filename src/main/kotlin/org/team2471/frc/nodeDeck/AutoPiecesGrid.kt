@@ -4,38 +4,39 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 
-class AutoPiecesGrid(title: String, preLoaded: Boolean = false): GridPane() {
+class AutoPiecesGrid(title: String): GridPane() {
 
     val coneOrCubeSelector = ComboBox<String>()
     val locationSelector = ComboBox<String>()
     val titleLabel = Label(title)
+
     var nodeValue: Int? = null
         get() = nodeValue()
     val isReady: Boolean
         get() = (coneOrCubeSelector.value != null && locationSelector.value != null)
 
     var fontSize = 40
-    val borderWidth = " 15 15 15 15" //format in " ## ## ## ##" TT RR BB LL
+    var borderWidth = " 15 15 15 15" //format in " ## ## ## ##" TT RR BB LL
+    var thisWidth: Double = 300.0
+    var thisHeight: Double = 150.0
 
     init {
-        if (preLoaded) {
-            titleLabel.text = title + " (preloaded)"
-        }
+        style = "-fx-border-size: $borderWidth; -fx-border-color: black"
         titleLabel.style = "-fx-font-weight: bold; -fx-font-size: $fontSize px"
         coneOrCubeSelector.style = "-fx-font-size: $fontSize px"
         locationSelector.style = "-fx-font-size: $fontSize px"
+
         coneOrCubeSelector.items.addAll("Cone", "Cube")
         locationSelector.items.addAll("Top", "Middle", "Bottom")
 
-        println(coneOrCubeSelector.value)
-
         addColumn(0, titleLabel, coneOrCubeSelector, locationSelector)
-        style = "-fx-border-size: $borderWidth; -fx-border-color: black"
-        setPrefSize(300.0, 150.0)
+        setPrefSize(thisWidth, thisHeight)
     }
-    fun nodeValue(): Int? {
+    fun nodeValue(): Int? { //logic to find out the node numbers for autos
         var n: Int? = 0
-        //logic to find out the node numbers for autos
+        if (!isReady) {
+            n = null
+        }
         if (n != null) {
             if (!NTClient.isRed) {
                 n += 27
@@ -64,12 +65,8 @@ class AutoPiecesGrid(title: String, preLoaded: Boolean = false): GridPane() {
                 style = "-fx-border-size: $borderWidth; -fx-border-color: #9900ff"
             }
         }
-        if (!isReady) {
-            n = null
-        }
-
         return n
     }
 }
 
-//todo: Button selector instead of dropdown, color coding, bigger text
+//todo: Button selector instead of dropdown, color coding

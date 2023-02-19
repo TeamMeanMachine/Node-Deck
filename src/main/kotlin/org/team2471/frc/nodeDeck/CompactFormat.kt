@@ -47,7 +47,7 @@ object CompactFormat : GridPane() {
     init {
         println("CompactFormat says hi")
 
-        //configure all buttons
+           //configure all buttons
         leftGrid.setPrefSize(gridButtonWidth, gridButtonHeight)
         leftGrid.style = "-fx-font-weight: bold; -fx-font-size: 60px; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
         leftGrid.setOnAction {
@@ -156,11 +156,11 @@ object CompactFormat : GridPane() {
             updateInfoPanel()
         }
 
-
         flipButton.setPrefSize(190.0, 50.0)
         flipButton.setOnAction {
             flipButtons()
         }
+
 
         nodeLabel.alignment = Pos.CENTER
         nodeLabel.font = Font(20.0)
