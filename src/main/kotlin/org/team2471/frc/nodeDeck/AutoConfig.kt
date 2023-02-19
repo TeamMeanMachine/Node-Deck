@@ -55,6 +55,7 @@ object AutoConfig: VBox(10.0) {
 
         amountOfPiecesSelector.setOnAction {  //setting button events
             showPiecesGrid()
+            updateValidAutoLabel()
             NTClient.setTables()
         }
         saveButton.setOnAction {

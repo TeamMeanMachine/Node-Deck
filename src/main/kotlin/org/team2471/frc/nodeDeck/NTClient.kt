@@ -16,15 +16,15 @@ object NTClient {
     private val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
     private val isStartingLeftEntry = nodeTable.getBooleanTopic("IsStartingLeft").publish()
     private val selectedNodeEntry = nodeTable.getIntegerTopic("Selected Node").publish()
-    private val piecesInAutoEntry = nodeTable.getIntegerTopic("PiecesInAuto").publish()
     val shoulderCoastModeEntry = nodeTable.getBooleanTopic("setShoulderCoastMode").getEntry(false)
     val shoulderBrakeModeEntry = nodeTable.getBooleanTopic("setShoulderBrakeMode").getEntry(false)
-    private val amountOfPiecesInAutoEntry = nodeTable.getIntegerTopic("amountOfPiecesInAuto").publish()
+    private val amountOfPiecesInAutoEntry = nodeTable.getIntegerTopic("AmountOfAutoPieces").publish()
     private val autoOneEntry = nodeTable.getIntegerTopic("1").publish()
     private val autoTwoEntry = nodeTable.getIntegerTopic("2").publish()
     private val autoThreeEntry = nodeTable.getIntegerTopic("3").publish()
     private val autoFourEntry = nodeTable.getIntegerTopic("4").publish()
     private val autoFiveEntry = nodeTable.getIntegerTopic("5").publish()
+    private val validAutoEntry = nodeTable.getBooleanTopic("valid auto").publish()
 
     val isRed: Boolean
         get() = isRedEntry.get()
@@ -96,11 +96,11 @@ object NTClient {
         }
     }
     fun setTables() {
+        amountOfPiecesInAutoEntry.set(AutoConfig.amountOfPiecesSelector.value.toLong())
         chargeInAutoEntry.set(AutoConfig.chargeButton.isSelected)
         isStartingLeftEntry.set(AutoConfig.isStartingLeft)
+        validAutoEntry.set(AutoConfig.isValidAuto())
         selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
-        piecesInAutoEntry.set(AutoConfig.amountOfPiecesSelector.value.toLong())
-        amountOfPiecesInAutoEntry.set(AutoConfig.amountOfPiecesSelector.value.toLong())
         AutoConfig.piece1.nodeValue?.let { autoOneEntry.set(it.toLong()) }
         AutoConfig.piece2.nodeValue?.let { autoTwoEntry.set(it.toLong()) }
         AutoConfig.piece3.nodeValue?.let { autoThreeEntry.set(it.toLong()) }
