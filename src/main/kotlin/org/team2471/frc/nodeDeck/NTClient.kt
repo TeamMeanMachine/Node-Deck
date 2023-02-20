@@ -32,6 +32,7 @@ object NTClient {
     private var connectionJob: Job? = null
     val ipAddress: String
         get() = SettingsTab.ipInput.text
+    var quarterCount = 0
 
     init {
         println("NTClient says hi!!")
@@ -74,6 +75,8 @@ object NTClient {
                     println("Not Connected!!!! Connecting to network table...")
                     ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ffff00; -fx-border-width: ${ColorOutline.borderWidth}"
                     connect()
+                    println("Quarter count: $quarterCount")
+                    quarterCount += 1
                 }
 
                 Platform.runLater {
