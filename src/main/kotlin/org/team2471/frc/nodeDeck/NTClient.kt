@@ -61,6 +61,10 @@ object NTClient {
                 networkTableInstance.setServer(address)
                 networkTableInstance.startDSClient()
             }
+            if (!networkTableInstance.isConnected) {
+                quarterCount += 1
+                println("Quarter count: $quarterCount")
+            }
         }
     }
 
@@ -75,8 +79,6 @@ object NTClient {
                     println("Not Connected!!!! Connecting to network table...")
                     ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ffff00; -fx-border-width: ${ColorOutline.borderWidth}"
                     connect()
-                    println("Quarter count: $quarterCount")
-                    quarterCount += 1
                 }
 
                 Platform.runLater {
