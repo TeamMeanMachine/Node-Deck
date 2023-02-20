@@ -67,6 +67,10 @@ class AutoPiecesGrid(title: String): GridPane() {
         }
         return n
     }
+    fun clear() {
+        coneOrCubeSelector.value = null
+        locationSelector.value = null
+    }
 }
 
 //todo: Button selector instead of dropdown, color coding

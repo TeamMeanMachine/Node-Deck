@@ -13,6 +13,7 @@ object AutoConfig: VBox(10.0) {
     private val leftButton = ToggleButton("Left")
     private val rightButton = ToggleButton("Right")
     private val saveButton = Button("Save")
+    private val clearButton = Button("Clear")
     val chargeButton = ToggleButton("Charge Up?")
     val amountOfPiecesSelector = ComboBox<String>()
 
@@ -29,7 +30,8 @@ object AutoConfig: VBox(10.0) {
     val piece3 = AutoPiecesGrid("#3")
     val piece4 = AutoPiecesGrid("#4")
     val piece5 = AutoPiecesGrid("#5")
-    val piecesGrid = GridPane()
+    private val piecesGrid = GridPane()
+    val allPieces = listOf(piece1, piece2, piece3, piece4, piece5)
 
     val fontSize = 50
 
@@ -61,7 +63,18 @@ object AutoConfig: VBox(10.0) {
         saveButton.setOnAction {
             updateValidAutoLabel()
             NTClient.setTables()
+            AutoVisualizer.updateCanvas()
 //            validAutoLabel.text = "${validAutoLabel.text} SAVED"
+        }
+        clearButton.setOnAction {
+            for (p in allPieces) {
+                p.clear()
+            }
+            amountOfPiecesSelector.value = "1"
+            showPiecesGrid()
+            updateValidAutoLabel()
+            NTClient.setTables()
+            AutoVisualizer.updateCanvas()
         }
 
         leftButton.toggleGroup = startLeftOrRightGroup //add left/right buttons to the ToggleGroup
@@ -72,7 +85,7 @@ object AutoConfig: VBox(10.0) {
         leftOrRightGrid.addRow(0, leftButton, rightButton) //adding L/R buttons to the same grid
 
         AutoConfig.alignment = Pos.TOP_CENTER
-        AutoConfig.children.addAll(leftOrRightLabel, piecesLabel, piecesGrid, chargeLabel, saveButton, validAutoLabel, AutoVisualizer) //Labels are "labeling" a Node. (see initializer)
+        AutoConfig.children.addAll(leftOrRightLabel, piecesLabel, piecesGrid, chargeLabel, saveButton, clearButton, validAutoLabel, AutoVisualizer) //Labels are "labeling" a Node. (see initializer)
 
         showPiecesGrid()
         rightButton.fire()
@@ -122,4 +135,4 @@ object AutoConfig: VBox(10.0) {
     }
 }
 
-//todo: Node # textbox/override, mini grid that shows what is being placed
+//todo: Node # textbox/override, make Left/Right buttons regular buttons (like the node selectors)
