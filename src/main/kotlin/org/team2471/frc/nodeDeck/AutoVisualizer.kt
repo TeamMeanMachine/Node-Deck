@@ -3,7 +3,7 @@ package org.team2471.frc.nodeDeck
 import javafx.scene.canvas.Canvas
 import javafx.scene.image.Image
 
-object AutoVisualizer: Canvas(269.0, 269.0) /* nice ;) */{
+object AutoVisualizer: Canvas(269.0, 225.0) /* nice ;) */{
     val gc = AutoVisualizer.graphicsContext2D
 
     init {

@@ -23,7 +23,7 @@ object AutoConfig: VBox(10.0) {
     private val chargeLabel = Label("End the auto on charge station?", chargeButton)//chargeLabel is "labeling" chargeButton. chargeLabel will now call chargeButton and itself (creating a label for chargeButton)
     private val piecesLabel = Label("Amount of game pieces to score.", amountOfPiecesSelector)
     private val leftOrRightLabel = Label("Is the robot starting on the left or right?", leftOrRightGrid)
-    private val validAutoLabel = Label()
+    private val validAutoLabel = Label("", saveButton)
 
     val piece1 = AutoPiecesGrid("#1 (preloaded)")
     val piece2 = AutoPiecesGrid("#2")
@@ -85,7 +85,7 @@ object AutoConfig: VBox(10.0) {
         leftOrRightGrid.addRow(0, leftButton, rightButton) //adding L/R buttons to the same grid
 
         AutoConfig.alignment = Pos.TOP_CENTER
-        AutoConfig.children.addAll(leftOrRightLabel, piecesLabel, piecesGrid, chargeLabel, saveButton, clearButton, validAutoLabel, AutoVisualizer) //Labels are "labeling" a Node. (see initializer)
+        AutoConfig.children.addAll(leftOrRightLabel, piecesLabel, piecesGrid, chargeLabel, validAutoLabel, AutoVisualizer, clearButton) //Labels are "labeling" a Node. (see initializer)
 
         showPiecesGrid()
         rightButton.fire()
@@ -135,4 +135,4 @@ object AutoConfig: VBox(10.0) {
     }
 }
 
-//todo: Node # textbox/override, make Left/Right buttons regular buttons (like the node selectors)
+//todo: Node # textbox/override, make Left/Right buttons regular buttons (like the node selectors), make saveButton turn red and/or unpressable if invalid auto, Auto Presets
