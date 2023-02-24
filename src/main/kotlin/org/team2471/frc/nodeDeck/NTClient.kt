@@ -61,10 +61,6 @@ object NTClient {
                 networkTableInstance.setServer(address)
                 networkTableInstance.startDSClient()
             }
-            if (!networkTableInstance.isConnected) {
-                quarterCount += 1
-                println("Quarter count: $quarterCount")
-            }
         }
     }
 
@@ -76,7 +72,7 @@ object NTClient {
                 // check network table connection
                 if (!networkTableInstance.isConnected) {
                     // attempt to connect
-                    println("Not Connected!!!! Connecting to network table...")
+                    println("\u001b[33m" + "Not Connected!!!! Connecting to network table..." + "\u001b[0m")
                     ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ffff00; -fx-border-width: ${ColorOutline.borderWidth}"
                     connect()
                 }
@@ -84,6 +80,11 @@ object NTClient {
                 Platform.runLater {
                     setTables()
                     ColorOutline.checkAlliance()
+
+                    if (!networkTableInstance.isConnected) { //QUARTER!!!!!
+                        quarterCount += 1
+                        println("Quarter count: $quarterCount")
+                    }
                 }
             }
         }, 10, 1000L * updateFrequencyInSeconds)
