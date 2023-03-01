@@ -10,8 +10,8 @@ import javafx.scene.layout.GridPane
 import javafx.scene.layout.VBox
 
 object AutoConfig: VBox(10.0) {
-    private val leftButton = ToggleButton("Left")
-    private val rightButton = ToggleButton("Right")
+    private val insideButton = ToggleButton("Inside")
+    private val outsideButton = ToggleButton("Outside")
     private val saveButton = Button("Save")
     private val clearButton = Button("Clear")
     val chargeButton = ToggleButton("Charge Up?")
@@ -21,8 +21,8 @@ object AutoConfig: VBox(10.0) {
     private val leftOrRightGrid = GridPane()
 
     private val chargeLabel = Label("End the auto on charge station?", chargeButton)//chargeLabel is "labeling" chargeButton. chargeLabel will now call chargeButton and itself (creating a label for chargeButton)
-    private val piecesLabel = Label("Amount of game pieces to score.", amountOfPiecesSelector)
-    private val leftOrRightLabel = Label("Is the robot starting on the left or right?", leftOrRightGrid)
+    private val piecesLabel = Label("Number of game pieces to score.", amountOfPiecesSelector)
+    private val leftOrRightLabel = Label("Is the robot starting on the inside or outside?", leftOrRightGrid)
     private val validAutoLabel = Label("", saveButton)
 
     val piece1 = AutoPiecesGrid("#1 (preloaded)")
@@ -36,7 +36,7 @@ object AutoConfig: VBox(10.0) {
     val fontSize = 50
 
     val isStartingLeft: Boolean
-        get() = leftButton.isSelected
+        get() = insideButton.isSelected
 
     init {
         println("AutoConfig says hi!")
@@ -45,8 +45,8 @@ object AutoConfig: VBox(10.0) {
         chargeLabel.style = "-fx-font-size: $fontSize px"
         leftOrRightLabel.style = "-fx-font-size: $fontSize px"
         piecesLabel.style = "-fx-font-size: $fontSize px"
-        leftButton.style = "-fx-font-size: $fontSize px"
-        rightButton.style = "-fx-font-size: $fontSize px"
+        insideButton.style = "-fx-font-size: $fontSize px"
+        outsideButton.style = "-fx-font-size: $fontSize px"
         amountOfPiecesSelector.style = "-fx-font-size: $fontSize px"
         chargeButton.style = "-fx-font-size: $fontSize px"
 
@@ -77,18 +77,18 @@ object AutoConfig: VBox(10.0) {
             AutoVisualizer.updateCanvas()
         }
 
-        leftButton.toggleGroup = startLeftOrRightGroup //add left/right buttons to the ToggleGroup
-        rightButton.toggleGroup = startLeftOrRightGroup
-        leftButton.setPrefSize(200.0, 50.0)
-        rightButton.setPrefSize(200.0, 50.0)
+        insideButton.toggleGroup = startLeftOrRightGroup //add left/right buttons to the ToggleGroup
+        outsideButton.toggleGroup = startLeftOrRightGroup
+        insideButton.setPrefSize(300.0, 50.0)
+        outsideButton.setPrefSize(300.0, 50.0)
 
-        leftOrRightGrid.addRow(0, leftButton, rightButton) //adding L/R buttons to the same grid
+        leftOrRightGrid.addRow(0, insideButton, outsideButton) //adding L/R buttons to the same grid
 
         AutoConfig.alignment = Pos.TOP_CENTER
         AutoConfig.children.addAll(leftOrRightLabel, piecesLabel, piecesGrid, chargeLabel, validAutoLabel, AutoVisualizer, clearButton) //Labels are "labeling" a Node. (see initializer)
 
         showPiecesGrid()
-        rightButton.fire()
+        outsideButton.fire()
     }
 
     fun showPiecesGrid() { //function that adds each of the PiecesGrid's to the grid based off the number of pieces selection.

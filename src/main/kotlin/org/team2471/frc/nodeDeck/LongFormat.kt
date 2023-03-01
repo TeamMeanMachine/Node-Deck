@@ -173,3 +173,5 @@ object LongFormat: GridPane() {
         LongFormat.children.removeAll(rightNodeSelectorGrid, middleNodeSelectorGrid, leftNodeSelectorGrid)
     }
 }
+
+//todo cone/cube buttons

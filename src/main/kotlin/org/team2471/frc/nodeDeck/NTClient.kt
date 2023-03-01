@@ -14,7 +14,7 @@ object NTClient {
 
     private val isRedEntry = fmsTable.getBooleanTopic("IsRedAlliance").subscribe(true)
     private val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
-    private val isStartingLeftEntry = nodeTable.getBooleanTopic("IsStartingLeft").publish()
+    private val isStartingInsideEntry = nodeTable.getBooleanTopic("IsStartingInside").publish()
     private val selectedNodeEntry = nodeTable.getIntegerTopic("Selected Node").publish()
     val shoulderCoastModeEntry = nodeTable.getBooleanTopic("setShoulderCoastMode").getEntry(false)
     val shoulderBrakeModeEntry = nodeTable.getBooleanTopic("setShoulderBrakeMode").getEntry(false)
@@ -104,7 +104,7 @@ object NTClient {
     fun setTables() {
         amountOfPiecesInAutoEntry.set(AutoConfig.amountOfPiecesSelector.value.toLong())
         chargeInAutoEntry.set(AutoConfig.chargeButton.isSelected)
-        isStartingLeftEntry.set(AutoConfig.isStartingLeft)
+        isStartingInsideEntry.set(AutoConfig.isStartingLeft)
         validAutoEntry.set(AutoConfig.isValidAuto())
         selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
         AutoConfig.piece1.nodeValue?.let { autoOneEntry.set(it.toLong()) }
