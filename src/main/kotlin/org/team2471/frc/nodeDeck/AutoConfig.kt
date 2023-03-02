@@ -4,20 +4,17 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
-import javafx.scene.control.ToggleButton
-import javafx.scene.control.ToggleGroup
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.VBox
 
 object AutoConfig: VBox(10.0) {
-    private val insideButton = ToggleButton("Inside")
-    private val outsideButton = ToggleButton("Outside")
+    private val insideButton = Button("Inside")
+    private val outsideButton = Button("Outside")
     private val saveButton = Button("Save")
     private val clearButton = Button("Clear")
-    val chargeButton = ToggleButton("Charge Up?")
+    val chargeButton = Button("Charge Up?")
     val amountOfPiecesSelector = ComboBox<String>()
 
-    private val startLeftOrRightGroup = ToggleGroup()
     private val leftOrRightGrid = GridPane()
 
     private val chargeLabel = Label("End the auto on charge station?", chargeButton)//chargeLabel is "labeling" chargeButton. chargeLabel will now call chargeButton and itself (creating a label for chargeButton)
@@ -35,8 +32,9 @@ object AutoConfig: VBox(10.0) {
 
     val fontSize = 50
 
-    val isStartingLeft: Boolean
-        get() = insideButton.isSelected
+    var isStartingInside = true
+    var selectedStartingButton: Button = insideButton
+    var chargeInAuto = false
 
     init {
         println("AutoConfig says hi!")
@@ -60,6 +58,9 @@ object AutoConfig: VBox(10.0) {
             updateValidAutoLabel()
             NTClient.setTables()
         }
+        chargeButton.setOnAction {
+            updateChargeButton()
+        }
         saveButton.setOnAction {
             updateValidAutoLabel()
             NTClient.setTables()
@@ -77,10 +78,18 @@ object AutoConfig: VBox(10.0) {
             AutoVisualizer.updateCanvas()
         }
 
-        insideButton.toggleGroup = startLeftOrRightGroup //add left/right buttons to the ToggleGroup
-        outsideButton.toggleGroup = startLeftOrRightGroup
         insideButton.setPrefSize(300.0, 50.0)
         outsideButton.setPrefSize(300.0, 50.0)
+        insideButton.setOnAction {
+            isStartingInside = true
+            switchInsideOrOutside(insideButton)
+            NTClient.setTables()
+        }
+        outsideButton.setOnAction {
+            isStartingInside = false
+            switchInsideOrOutside(outsideButton)
+            NTClient.setTables()
+        }
 
         leftOrRightGrid.addRow(0, insideButton, outsideButton) //adding L/R buttons to the same grid
 
@@ -88,7 +97,7 @@ object AutoConfig: VBox(10.0) {
         AutoConfig.children.addAll(leftOrRightLabel, piecesLabel, piecesGrid, chargeLabel, validAutoLabel, AutoVisualizer, clearButton) //Labels are "labeling" a Node. (see initializer)
 
         showPiecesGrid()
-        outsideButton.fire()
+        switchInsideOrOutside(insideButton)
     }
 
     fun showPiecesGrid() { //function that adds each of the PiecesGrid's to the grid based off the number of pieces selection.
@@ -131,6 +140,27 @@ object AutoConfig: VBox(10.0) {
         } else {
             validAutoLabel.text = "INVALID ROBOT AUTO"
             validAutoLabel.style = "-fx-text-fill: red; -fx-font-size: ${fontSize - 20}px"
+        }
+    }
+    fun switchInsideOrOutside(thisButton: Button) {
+        //checks if previous button was cone or cube then sets its style
+        if (selectedStartingButton == insideButton) {
+            selectedStartingButton.style = "-fx-font-size: $fontSize px"
+        } else {
+            selectedStartingButton.style = "-fx-font-size: $fontSize px"
+        }
+        //adds red border around new selected button
+        thisButton.style = thisButton.style + "; -fx-border-color: red; -fx-border-width: 10 10 10 10"
+
+        selectedStartingButton = thisButton
+    }
+    fun updateChargeButton() {
+        if (chargeInAuto) {
+            chargeButton.style = "-fx-font-size: $fontSize px"
+            chargeInAuto = false
+        } else {
+            chargeButton.style = "-fx-font-size: $fontSize px; -fx-border-color: red; -fx-border-width: 10 10 10 10"
+            chargeInAuto = true
         }
     }
 }

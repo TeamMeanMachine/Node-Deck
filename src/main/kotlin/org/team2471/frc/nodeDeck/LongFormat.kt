@@ -3,6 +3,8 @@ package org.team2471.frc.nodeDeck
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.Region
 import javafx.scene.text.Font
@@ -94,9 +96,10 @@ object LongFormat: GridPane() {
 
         typeButton.setOnAction {
             switchFloorPieceType()
+            NTClient.setTables()
         }
         switchFloorPieceType()
-        typeButton.setMinSize(1900.0, 100.0)
+        typeButton.setMinSize(buttonWidth * 9, 165.0)
         typeButton.alignment = Pos.CENTER
 
         pieceTypeGrid.addRow(0, typeButton)
@@ -123,10 +126,11 @@ object LongFormat: GridPane() {
         infoPane.setMinSize(buttonWidth * 3 + 15, 50.0)
         infoPane.alignment = Pos.TOP_CENTER
 
-        nodeGridPane.setMinSize(1400.0, 1000.0)
+        nodeGridPane.setMinSize(buttonWidth * 9, buttonHeight * 3)
         nodeGridPane.add(infoPane, 1, 2)
         nodeGridPane.add(pieceTypeGrid, 1, 0)
         nodeGridPane.alignment = Pos.CENTER
+        nodeGridPane.style = "-fx-border-width: 5 0 0 0; -fx-border-color: black"
 
         LongFormat.setMinSize(1400.0, 1000.0)
         LongFormat.add(typeButton, 0, 0)
@@ -169,7 +173,7 @@ object LongFormat: GridPane() {
             rightNodeSelectorGrid.addColumn(1, twentyOne, twentyTwo, twentyThree)
             rightNodeSelectorGrid.addColumn(2, twentyFour, twentyFive, twentySix)
             rightNodeSelectorGrid.alignment = Pos.CENTER
-            nodeGridPane.addRow(0, leftNodeSelectorGrid, middleNodeSelectorGrid, rightNodeSelectorGrid)
+            nodeGridPane.addRow(1, leftNodeSelectorGrid, middleNodeSelectorGrid, rightNodeSelectorGrid)
             flipped = false
         } else {
             leftNodeSelectorGrid.addColumn(2, two, one, zero)
@@ -197,14 +201,12 @@ object LongFormat: GridPane() {
     fun switchFloorPieceType() {
         if (isFloorCone) {
             typeButton.style = "-fx-background-color: #9900ff; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
-            typeButton.text = "CUBE"
+            typeButton.graphic = ImageView(Image("cube-icon.png"))
             isFloorCone = false
         } else {
             typeButton.style = "-fx-background-color: #FFFF00; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
-            typeButton.text = "CONE"
+            typeButton.graphic = ImageView(Image("cone-icon.png"))
             isFloorCone = true
         }
     }
 }
-
-//todo cone/cube buttons

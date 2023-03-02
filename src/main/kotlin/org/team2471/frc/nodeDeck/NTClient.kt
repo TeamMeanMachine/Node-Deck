@@ -104,8 +104,8 @@ object NTClient {
     }
     fun setTables() {
         amountOfPiecesInAutoEntry.set(AutoConfig.amountOfPiecesSelector.value.toLong())
-        chargeInAutoEntry.set(AutoConfig.chargeButton.isSelected)
-        isStartingInsideEntry.set(AutoConfig.isStartingLeft)
+        chargeInAutoEntry.set(AutoConfig.chargeInAuto)
+        isStartingInsideEntry.set(AutoConfig.isStartingInside)
         validAutoEntry.set(AutoConfig.isValidAuto())
         selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
         AutoConfig.piece1.nodeValue?.let { autoOneEntry.set(it.toLong()) }
@@ -114,6 +114,7 @@ object NTClient {
         AutoConfig.piece4.nodeValue?.let { autoFourEntry.set(it.toLong()) }
         AutoConfig.piece5.nodeValue?.let { autoFiveEntry.set(it.toLong()) }
         SettingsTab.updateArmModeLabel()
+        SettingsTab.updateArmModeButtons()
         isFloorConeEntry.set(LongFormat.isFloorCone)
     }
 }

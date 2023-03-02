@@ -74,6 +74,7 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
                 NTClient.shoulderCoastModeEntry.set(true)
                 println(coastArmMotor)
                 NTClient.setTables()
+                updateArmModeButtons()
                 updateArmModeLabel()
             }
         }
@@ -82,6 +83,7 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
                 NTClient.shoulderBrakeModeEntry.set(true)
                 println(brakeArmMotor)
                 NTClient.setTables()
+                updateArmModeButtons()
                 updateArmModeLabel()
             }
         }
@@ -93,5 +95,17 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
             armModeLabel.text = "In coast mode"
         if (brakeArmMotor && coastArmMotor)
             armModeLabel.text = "i might be breaking..."
+    }
+    fun updateArmModeButtons() {
+        if (coastArmMotor) {
+            armCoastButton.style = "-fx-font-size: $fontSize px; -fx-border-color: red; -fx-border-width: 5 10 5 10"
+        } else {
+            armCoastButton.style = "-fx-font-size: $fontSize px"
+        }
+        if (brakeArmMotor) {
+            armBrakeButtton.style = "-fx-font-size: $fontSize px; -fx-border-color: red; -fx-border-width: 5 10 5 10"
+        } else {
+            armBrakeButtton.style = "-fx-font-size: $fontSize px"
+        }
     }
 }

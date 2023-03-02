@@ -41,7 +41,7 @@ class AutoPiecesGrid(title: String): GridPane() {
             if (!NTClient.isRed) {
                 n += 27
             }
-            if (AutoConfig.isStartingLeft) {
+            if (AutoConfig.isStartingInside) {
                 n += 21
                 if (coneOrCubeSelector.value == "Cone") {
                     n += 3
