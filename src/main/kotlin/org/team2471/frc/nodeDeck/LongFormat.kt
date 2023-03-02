@@ -8,9 +8,12 @@ import javafx.scene.layout.Region
 import javafx.scene.text.Font
 
 object LongFormat: GridPane() {
+    private val nodeGridPane = GridPane()
+
     private val leftNodeSelectorGrid = GridPane()
     private val middleNodeSelectorGrid = GridPane()
     private val rightNodeSelectorGrid = GridPane()
+    private val pieceTypeGrid = GridPane()
     private val infoPane = GridPane()
     private val nodeLabel = Label()
     private val spacer = Region()
@@ -43,6 +46,8 @@ object LongFormat: GridPane() {
     private val twentyFive = Button()
     private val twentySix = Button()
     private val flipButton = Button("Flip Buttons")
+    private val typeButton = Button()
+//    private val cubeButton = Button()
 
 
     val buttonHeight: Double = 220.0
@@ -52,6 +57,7 @@ object LongFormat: GridPane() {
     val selectedButtonBorderSize = " 20 20 20 20"
     val fontSize = 50
     var flipped = false
+    var isFloorCone = true
 
     val allButtons = listOf<Button>(zero, one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty, twentyOne, twentyTwo, twentyThree, twentyFour, twentyFive, twentySix)
     val allFloorButtons = listOf<Button>(two, five, eight, eleven, fourteen, seventeen, twenty, twentyThree, twentySix)
@@ -86,6 +92,16 @@ object LongFormat: GridPane() {
             button.style = "-fx-background-color: #595959; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
         }
 
+        typeButton.setOnAction {
+            switchFloorPieceType()
+        }
+        switchFloorPieceType()
+        typeButton.setMinSize(1900.0, 100.0)
+        typeButton.alignment = Pos.CENTER
+
+        pieceTypeGrid.addRow(0, typeButton)
+        pieceTypeGrid.alignment = Pos.CENTER
+
 
         flipButton.setPrefSize(290.0, 25.0)
         flipButton.font = Font(20.0)
@@ -107,9 +123,15 @@ object LongFormat: GridPane() {
         infoPane.setMinSize(buttonWidth * 3 + 15, 50.0)
         infoPane.alignment = Pos.TOP_CENTER
 
-        LongFormat.setPrefSize(1400.0, 1400.0)
-        LongFormat.add(infoPane, 1, 2)
-        LongFormat.alignment = Pos.BOTTOM_CENTER
+        nodeGridPane.setMinSize(1400.0, 1000.0)
+        nodeGridPane.add(infoPane, 1, 2)
+        nodeGridPane.add(pieceTypeGrid, 1, 0)
+        nodeGridPane.alignment = Pos.CENTER
+
+        LongFormat.setMinSize(1400.0, 1000.0)
+        LongFormat.add(typeButton, 0, 0)
+        LongFormat.add(nodeGridPane, 0, 1)
+        LongFormat.alignment = Pos.CENTER
 
         changeSelectedNodeButton(zero)
         updateInfoPanel()
@@ -147,7 +169,7 @@ object LongFormat: GridPane() {
             rightNodeSelectorGrid.addColumn(1, twentyOne, twentyTwo, twentyThree)
             rightNodeSelectorGrid.addColumn(2, twentyFour, twentyFive, twentySix)
             rightNodeSelectorGrid.alignment = Pos.CENTER
-            LongFormat.addRow(0, leftNodeSelectorGrid, middleNodeSelectorGrid, rightNodeSelectorGrid)
+            nodeGridPane.addRow(0, leftNodeSelectorGrid, middleNodeSelectorGrid, rightNodeSelectorGrid)
             flipped = false
         } else {
             leftNodeSelectorGrid.addColumn(2, two, one, zero)
@@ -162,7 +184,7 @@ object LongFormat: GridPane() {
             rightNodeSelectorGrid.addColumn(1, twentyThree, twentyTwo, twentyOne)
             rightNodeSelectorGrid.addColumn(0, twentySix, twentyFive, twentyFour)
             rightNodeSelectorGrid.alignment = Pos.CENTER_RIGHT
-            LongFormat.addRow(1, rightNodeSelectorGrid, middleNodeSelectorGrid, leftNodeSelectorGrid)
+            nodeGridPane.addRow(1, rightNodeSelectorGrid, middleNodeSelectorGrid, leftNodeSelectorGrid)
             flipped = true
         }
     }
@@ -170,7 +192,18 @@ object LongFormat: GridPane() {
         rightNodeSelectorGrid.children.removeAll(allButtons)
         middleNodeSelectorGrid.children.removeAll(allButtons)
         leftNodeSelectorGrid.children.removeAll(allButtons)
-        LongFormat.children.removeAll(rightNodeSelectorGrid, middleNodeSelectorGrid, leftNodeSelectorGrid)
+        nodeGridPane.children.removeAll(rightNodeSelectorGrid, middleNodeSelectorGrid, leftNodeSelectorGrid)
+    }
+    fun switchFloorPieceType() {
+        if (isFloorCone) {
+            typeButton.style = "-fx-background-color: #9900ff; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
+            typeButton.text = "CUBE"
+            isFloorCone = false
+        } else {
+            typeButton.style = "-fx-background-color: #FFFF00; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
+            typeButton.text = "CONE"
+            isFloorCone = true
+        }
     }
 }
 

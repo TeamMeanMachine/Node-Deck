@@ -25,6 +25,7 @@ object NTClient {
     private val autoFourEntry = nodeTable.getIntegerTopic("4").publish()
     private val autoFiveEntry = nodeTable.getIntegerTopic("5").publish()
     private val validAutoEntry = nodeTable.getBooleanTopic("valid auto").publish()
+    private val isFloorConeEntry = nodeTable.getBooleanTopic("isFloorCone").publish()
 
     val isRed: Boolean
         get() = isRedEntry.get()
@@ -113,5 +114,6 @@ object NTClient {
         AutoConfig.piece4.nodeValue?.let { autoFourEntry.set(it.toLong()) }
         AutoConfig.piece5.nodeValue?.let { autoFiveEntry.set(it.toLong()) }
         SettingsTab.updateArmModeLabel()
+        isFloorConeEntry.set(LongFormat.isFloorCone)
     }
 }
