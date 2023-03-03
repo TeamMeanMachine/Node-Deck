@@ -108,4 +108,4 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
             armBrakeButtton.style = "-fx-font-size: $fontSize px"
         }
     }
-}
+} //todo toggle piece type button in LongFormat
