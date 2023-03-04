@@ -10,14 +10,14 @@ object TabDeck: TabPane() {
     val testTab = Tab("Test")
     val longTab = Tab("Long Format")
 
-    val fontSize = "19"
+    val fontSize = "15"
 
     init {
         println("TabDeck says hi!")
 
 //        TabDeck.setPrefSize(1000.0, 2000.0)
 
-        tabMinHeight = 75.0
+        tabMinHeight = 60.0
         tabMinWidth = 200.0
 
         longTab.content = LongFormat

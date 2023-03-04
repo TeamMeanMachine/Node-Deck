@@ -60,6 +60,7 @@ object LongFormat: GridPane() {
     val fontSize = 50
     var flipped = false
     var isFloorCone = true
+    val nodeFontSize = 100
 
     val allButtons = listOf<Button>(zero, one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty, twentyOne, twentyTwo, twentyThree, twentyFour, twentyFive, twentySix)
     val allFloorButtons = listOf<Button>(two, five, eight, eleven, fourteen, seventeen, twenty, twentyThree, twentySix)
@@ -83,6 +84,7 @@ object LongFormat: GridPane() {
                 changeSelectedNodeButton(button)
                 updateInfoPanel()
             }
+            button.setFont(Font.font ("Verdana", 75.0))
         }
         for (button in allConeButtons) {
             button.style = "-fx-background-color: #FFFF00; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
@@ -120,7 +122,7 @@ object LongFormat: GridPane() {
         nodeLabel.style = "-fx-background-color: #f0f0f0; -fx-font-weight: bold; -fx-font-size: $fontSize px"
         nodeLabel.setPrefSize(290.0, 25.0)
 
-        spacer.setPrefSize(0.0, 25.0)
+        spacer.setPrefSize(0.0, 10.0)
 
         infoPane.addColumn(0, nodeLabel, flipButton, spacer)
         infoPane.setMinSize(buttonWidth * 3 + 15, 50.0)
@@ -132,7 +134,7 @@ object LongFormat: GridPane() {
         nodeGridPane.alignment = Pos.CENTER
         nodeGridPane.style = "-fx-border-width: 5 0 0 0; -fx-border-color: black"
 
-        LongFormat.setMinSize(1400.0, 1000.0)
+        LongFormat.setPrefSize(1400.0, 300.0)
         LongFormat.add(typeButton, 0, 0)
         LongFormat.add(nodeGridPane, 0, 1)
         LongFormat.alignment = Pos.CENTER
@@ -141,6 +143,7 @@ object LongFormat: GridPane() {
         updateInfoPanel()
     }
     fun changeSelectedNodeButton(thisButton: Button) {
+        selectedNodeButton.setFont(Font.font ("Verdana", 78.0))
         //checks if previous button was cone or cube then sets its style
         if (allCubeButtons.contains(selectedNodeButton)) {
             selectedNodeButton.style = "-fx-background-color: #9900ff; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
@@ -151,9 +154,11 @@ object LongFormat: GridPane() {
         }
         //adds red border around new selected button
         thisButton.style = thisButton.style + "; -fx-border-color: red; -fx-border-width: $selectedButtonBorderSize"
+        thisButton.font = Font.font ("Verdana", 64.0)
 
         selectedNodeButton = thisButton
         NTClient.setTables()
+        setButtonText()
     }
     fun updateInfoPanel() {
         nodeLabel.text = "Node #: ${NodeDeck.selectedNode}"
@@ -208,5 +213,34 @@ object LongFormat: GridPane() {
             typeButton.graphic = ImageView(Image("cone-icon.png"))
             isFloorCone = true
         }
+    }
+    fun setButtonText() {
+        twentySix.text = "1"
+        twentyThree.text = "2"
+        twenty.text = "3"
+        seventeen.text = "4"
+        fourteen.text = "5"
+        eleven.text = "6"
+        eight.text = "7"
+        five.text = "8"
+        two.text = "9"
+        twentyFive.text = "10"
+        twentyTwo.text = "11"
+        nineteen.text = "12"
+        sixteen.text = "13"
+        thirteen.text = "14"
+        ten.text = "15"
+        seven.text = "16"
+        four.text = "17"
+        one.text = "18"
+        twentyFour.text = "19"
+        twentyOne.text = "20"
+        eighteen.text = "21"
+        fifteen.text = "22"
+        twelve.text = "23"
+        nine.text = "24"
+        six.text = "25"
+        three.text = "26"
+        zero.text = "27"
     }
 }
