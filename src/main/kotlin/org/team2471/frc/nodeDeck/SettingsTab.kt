@@ -5,6 +5,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
+import javafx.scene.control.ToggleButton
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.TilePane
 
@@ -16,14 +17,17 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
     val fullscreenButton = Button("Fullscreen application")
     val armCoastButton = Button("Coast")
     val armBrakeButtton = Button("Brake")
+    val toggleTypeButton = ToggleButton("Toggle Type Button")
     val armModeLabel = Label()
     val armModeGrid = GridPane()
 //    val armModeLabel = Label("sets the arm shoulder motor to coast mode", armCoastButton)
     val ipLabel = Label("roboRIO IP Address:")
     val ndSettingsLabel = Label("NodeDeck Settings:")
     val robotSettingsLabel = Label("Robot Settings:")
+    val toggleTypeButtonLabel = Label("Toggle the cone/cube button", toggleTypeButton)
     val fontSize = 30
 
+    var typeButtonIsShowing = true
     val coastArmMotor
         get() = NTClient.shoulderCoastModeEntry.get()
     val brakeArmMotor
@@ -43,15 +47,15 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
         armModeLabel.style = "-fx-font-size: $fontSize px"
         armCoastButton.style = "-fx-font-size: $fontSize px"
         armBrakeButtton.style = "-fx-font-size: $fontSize px"
+        toggleTypeButton.style = "-fx-font-size: $fontSize px"
+        toggleTypeButtonLabel.style = "-fx-font-size: $fontSize px"
 
-//        armBrakeButtton.toggleGroup = armModeGroup
-//        armCoastButton.toggleGroup = armModeGroup
 
         armModeGrid.addRow(0, armBrakeButtton, armCoastButton, armModeLabel)
         armModeGrid.alignment = Pos.CENTER
 
         SettingsTab.alignment = Pos.TOP_CENTER
-        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton, ndSettingsLabel, fullscreenButton, robotSettingsLabel, armModeGrid)
+        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton, ndSettingsLabel, fullscreenButton, toggleTypeButtonLabel, robotSettingsLabel, armModeGrid)
         ipInput.setOnAction {
             NTClient.connect()
         }
@@ -87,6 +91,10 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
                 updateArmModeLabel()
             }
         }
+        toggleTypeButton.setOnAction {
+            toggleTypeButton()
+        }
+        toggleTypeButton()
     }
     fun updateArmModeLabel() {
         if (brakeArmMotor)
@@ -106,6 +114,11 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
             armBrakeButtton.style = "-fx-font-size: $fontSize px; -fx-border-color: red; -fx-border-width: 5 10 5 10"
         } else {
             armBrakeButtton.style = "-fx-font-size: $fontSize px"
+        }
+    }
+    fun toggleTypeButton() {
+        if (toggleTypeButton.isArmed) {
+        } else {
         }
     }
 } //todo toggle piece type button in LongFormat
