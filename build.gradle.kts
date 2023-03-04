@@ -10,7 +10,7 @@ plugins {
     id("com.github.gmazzo.buildconfig") version "3.0.0"
     id("org.openjfx.javafxplugin") version "0.0.13"
 }
-val mainClass = "org.team2471.frc.nodeDeck.NodeDeck"
+val mainClass = "org.team2471.frc.nodeDeck.Main"
 
 buildConfig {
     buildConfigField ("long", "BUILD_TIME", "${System.currentTimeMillis()}L")
@@ -41,7 +41,7 @@ javafx {
     modules = "javafx.controls,javafx.fxml".split(",").toMutableList()
 }
 application {
-    mainClass.set("org.team2471.frc.nodeDeck.NodeDeck")
+    mainClass.set("org.team2471.frc.nodeDeck.Main")
 }
 
 dependencies {
