@@ -8,7 +8,7 @@ object TabDeck: TabPane() {
     val settingsTab = Tab("General Settings")
     val autoTab = Tab("Robot Auto")
     val testTab = Tab("Test")
-    val longTab = Tab("Long Format")
+    val longTab = Tab("Node Deck")
 
     val fontSize = "15"
 
@@ -39,7 +39,7 @@ object TabDeck: TabPane() {
         longTab.isClosable = false
 
         tabs.add(longTab)
-        tabs.add(gridSelectionTab)
+//        tabs.add(gridSelectionTab)
         tabs.add(autoTab)
 //        tabs.add(testTab)
         tabs.add(settingsTab)

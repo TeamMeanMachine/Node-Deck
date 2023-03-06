@@ -14,7 +14,7 @@ object NTClient {
 
     private val isRedEntry = fmsTable.getBooleanTopic("IsRedAlliance").subscribe(true)
     private val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
-    private val isStartingInsideEntry = nodeTable.getBooleanTopic("IsStartingInside").publish()
+    private val startingPointEntry = nodeTable.getStringTopic("Starting Point").publish()
     private val selectedNodeEntry = nodeTable.getIntegerTopic("Selected Node").publish()
     val shoulderCoastModeEntry = nodeTable.getBooleanTopic("setShoulderCoastMode").getEntry(false)
     val shoulderBrakeModeEntry = nodeTable.getBooleanTopic("setShoulderBrakeMode").getEntry(false)
@@ -103,16 +103,15 @@ object NTClient {
         }
     }
     fun setTables() {
-        amountOfPiecesInAutoEntry.set(AutoConfig.amountOfPiecesSelector.value.toLong())
         chargeInAutoEntry.set(AutoConfig.chargeInAuto)
-        isStartingInsideEntry.set(AutoConfig.isStartingInside)
-        validAutoEntry.set(AutoConfig.isValidAuto())
+        startingPointEntry.set("${AutoConfig.startingPoint}")
         selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
-        AutoConfig.piece1.nodeValue?.let { autoOneEntry.set(it.toLong()) }
-        AutoConfig.piece2.nodeValue?.let { autoTwoEntry.set(it.toLong()) }
-        AutoConfig.piece3.nodeValue?.let { autoThreeEntry.set(it.toLong()) }
-        AutoConfig.piece4.nodeValue?.let { autoFourEntry.set(it.toLong()) }
-        AutoConfig.piece5.nodeValue?.let { autoFiveEntry.set(it.toLong()) }
+        amountOfPiecesInAutoEntry.set(AutoInterface.amountOfPieces.toLong())
+        AutoInterface.realNodeNumber(AutoInterface.first)?.let { autoOneEntry.set(it.toLong()) }
+        AutoInterface.realNodeNumber(AutoInterface.second)?.let { autoTwoEntry.set(it.toLong()) }
+        AutoInterface.realNodeNumber(AutoInterface.third)?.let { autoThreeEntry.set(it.toLong()) }
+        AutoInterface.realNodeNumber(AutoInterface.fourth)?.let { autoFourEntry.set(it.toLong()) }
+        AutoInterface.realNodeNumber(AutoInterface.fifth)?.let { autoFiveEntry.set(it.toLong()) }
         SettingsTab.updateArmModeLabel()
         SettingsTab.updateArmModeButtons()
         isFloorConeEntry.set(LongFormat.isFloorCone)
