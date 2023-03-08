@@ -14,6 +14,7 @@ object NTClient {
 
     private val isRedEntry = fmsTable.getBooleanTopic("IsRedAlliance").subscribe(true)
     private val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
+    private val finishWithPieceEntry = nodeTable.getBooleanTopic("finishWithPiece").publish()
     private val startingPointEntry = nodeTable.getStringTopic("Starting Point").publish()
     private val selectedNodeEntry = nodeTable.getIntegerTopic("Selected Node").publish()
     val shoulderCoastModeEntry = nodeTable.getBooleanTopic("setShoulderCoastMode").getEntry(false)
@@ -74,7 +75,6 @@ object NTClient {
                 if (!networkTableInstance.isConnected) {
                     // attempt to connect
                     println("\u001b[33m" + "Not Connected!!!! Connecting to network table..." + "\u001b[0m")
-                    ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ffff00; -fx-border-width: ${ColorOutline.borderWidth}"
                     connect()
                 }
 
@@ -104,6 +104,7 @@ object NTClient {
     }
     fun setTables() {
         chargeInAutoEntry.set(AutoConfig.chargeInAuto)
+        finishWithPieceEntry.set(AutoConfig.finishWPiece)
         startingPointEntry.set("${AutoConfig.startingPoint}")
         selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
         amountOfPiecesInAutoEntry.set(AutoInterface.amountOfPieces.toLong())

@@ -13,8 +13,10 @@ object AutoConfig: VBox(10.0) {
     private val saveButton = Button("Save")
     private val clearButton = Button("Clear")
     val chargeButton = Button("Charge Up?")
+    val finishWithPieceButton = Button("Finish with piece")
 
     private val startingPointGrid = GridPane()
+    private val endOfAutoGrid = GridPane()
 
     private val chargeLabel = Label("End the auto on charge station?", chargeButton)//chargeLabel is "labeling" chargeButton. chargeLabel will now call chargeButton and itself (creating a label for chargeButton)
     private val leftOrRightLabel = Label("Where is the robot starting?", startingPointGrid)
@@ -26,12 +28,14 @@ object AutoConfig: VBox(10.0) {
     var startingPoint: StartingPoint = StartingPoint.INSIDE
     var selectedStartingButton: Button = insideButton
     var chargeInAuto = false
+    var finishWPiece = false
 
     init {
         println("AutoConfig says hi!")
 
         saveButton.style = "-fx-font-size: $fontSize px" //setting style for javaFX Nodes
         chargeLabel.style = "-fx-font-size: $fontSize px"
+        finishWithPieceButton.style = "-fx-font-size: $fontSize px"
         leftOrRightLabel.style = "-fx-font-size: $fontSize px"
         insideButton.style = "-fx-font-size: $fontSize px"
         outsideButton.style = "-fx-font-size: $fontSize px"
@@ -39,6 +43,9 @@ object AutoConfig: VBox(10.0) {
 
         chargeButton.setOnAction {
             updateChargeButton()
+        }
+        finishWithPieceButton.setOnAction {
+            updateFinishButton()
         }
         saveButton.setOnAction {
             NTClient.setTables()
@@ -68,9 +75,11 @@ object AutoConfig: VBox(10.0) {
         }
 
         startingPointGrid.addRow(0, insideButton, middleButton, outsideButton) //adding L/R buttons to the same grid
+        endOfAutoGrid.addRow(0, finishWithPieceButton, chargeLabel)
+        endOfAutoGrid.alignment = Pos.CENTER
 
         AutoConfig.alignment = Pos.TOP_CENTER
-        AutoConfig.children.addAll(leftOrRightLabel, chargeLabel, AutoInterface, validAutoLabel, clearButton) //Labels are "labeling" a Node. (see initializer)
+        AutoConfig.children.addAll(leftOrRightLabel, endOfAutoGrid, AutoInterface, validAutoLabel, clearButton) //Labels are "labeling" a Node. (see initializer)
 
         switchStartingPointButton(insideButton)
     }
@@ -87,6 +96,15 @@ object AutoConfig: VBox(10.0) {
         } else {
             chargeButton.style = "-fx-font-size: $fontSize px; -fx-border-color: red; -fx-border-width: 10 10 10 10"
             chargeInAuto = true
+        }
+    }
+    fun updateFinishButton() {
+        if (finishWPiece) {
+            finishWithPieceButton.style = "-fx-font-size: $fontSize px"
+            finishWPiece = false
+        } else {
+            finishWithPieceButton.style = "-fx-font-size: $fontSize px; -fx-border-color: red; -fx-border-width: 10 10 10 10"
+            finishWPiece = true
         }
     }
 }
