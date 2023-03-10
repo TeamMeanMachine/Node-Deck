@@ -108,7 +108,7 @@ object NTClient {
         startingPointEntry.set("${AutoConfig.startingPoint}")
         selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
         amountOfPiecesInAutoEntry.set(AutoInterface.amountOfPieces.toLong())
-        (AutoInterface.realNodeNumber(AutoInterface.first))?.let { autoOneEntry.set(it) }
+        (AutoInterface.realNodeNumber(AutoInterface.first))?.let { autoOneEntry.set(it) } //todo: find out why it isn't publishing auto node entries correctly
         (AutoInterface.realNodeNumber(AutoInterface.second))?.let { autoTwoEntry.set(it) }
         (AutoInterface.realNodeNumber(AutoInterface.third))?.let { autoThreeEntry.set(it) }
         (AutoInterface.realNodeNumber(AutoInterface.fourth))?.let { autoFourEntry.set(it) }
