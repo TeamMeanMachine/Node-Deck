@@ -184,7 +184,7 @@ object AutoInterface: GridPane() {
             return 4
         } else return 5
     }
-    fun realNodeNumber(x: Int?): Int? {
+    fun realNodeNumber(x: Int?): Long? {
         var n = x
         if (n != null) {
             if (!NTClient.isRed) {
@@ -200,7 +200,7 @@ object AutoInterface: GridPane() {
             if (AutoConfig.startingPoint == StartingPoint.MIDDLE) {
                 n += 9
             }
-            return n
+            return n.toLong()
         } else {
             return null
         }

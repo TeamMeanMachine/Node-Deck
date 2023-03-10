@@ -108,11 +108,11 @@ object NTClient {
         startingPointEntry.set("${AutoConfig.startingPoint}")
         selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
         amountOfPiecesInAutoEntry.set(AutoInterface.amountOfPieces.toLong())
-        AutoInterface.realNodeNumber(AutoInterface.first)?.let { autoOneEntry.set(it.toLong()) }
-        AutoInterface.realNodeNumber(AutoInterface.second)?.let { autoTwoEntry.set(it.toLong()) }
-        AutoInterface.realNodeNumber(AutoInterface.third)?.let { autoThreeEntry.set(it.toLong()) }
-        AutoInterface.realNodeNumber(AutoInterface.fourth)?.let { autoFourEntry.set(it.toLong()) }
-        AutoInterface.realNodeNumber(AutoInterface.fifth)?.let { autoFiveEntry.set(it.toLong()) }
+        (AutoInterface.realNodeNumber(AutoInterface.first))?.let { autoOneEntry.set(it) }
+        (AutoInterface.realNodeNumber(AutoInterface.second))?.let { autoTwoEntry.set(it) }
+        (AutoInterface.realNodeNumber(AutoInterface.third))?.let { autoThreeEntry.set(it) }
+        (AutoInterface.realNodeNumber(AutoInterface.fourth))?.let { autoFourEntry.set(it) }
+        (AutoInterface.realNodeNumber(AutoInterface.fifth))?.let { autoFiveEntry.set(it) }
         SettingsTab.updateArmModeLabel()
         SettingsTab.updateArmModeButtons()
         isFloorConeEntry.set(LongFormat.isFloorCone)
