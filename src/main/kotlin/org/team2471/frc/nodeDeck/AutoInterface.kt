@@ -93,8 +93,8 @@ object AutoInterface: GridPane() {
                 setVisual()
                 NTClient.setTables()
             }
-            for (button in allToggleButtons) {
-                button.setPrefSize(buttonWidth, buttonHeight/2)
+            for (tButton in allToggleButtons) {
+                tButton.setPrefSize(buttonWidth, buttonHeight/2)
             }
 
             if (allConeButtons.contains(button)) {

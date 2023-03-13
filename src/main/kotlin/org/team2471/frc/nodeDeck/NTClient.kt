@@ -1,6 +1,7 @@
 package org.team2471.frc.nodeDeck
 
 import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import javafx.application.Platform
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -25,7 +26,6 @@ object NTClient {
     private val autoThreeEntry = nodeTable.getIntegerTopic("3").publish()
     private val autoFourEntry = nodeTable.getIntegerTopic("4").publish()
     private val autoFiveEntry = nodeTable.getIntegerTopic("5").publish()
-    private val validAutoEntry = nodeTable.getBooleanTopic("valid auto").publish()
     private val isFloorConeEntry = nodeTable.getBooleanTopic("isFloorCone").publish()
 
     val isRed: Boolean
@@ -35,6 +35,8 @@ object NTClient {
     val ipAddress: String
         get() = SettingsTab.ipInput.text
     var quarterCount = 0
+    val selectedAuto
+        get() = SmartDashboard.getString("Autos/selected", "no auto selected")
 
     init {
         println("NTClient says hi!!")
@@ -50,19 +52,12 @@ object NTClient {
         connectionJob = GlobalScope.launch {
             // shut down previous server, if connected
             if (networkTableInstance.isConnected) {
-                networkTableInstance.stopDSClient()
                 networkTableInstance.stopClient()
             }
 
             // reconnect with new address
             networkTableInstance.startClient4("NodeDeck")
-            if (address.matches("[1-9](\\d{1,3})?".toRegex())) { //checks if ip is a team number
-                networkTableInstance.setServerTeam(address.toInt())
-                networkTableInstance.startDSClient()
-            } else {
-                networkTableInstance.setServer(address)
-                networkTableInstance.startDSClient()
-            }
+            networkTableInstance.setServer(address)
         }
     }
 
@@ -89,9 +84,6 @@ object NTClient {
                 }
             }
         }, 10, 1000L * updateFrequencyInSeconds)
-    }
-    fun printNTTopicConnection() {
-        println("isRedEntry = ${isRedEntry.exists()}")
     }
 
     fun disconnect() {

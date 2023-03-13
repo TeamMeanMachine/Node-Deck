@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.gradle.jvm.tasks.Jar
+import org.gradle.internal.os.OperatingSystem
 val wpiLibVersion = "2023.2.1"
 
 
@@ -47,11 +48,12 @@ application {
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("edu.wpi.first.ntcore:ntcore-java:$wpiLibVersion")
-    implementation("edu.wpi.first.ntcore:ntcore-jni:$wpiLibVersion:osxuniversal")
-    implementation("edu.wpi.first.ntcore:ntcore-jni:$wpiLibVersion:windowsx86-64")
+    implementation("edu.wpi.first.ntcore:ntcore-jni:$wpiLibVersion:${if (OperatingSystem.current().isMacOsX) "osxuniversal" else "windowsx86-64"}")
     implementation("edu.wpi.first.wpiutil:wpiutil-java:$wpiLibVersion")
-    implementation("edu.wpi.first.wpiutil:wpiutil-jni:$wpiLibVersion:osxuniversal")
-    implementation("edu.wpi.first.wpiutil:wpiutil-jni:$wpiLibVersion:windowsx86-64")
+    implementation("edu.wpi.first.wpiutil:wpiutil-jni:$wpiLibVersion:${if (OperatingSystem.current().isMacOsX) "osxuniversal" else "windowsx86-64"}")
+    implementation("edu.wpi.first.wpilibj:wpilibj-java:$wpiLibVersion")
+    implementation("edu.wpi.first.hal:hal-java:$wpiLibVersion")
+    implementation("edu.wpi.first.hal:hal-jni:$wpiLibVersion:${if (OperatingSystem.current().isMacOsX) "osxuniversal" else "windowsx86-64"}")
 }
 java {
     withSourcesJar()
