@@ -10,13 +10,9 @@ object TestTab: GridPane() {
     init {
 
         testButton.setOnAction {
-
+//            NTClient.setNodeDeckAuto()
         }
 
-        testButton.setOnAction {
-//            NTClient.connectionJob?.cancel()
-//            NTClient.connect()
-        }
 
         addRow(1, testButton)
     }

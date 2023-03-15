@@ -31,7 +31,7 @@ class NodeDeck : Application() {
         stage.scene = Scene(ColorOutline, bounds.width, bounds.height)
         stage.sizeToScene()
         stage.show()
-        stage.isFullScreen = true
+//        stage.isFullScreen = true
 
         NTClient.setTables()
     }

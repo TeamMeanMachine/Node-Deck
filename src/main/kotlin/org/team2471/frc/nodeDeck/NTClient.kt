@@ -63,7 +63,7 @@ object NTClient {
 
     private fun initConnectionStatusCheck() {
         println("inside initConnectionStatusCheck")
-        val updateFrequencyInSeconds = 2
+        val updateFrequencyInSeconds = 1
         timer.schedule(object : TimerTask() {
             override fun run() {
                 // check network table connection
@@ -108,5 +108,9 @@ object NTClient {
         SettingsTab.updateArmModeLabel()
         SettingsTab.updateArmModeButtons()
         isFloorConeEntry.set(LongFormat.isFloorCone)
+        AutoConfig.showNodeAutoChanger()
+    }
+    fun setNodeDeckAuto() {
+        SmartDashboard.putString("Autos/selected", "NodeDeck")
     }
 }
