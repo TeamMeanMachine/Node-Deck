@@ -28,6 +28,7 @@ object NTClient {
     private val autoFiveEntry = nodeTable.getIntegerTopic("5").publish()
     private val isFloorConeEntry = nodeTable.getBooleanTopic("isFloorCone").publish()
 
+    private var reconnected: Boolean = true
     val isRed: Boolean
         get() = isRedEntry.get()
     private val timer = Timer()
@@ -78,12 +79,21 @@ object NTClient {
                     ColorOutline.checkAlliance()
 
                     if (!networkTableInstance.isConnected) { //QUARTER!!!!!
+                        reconnected = false
                         quarterCount += 1
                         println("Quarter count: $quarterCount")
+                    } else {
+                        secondConnect()
                     }
                 }
             }
         }, 10, 1000L * updateFrequencyInSeconds)
+    }
+    fun secondConnect() { // fix for a strange NetworkTable update bug
+        if (!reconnected) {
+            connect()
+            reconnected = true
+        }
     }
 
     fun disconnect() {
@@ -100,7 +110,7 @@ object NTClient {
         startingPointEntry.set("${AutoConfig.startingPoint}")
         selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
         amountOfPiecesInAutoEntry.set(AutoInterface.amountOfPieces.toLong())
-        (AutoInterface.realNodeNumber(AutoInterface.first))?.let { autoOneEntry.set(it) } //todo: find out why it isn't publishing auto node entries correctly
+        (AutoInterface.realNodeNumber(AutoInterface.first))?.let { autoOneEntry.set(it) }
         (AutoInterface.realNodeNumber(AutoInterface.second))?.let { autoTwoEntry.set(it) }
         (AutoInterface.realNodeNumber(AutoInterface.third))?.let { autoThreeEntry.set(it) }
         (AutoInterface.realNodeNumber(AutoInterface.fourth))?.let { autoFourEntry.set(it) }

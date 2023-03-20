@@ -106,7 +106,7 @@ object AutoInterface: GridPane() {
                 button.setPrefSize(buttonWidth, buttonHeight/2)
             }
 
-            AutoInterface.add(button, thisButtonNode/3, thisButtonNode.mod(3))
+            AutoInterface.add(button, 2 - thisButtonNode/3, 3 - thisButtonNode.mod(3))
         }
     }
     fun setVisual() {
@@ -155,11 +155,11 @@ object AutoInterface: GridPane() {
     }
     fun showFloorTypeButtons(button: Button) {
         if (button == two) {
-            AutoInterface.add(twoT, 0, 3)
+            AutoInterface.add(twoT, 2, 0)
         } else if (button == five) {
-            AutoInterface.add(fiveT, 1, 3)
+            AutoInterface.add(fiveT, 1, 0)
         } else if (button == eight) {
-            AutoInterface.add(eightT, 2, 3)
+            AutoInterface.add(eightT, 0, 0)
         }
     }
     fun hideFloorTypeButtons(button: Button) {
