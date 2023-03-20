@@ -51,16 +51,15 @@ object LongFormat: GridPane() {
     private val typeButton = Button()
 //    private val cubeButton = Button()
 
+    private const val buttonHeight: Double = 220.0
+    private const val buttonWidth: Double = 208.0
+    private const val buttonBorderSize = " 2 2 2 2" //format in " ## ## ## ##" Top Right Bottom Left
+    private const val selectedButtonBorderSize = " 20 20 20 20"
+    private const val fontSize = 50
 
-    val buttonHeight: Double = 220.0
-    val buttonWidth: Double = 208.0
-    var selectedNodeButton: Button = one
-    val buttonBorderSize = " 2 2 2 2" //format in " ## ## ## ##" Top Right Bottom Left
-    val selectedButtonBorderSize = " 20 20 20 20"
-    val fontSize = 50
-    var flipped = false
+    private var selectedNodeButton: Button = one
+    private var flipped = false
     var isFloorCone = true
-    val nodeFontSize = 100
 
     val allButtons = listOf<Button>(zero, one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty, twentyOne, twentyTwo, twentyThree, twentyFour, twentyFive, twentySix)
     val allFloorButtons = listOf<Button>(two, five, eight, eleven, fourteen, seventeen, twenty, twentyThree, twentySix)
@@ -84,16 +83,16 @@ object LongFormat: GridPane() {
                 changeSelectedNodeButton(button)
                 updateInfoPanel()
             }
-            button.setFont(Font.font ("Verdana", 75.0))
+            button.font = Font.font ("Verdana", 75.0)
         }
         for (button in allConeButtons) {
-            button.style = "-fx-background-color: #FFFF00; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
+            button.style = "-fx-background-color: #FFFF00; -fx-border-width: $buttonBorderSize; -fx-border-color: black; -fx-text-fill: black"
         }
         for (button in allCubeButtons) {
-            button.style = "-fx-background-color: #9900ff; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
+            button.style = "-fx-background-color: #9900ff; -fx-border-width: $buttonBorderSize; -fx-border-color: black; -fx-text-fill: black"
         }
         for (button in allFloorButtons) {
-            button.style = "-fx-background-color: #595959; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
+            button.style = "-fx-background-color: #595959; -fx-border-width: $buttonBorderSize; -fx-border-color: black; -fx-text-fill: black"
         }
 
         typeButton.setOnAction {
@@ -143,14 +142,14 @@ object LongFormat: GridPane() {
         updateInfoPanel()
     }
     fun changeSelectedNodeButton(thisButton: Button) {
-        selectedNodeButton.setFont(Font.font ("Verdana", 78.0))
+        selectedNodeButton.font = Font.font ("Verdana", 78.0)
         //checks if previous button was cone or cube then sets its style
         if (allCubeButtons.contains(selectedNodeButton)) {
-            selectedNodeButton.style = "-fx-background-color: #9900ff; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
+            selectedNodeButton.style = "-fx-background-color: #9900ff; -fx-border-width: $buttonBorderSize; -fx-border-color: black; -fx-text-fill: black"
         } else if (allFloorButtons.contains(selectedNodeButton)) {
-            selectedNodeButton.style = "-fx-background-color: #595959; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
+            selectedNodeButton.style = "-fx-background-color: #595959; -fx-border-width: $buttonBorderSize; -fx-border-color: black; -fx-text-fill: black"
         } else {
-            selectedNodeButton.style = "-fx-background-color: #FFFF00; -fx-border-width: $buttonBorderSize; -fx-border-color: black"
+            selectedNodeButton.style = "-fx-background-color: #FFFF00; -fx-border-width: $buttonBorderSize; -fx-border-color: black; -fx-text-fill: black"
         }
         //adds red border around new selected button
         thisButton.style = thisButton.style + "; -fx-border-color: red; -fx-border-width: $selectedButtonBorderSize"
@@ -214,7 +213,7 @@ object LongFormat: GridPane() {
             isFloorCone = true
         }
     }
-    fun setButtonText() {
+    fun setButtonText() { // I couldn't find a way to mathematically do this :P (feel free to give me an equation lol)
         twentySix.text = "1"
         twentyThree.text = "2"
         twenty.text = "3"

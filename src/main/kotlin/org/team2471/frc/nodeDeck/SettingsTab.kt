@@ -14,7 +14,6 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
     val connectButton = Button("Connect")
     val robotIpButton = Button("10.24.71.2")
     val lHostButton = Button("localhost")
-    val fullscreenButton = Button("Fullscreen application")
     val armCoastButton = Button("Coast")
     val armBrakeButtton = Button("Brake")
     val toggleTypeButton = ToggleButton("Toggle Type Button")
@@ -27,7 +26,6 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
     val toggleTypeButtonLabel = Label("Toggle the cone/cube button", toggleTypeButton)
     val fontSize = 30
 
-    var typeButtonIsShowing = true
     val coastArmMotor
         get() = NTClient.shoulderCoastModeEntry.get()
     val brakeArmMotor
@@ -41,7 +39,6 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
         connectButton.style = "-fx-font-size: $fontSize px"
         robotIpButton.style = "-fx-font-size: $fontSize px"
         lHostButton.style = "-fx-font-size: $fontSize px"
-        fullscreenButton.style = "-fx-font-size: $fontSize px"
         ndSettingsLabel.style = "-fx-font-size: $fontSize px"
         robotSettingsLabel.style = "-fx-font-size: $fontSize px"
         armModeLabel.style = "-fx-font-size: $fontSize px"
@@ -55,7 +52,7 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
         armModeGrid.alignment = Pos.CENTER
 
         SettingsTab.alignment = Pos.TOP_CENTER
-        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton, ndSettingsLabel, fullscreenButton, toggleTypeButtonLabel, robotSettingsLabel, armModeGrid)
+        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton, ndSettingsLabel, toggleTypeButtonLabel, robotSettingsLabel, armModeGrid)
         ipInput.setOnAction {
             NTClient.connect()
         }
@@ -70,13 +67,9 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
             ipInput.text = "localhost"
             NTClient.connect()
         }
-        fullscreenButton.setOnAction {
-            NodeDeck.stage.isFullScreen = true
-        }
         armCoastButton.setOnAction {
             if (NTClient.networkTableInstance.isConnected) {
                 NTClient.shoulderCoastModeEntry.set(true)
-                println(coastArmMotor)
                 NTClient.setTables()
                 updateArmModeButtons()
                 updateArmModeLabel()
@@ -85,7 +78,6 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
         armBrakeButtton.setOnAction {
             if (NTClient.networkTableInstance.isConnected) {
                 NTClient.shoulderBrakeModeEntry.set(true)
-                println(brakeArmMotor)
                 NTClient.setTables()
                 updateArmModeButtons()
                 updateArmModeLabel()

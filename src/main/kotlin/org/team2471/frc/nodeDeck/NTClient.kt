@@ -85,6 +85,9 @@ object NTClient {
                     } else {
                         secondConnect()
                     }
+                    if (!NodeDeck.stage.isFullScreen) {
+                        TabDeck.tabs.add(TabDeck.fullscreenTab)
+                    }
                 }
             }
         }, 10, 1000L * updateFrequencyInSeconds)
