@@ -10,7 +10,7 @@ object TestTab: GridPane() {
     init {
 
         testButton.setOnAction {
-//            NTClient.setNodeDeckAuto()
+            NTClient.initConnectionStatusCheck()
         }
 
 

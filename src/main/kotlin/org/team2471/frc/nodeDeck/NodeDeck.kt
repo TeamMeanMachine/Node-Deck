@@ -23,6 +23,7 @@ class NodeDeck : Application() {
 
         val screen = Screen.getPrimary()
 
+        OutTerminal.MAX_ITEMS = 15
         stage.title = "NodeDeck"
         stage.icons.add(Image("node-icon.png"))
         Companion.stage = stage

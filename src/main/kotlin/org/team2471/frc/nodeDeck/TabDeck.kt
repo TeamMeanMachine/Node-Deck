@@ -47,7 +47,7 @@ object TabDeck: TabPane() {
         tabs.add(longTab)
 //        tabs.add(gridSelectionTab)
         tabs.add(autoTab)
-//        tabs.add(testTab)
+        tabs.add(testTab)
         tabs.add(settingsTab)
         tabs.add(fullscreenTab)
     }

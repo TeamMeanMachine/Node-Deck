@@ -8,8 +8,9 @@ import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.TilePane
+import javafx.scene.layout.VBox
 
-object SettingsTab : TilePane(Orientation.VERTICAL) {
+object SettingsTab : VBox() {
     val ipInput = TextField("10.24.71.2")
     val connectButton = Button("Connect")
     val robotIpButton = Button("10.24.71.2")
@@ -52,7 +53,7 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
         armModeGrid.alignment = Pos.CENTER
 
         SettingsTab.alignment = Pos.TOP_CENTER
-        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton, ndSettingsLabel, toggleTypeButtonLabel, robotSettingsLabel, armModeGrid)
+        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton, ndSettingsLabel, toggleTypeButtonLabel, robotSettingsLabel, armModeGrid, OutTerminal)
         ipInput.setOnAction {
             NTClient.connect()
         }

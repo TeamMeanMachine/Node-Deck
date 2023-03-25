@@ -41,12 +41,12 @@ object NTClient {
 
     init {
         println("NTClient says hi!!")
-        initConnectionStatusCheck()
+//        initConnectionStatusCheck()
     }
 
     fun connect() {
         val address = ipAddress
-        println("Connecting to address $address")
+//        println("Connecting to address $address")
 
         connectionJob?.cancel()
 
@@ -62,7 +62,7 @@ object NTClient {
         }
     }
 
-    private fun initConnectionStatusCheck() {
+    fun initConnectionStatusCheck() {
         println("inside initConnectionStatusCheck")
         val updateFrequencyInSeconds = 1
         timer.schedule(object : TimerTask() {
@@ -70,7 +70,7 @@ object NTClient {
                 // check network table connection
                 if (!networkTableInstance.isConnected) {
                     // attempt to connect
-                    println("\u001b[33m" + "Not Connected!!!! Connecting to network table..." + "\u001b[0m")
+//                    println("\u001b[33m" + "Not Connected!!!! Connecting to network table..." + "\u001b[0m")
                     connect()
                 }
 
