@@ -3,6 +3,7 @@ package org.team2471.frc.nodeDeck
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import javafx.application.Platform
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -44,6 +45,7 @@ object NTClient {
         initConnectionStatusCheck()
     }
 
+    @OptIn(DelicateCoroutinesApi::class) //
     fun connect() {
         val address = ipAddress
         println("Connecting to address $address")
@@ -85,7 +87,7 @@ object NTClient {
                     } else {
                         secondConnect()
                     }
-                    if (!NodeDeck.stage.isFullScreen) {
+                    if (!NodeDeck.stage.isFullScreen && !TabDeck.tabs.contains(TabDeck.fullscreenTab)) {
                         TabDeck.tabs.add(TabDeck.fullscreenTab)
                     }
                 }

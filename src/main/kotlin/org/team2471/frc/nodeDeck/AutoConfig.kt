@@ -118,10 +118,14 @@ object AutoConfig: VBox(10.0) {
     fun showNodeAutoChanger() {
         if (NTClient.networkTableInstance.isConnected) {
             if (NTClient.selectedAuto != "NodeDeck") {
-                saveButtonGrid.children.removeAll(nodeDeckAutoButton, saveButton)
-                saveButtonGrid.addRow(0, saveButton, nodeDeckAutoButton)
+                if (!saveButtonGrid.children.contains(nodeDeckAutoButton)) {
+                    saveButtonGrid.children.removeAll(saveButton)
+                    saveButtonGrid.addRow(0, saveButton, nodeDeckAutoButton)
+                }
             } else {
-                saveButtonGrid.children.removeAll(nodeDeckAutoButton)
+                if (saveButtonGrid.children.contains(nodeDeckAutoButton)) {
+                    saveButtonGrid.children.removeAll(nodeDeckAutoButton)
+                }
             }
         }
     }
