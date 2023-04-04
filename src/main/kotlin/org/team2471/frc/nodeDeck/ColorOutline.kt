@@ -35,5 +35,6 @@ object ColorOutline : VBox() {
                         " -fx-border-width: $borderWidth;"
             }
         }
+        AutoConfig.updateStartingButtonsOrder()
     }
 }

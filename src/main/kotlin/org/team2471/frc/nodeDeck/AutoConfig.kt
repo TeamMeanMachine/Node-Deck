@@ -61,9 +61,9 @@ object AutoConfig: VBox(10.0) {
             NTClient.setTables()
         }
 
-        insideButton.setPrefSize(250.0, 50.0)
-        outsideButton.setPrefSize(250.0, 50.0)
-        middleButton.setPrefSize(250.0, 50.0)
+        insideButton.setPrefSize(270.0, 50.0)
+        outsideButton.setPrefSize(270.0, 50.0)
+        middleButton.setPrefSize(270.0, 50.0)
         insideButton.setOnAction {
             startingPoint = StartingPoint.INSIDE
             switchStartingPointButton(insideButton)
@@ -126,6 +126,21 @@ object AutoConfig: VBox(10.0) {
                 if (saveButtonGrid.children.contains(nodeDeckAutoButton)) {
                     saveButtonGrid.children.removeAll(nodeDeckAutoButton)
                 }
+            }
+        }
+    }
+    var prevAlliance = "idk"
+    fun updateStartingButtonsOrder() {
+        if (NTClient.networkTableInstance.isConnected) {
+            if (NTClient.isRed && prevAlliance != "red") {
+                startingPointGrid.children.removeAll(insideButton, middleButton, outsideButton)
+                startingPointGrid.addRow(0, outsideButton, middleButton, insideButton)
+                prevAlliance = "red"
+            }
+            if (!NTClient.isRed && prevAlliance != "blue") {
+                startingPointGrid.children.removeAll(insideButton, middleButton, outsideButton)
+                startingPointGrid.addRow(0, insideButton, middleButton, outsideButton)
+                prevAlliance = "blue"
             }
         }
     }
