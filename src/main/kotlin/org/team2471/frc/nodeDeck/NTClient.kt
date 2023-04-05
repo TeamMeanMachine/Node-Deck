@@ -90,6 +90,7 @@ object NTClient {
                     if (!NodeDeck.stage.isFullScreen && !TabDeck.tabs.contains(TabDeck.fullscreenTab)) {
                         TabDeck.tabs.add(TabDeck.fullscreenTab)
                     }
+                    NTTab.update()
                 }
             }
         }, 10, 1000L * updateFrequencyInSeconds)

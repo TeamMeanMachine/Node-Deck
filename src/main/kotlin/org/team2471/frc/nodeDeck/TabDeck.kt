@@ -8,10 +8,11 @@ object TabDeck: TabPane() {
     private val settingsTab = Tab("General Settings")
     private val testTab = Tab("Test")
     private val longTab = Tab("Node Deck")
+    private val ntTab = Tab("Network Tables")
     val fullscreenTab = Tab("Fullscreen Application")
     val autoTab = Tab("Robot Auto")
 
-    private val allTabs = listOf<Tab>(gridSelectionTab, settingsTab, autoTab, testTab, longTab, fullscreenTab)
+    private val allTabs = listOf<Tab>(gridSelectionTab, settingsTab, autoTab, testTab, longTab, fullscreenTab, ntTab)
 
     const val fontSize = "15"
 
@@ -43,6 +44,7 @@ object TabDeck: TabPane() {
         autoTab.content = AutoConfig
         settingsTab.content = SettingsTab
         testTab.content = TestTab
+        ntTab.content = NTTab
 
         tabs.add(longTab)
 //        tabs.add(gridSelectionTab)
@@ -50,5 +52,6 @@ object TabDeck: TabPane() {
 //        tabs.add(testTab)
         tabs.add(settingsTab)
         tabs.add(fullscreenTab)
+        tabs.add(ntTab)
     }
 }
