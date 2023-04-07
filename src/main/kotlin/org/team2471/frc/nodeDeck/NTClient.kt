@@ -79,6 +79,7 @@ object NTClient {
                 Platform.runLater {
                     setTables()
                     ColorOutline.checkAlliance()
+                    NTTab.checkIfNewTopics()
 
                     if (!networkTableInstance.isConnected) { //QUARTER!!!!!
                         reconnected = false
@@ -90,15 +91,15 @@ object NTClient {
                     if (!NodeDeck.stage.isFullScreen && !TabDeck.tabs.contains(TabDeck.fullscreenTab)) {
                         TabDeck.tabs.add(TabDeck.fullscreenTab)
                     }
-                    NTTab.update()
                 }
             }
-        }, 10, 1000L * updateFrequencyInSeconds)
+        }, 10, (1000L * updateFrequencyInSeconds).toLong())
     }
     fun secondConnect() { // fix for a strange NetworkTable update bug
         if (!reconnected) {
             connect()
             reconnected = true
+            NTTab.checkIfNewTopics()
         }
     }
 
