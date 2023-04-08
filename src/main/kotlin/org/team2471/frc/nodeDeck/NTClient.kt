@@ -85,12 +85,19 @@ object NTClient {
                         reconnected = false
                         quarterCount += 1
                         println("Quarter count: $quarterCount")
+                        if (SettingsTab.ipInput.text == "10.24.71.10") {
+                            SettingsTab.ipInput.text = "localhost"
+                            connect()
+                        } else {
+                            SettingsTab.ipInput.text = "10.24.71.10"
+                        }
                     } else {
                         secondConnect()
                     }
                     if (!NodeDeck.stage.isFullScreen && !TabDeck.tabs.contains(TabDeck.fullscreenTab)) {
                         TabDeck.tabs.add(TabDeck.fullscreenTab)
                     }
+
                 }
             }
         }, 10, (1000L * updateFrequencyInSeconds).toLong())

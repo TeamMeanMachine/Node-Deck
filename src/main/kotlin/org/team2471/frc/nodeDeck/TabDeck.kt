@@ -46,12 +46,12 @@ object TabDeck: TabPane() {
         testTab.content = TestTab
         ntTab.content = NTTab
 
+        tabs.add(ntTab)
         tabs.add(longTab)
 //        tabs.add(gridSelectionTab)
         tabs.add(autoTab)
 //        tabs.add(testTab)
         tabs.add(settingsTab)
         tabs.add(fullscreenTab)
-        tabs.add(ntTab)
     }
 }
