@@ -85,12 +85,13 @@ object NTClient {
                         reconnected = false
                         quarterCount += 1
                         println("Quarter count: $quarterCount")
-                        if (SettingsTab.ipInput.text == "10.24.71.10") {
-                            SettingsTab.ipInput.text = "localhost"
-                            connect()
-                        } else {
-                            SettingsTab.ipInput.text = "10.24.71.10"
-                        }
+//                        if (SettingsTab.ipInput.text == "10.24.71.10") {
+//                            SettingsTab.ipInput.text = "localhost"
+//                            connect()
+//                        } else {
+//                            SettingsTab.ipInput.text = "10.24.71.10"
+//                            connect()
+//                        }
                     } else {
                         secondConnect()
                     }

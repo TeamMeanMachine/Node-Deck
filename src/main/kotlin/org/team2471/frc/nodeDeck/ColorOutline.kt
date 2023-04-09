@@ -14,19 +14,13 @@ object ColorOutline : VBox() {
     }
     fun checkAlliance() {
         if (!NTClient.networkTableInstance.isConnected) {
-            if (ColorOutline.style != "-fx-background-color: #a8a8a8; -fx-border-color: #ffff00; -fx-border-width: $borderWidth") {
-                ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ffff00; -fx-border-width: $borderWidth"
-            }
+            ColorOutline.style = "-fx-background-color: #a8a8a8; -fx-border-color: #ffff00; -fx-border-width: $borderWidth"
         } else {
             val color = if (NTClient.isRed) "red" else "blue"
 
-
             if (NTClient.selectedAuto != "NodeDeck") {
-                if (ColorOutline.style != "-fx-border-color: yellow, $color ; -fx-background-color: #a8a8a8; -fx-border-width: $borderWidth;-fx-border-style: segments($segmentLength, $segmentLength), segments($segmentLength, $segmentLength) phase $segmentLength;") {
-                    ColorOutline.style = "-fx-border-color: yellow, $color ; -fx-background-color: #a8a8a8; -fx-border-width: $borderWidth;-fx-border-style: segments($segmentLength, $segmentLength), segments($segmentLength, $segmentLength) phase $segmentLength;"
-                }
-                if (TabDeck.autoTab.style != "-fx-font-size: ${TabDeck.fontSize} px; -fx-background-color: red; -fx-text-color: white")
-                    TabDeck.autoTab.style = "-fx-font-size: ${TabDeck.fontSize} px; -fx-background-color: red; -fx-text-color: white"
+                ColorOutline.style = "-fx-border-color: yellow, $color ; -fx-background-color: #a8a8a8; -fx-border-width: $borderWidth;-fx-border-style: segments($segmentLength, $segmentLength), segments($segmentLength, $segmentLength) phase $segmentLength;"
+                TabDeck.autoTab.style = "-fx-font-size: ${TabDeck.fontSize} px; -fx-background-color: red; -fx-text-color: white"
             } else {
                 TabDeck.autoTab.style = "-fx-font-size: ${TabDeck.fontSize} px"
                 ColorOutline.style = "" +

@@ -4,39 +4,40 @@ import edu.wpi.first.networktables.NetworkTableEvent
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.networktables.Topic
 import javafx.application.Platform
-import javafx.collections.FXCollections
-import javafx.collections.ObservableList
+import javafx.scene.Node
 import javafx.scene.control.ListView
+import javafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
+import javafx.scene.text.Text
 import java.util.EnumSet
 
 object NTTab: StackPane() {
-    var view: ListView<String>? = null
     val instance = NetworkTableInstance.getDefault()
     var usedTopics = arrayListOf<Topic>()
-    var list: ObservableList<String>? = null
+    var list = GridPane()
     var assignedRow = 0
 
     init {
-        list = FXCollections.observableArrayList()
-        view = ListView(list)
-        NTTab.children.add(view)
+        list.hgap = 10.0
+        NTTab.children.add(list)
     }
 
 
     fun checkIfNewTopics() {
         val unusedTopics = usedTopics
         instance.topics.forEach { topic ->
-            val tAssignedRow = if (assignedRow > (list?.size ?: 0)) list!!.size else assignedRow
+//            println(topic.name)
+            val tAssignedRow = if (assignedRow > list.rowCount) list.rowCount else assignedRow
             assignedRow += 1
             if (!usedTopics.contains(topic)) {
                 usedTopics.add(topic)
-                list?.add(tAssignedRow,"name: ${topic.name}      value: ${topic.getGenericEntry().get().value}")
+                list.addRow(tAssignedRow, Text(topic.name), Text("${topic.getGenericEntry().get().value}"))
                 instance.addListener(topic, EnumSet.of(NetworkTableEvent.Kind.kPublish, NetworkTableEvent.Kind.kValueAll)) { event: NetworkTableEvent ->
                     println("name: ${topic.name} value: ${topic.getGenericEntry().get().value}")
                     Platform.runLater {
-                        list?.removeAt(tAssignedRow)
-                        list?.add(tAssignedRow,"name: ${topic.name}      value: ${topic.getGenericEntry().get().value}")
+                        list.children.removeIf { node: Node -> GridPane.getRowIndex(node) == tAssignedRow }
+                        list.addRow(tAssignedRow, Text(topic.name), Text("${topic.getGenericEntry().get().value}"))
+//                        list.addRow(tAssignedRow, Text(topic.name), Text("${topic.getGenericEntry().get().value}"))
                     }
                 }
             } else {
