@@ -13,6 +13,7 @@ object NTClient {
     val networkTableInstance = NetworkTableInstance.getDefault()
     private val fmsTable = networkTableInstance.getTable("FMSInfo")
     private val nodeTable = networkTableInstance.getTable("NodeDeck")
+    private val driveTable = networkTableInstance.getTable("Drive")
 
     private val isRedEntry = fmsTable.getBooleanTopic("IsRedAlliance").subscribe(true)
     private val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
@@ -28,6 +29,7 @@ object NTClient {
     private val autoFourEntry = nodeTable.getIntegerTopic("4").publish()
     private val autoFiveEntry = nodeTable.getIntegerTopic("5").publish()
     private val isFloorConeEntry = nodeTable.getBooleanTopic("isFloorCone").publish()
+    private val demoModeEntry = driveTable.getBooleanTopic("Demo Mode").getEntry(false)
 
     private var reconnected: Boolean = true
     val isRed: Boolean
@@ -39,6 +41,9 @@ object NTClient {
     var quarterCount = 0
     val selectedAuto
         get() = SmartDashboard.getString("Autos/selected", "no auto selected")
+    var demoMode: Boolean
+        get() = demoModeEntry.get()
+        set(it) = demoModeEntry.set(it)
 
     init {
         println("NTClient says hi!!")
@@ -124,6 +129,7 @@ object NTClient {
         SettingsTab.updateArmModeButtons()
         isFloorConeEntry.set(LongFormat.isFloorCone)
         AutoConfig.showNodeAutoChanger()
+        DemoTab.updateDemoButton()
     }
     fun setNodeDeckAuto() {
         SmartDashboard.putString("Autos/selected", "NodeDeck")

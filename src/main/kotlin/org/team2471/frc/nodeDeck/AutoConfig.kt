@@ -5,6 +5,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.VBox
+import org.team2471.frc.nodeDeck.NTClient.demoMode
 
 object AutoConfig: VBox(10.0) {
     private val insideButton = Button("Inside")
@@ -116,7 +117,7 @@ object AutoConfig: VBox(10.0) {
         }
     }
     fun showNodeAutoChanger() {
-        if (NTClient.networkTableInstance.isConnected) {
+        if (NTClient.networkTableInstance.isConnected && !demoMode) {
             if (NTClient.selectedAuto != "NodeDeck") {
                 if (!saveButtonGrid.children.contains(nodeDeckAutoButton)) {
                     saveButtonGrid.children.removeAll(saveButton)
@@ -126,6 +127,10 @@ object AutoConfig: VBox(10.0) {
                 if (saveButtonGrid.children.contains(nodeDeckAutoButton)) {
                     saveButtonGrid.children.removeAll(nodeDeckAutoButton)
                 }
+            }
+        } else {
+            if (saveButtonGrid.children.contains(nodeDeckAutoButton)) {
+                saveButtonGrid.children.removeAll(nodeDeckAutoButton)
             }
         }
     }
