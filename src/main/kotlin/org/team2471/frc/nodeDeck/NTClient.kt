@@ -30,6 +30,7 @@ object NTClient {
     private val autoFiveEntry = nodeTable.getIntegerTopic("5").publish()
     private val isFloorConeEntry = nodeTable.getBooleanTopic("isFloorCone").publish()
     private val demoModeEntry = driveTable.getBooleanTopic("Demo Mode").getEntry(false)
+    private val demoSpeedLimitEntry = driveTable.getDoubleTopic("Demo Speed Limit").getEntry(1.0)
 
     private var reconnected: Boolean = true
     val isRed: Boolean
@@ -43,7 +44,10 @@ object NTClient {
         get() = SmartDashboard.getString("Autos/selected", "no auto selected")
     var demoMode: Boolean
         get() = demoModeEntry.get()
-        set(it) = demoModeEntry.set(it)
+        set(value) = demoModeEntry.set(value)
+    var demoSpeedLimit: Double
+        get() = demoSpeedLimitEntry.get()
+        set(value) = demoSpeedLimitEntry.set(value)
 
     init {
         println("NTClient says hi!!")
@@ -125,6 +129,11 @@ object NTClient {
         (AutoInterface.realNodeNumber(AutoInterface.third))?.let { autoThreeEntry.set(it) }
         (AutoInterface.realNodeNumber(AutoInterface.fourth))?.let { autoFourEntry.set(it) }
         (AutoInterface.realNodeNumber(AutoInterface.fifth))?.let { autoFiveEntry.set(it) }
+        demoSpeedLimitEntry.set(try {
+            DemoTab.speedLimitInput.text.toDouble()
+        } catch (ex:Exception) {
+            demoSpeedLimitEntry.get()
+        })
         SettingsTab.updateArmModeLabel()
         SettingsTab.updateArmModeButtons()
         isFloorConeEntry.set(LongFormat.isFloorCone)
