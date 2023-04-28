@@ -14,6 +14,7 @@ object NTClient {
     private val fmsTable = networkTableInstance.getTable("FMSInfo")
     private val nodeTable = networkTableInstance.getTable("NodeDeck")
     private val driveTable = networkTableInstance.getTable("Drive")
+    private val pvTable = networkTableInstance.getTable("photonvision")
 
     private val isRedEntry = fmsTable.getBooleanTopic("IsRedAlliance").subscribe(true)
     private val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
@@ -30,7 +31,9 @@ object NTClient {
     private val autoFiveEntry = nodeTable.getIntegerTopic("5").publish()
     private val isFloorConeEntry = nodeTable.getBooleanTopic("isFloorCone").publish()
     private val demoModeEntry = driveTable.getBooleanTopic("Demo Mode").getEntry(false)
-    private val demoSpeedLimitEntry = driveTable.getDoubleTopic("Demo Speed Limit").getEntry(1.0)
+    private val aprilDemoEntry = pvTable.getBooleanTopic("AprilTag Demo Mode").getEntry(false)
+    val demoSpeedEntry = SmartDashboard.getEntry("DemoSpeed")
+    private var prevDemoSpeed = 1.0
 
     private var reconnected: Boolean = true
     val isRed: Boolean
@@ -45,9 +48,9 @@ object NTClient {
     var demoMode: Boolean
         get() = demoModeEntry.get()
         set(value) = demoModeEntry.set(value)
-    var demoSpeedLimit: Double
-        get() = demoSpeedLimitEntry.get()
-        set(value) = demoSpeedLimitEntry.set(value)
+    var aprilDemo: Boolean
+        get() = aprilDemoEntry.get()
+        set(value) = aprilDemoEntry.set(value)
 
     init {
         println("NTClient says hi!!")
@@ -129,16 +132,15 @@ object NTClient {
         (AutoInterface.realNodeNumber(AutoInterface.third))?.let { autoThreeEntry.set(it) }
         (AutoInterface.realNodeNumber(AutoInterface.fourth))?.let { autoFourEntry.set(it) }
         (AutoInterface.realNodeNumber(AutoInterface.fifth))?.let { autoFiveEntry.set(it) }
-        demoSpeedLimitEntry.set(try {
-            DemoTab.speedLimitInput.text.toDouble()
-        } catch (ex:Exception) {
-            demoSpeedLimitEntry.get()
-        })
+        if (demoSpeedEntry.getDouble(1.0) != prevDemoSpeed) {
+            DemoTab.demoSpeedInput.text = demoSpeedEntry.getDouble(1.0).toString()
+        }
         SettingsTab.updateArmModeLabel()
         SettingsTab.updateArmModeButtons()
         isFloorConeEntry.set(LongFormat.isFloorCone)
         AutoConfig.showNodeAutoChanger()
         DemoTab.updateDemoButton()
+        prevDemoSpeed = demoSpeedEntry.getDouble(1.0)
     }
     fun setNodeDeckAuto() {
         SmartDashboard.putString("Autos/selected", "NodeDeck")
