@@ -13,8 +13,7 @@ object NTClient {
     val networkTableInstance = NetworkTableInstance.getDefault()
     private val fmsTable = networkTableInstance.getTable("FMSInfo")
     private val nodeTable = networkTableInstance.getTable("NodeDeck")
-    private val driveTable = networkTableInstance.getTable("Drive")
-    private val pvTable = networkTableInstance.getTable("photonvision")
+    private val armTable = networkTableInstance.getTable("Arm")
 
     private val isRedEntry = fmsTable.getBooleanTopic("IsRedAlliance").subscribe(true)
     private val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
@@ -30,10 +29,10 @@ object NTClient {
     private val autoFourEntry = nodeTable.getIntegerTopic("4").publish()
     private val autoFiveEntry = nodeTable.getIntegerTopic("5").publish()
     private val isFloorConeEntry = nodeTable.getBooleanTopic("isFloorCone").publish()
-    private val demoModeEntry = driveTable.getBooleanTopic("Demo Mode").getEntry(false)
-    private val aprilDemoEntry = pvTable.getBooleanTopic("AprilTag Demo Mode").getEntry(false)
+    private val demoReachLimitEntry = armTable.getDoubleTopic("Demo Reach Limit").getEntry(47.0)
     val demoSpeedEntry = SmartDashboard.getEntry("DemoSpeed")
     private var prevDemoSpeed = 1.0
+    private var prevReachLimit = 47.0
 
     private var reconnected: Boolean = true
     val isRed: Boolean
@@ -45,12 +44,11 @@ object NTClient {
     var quarterCount = 0
     val selectedAuto
         get() = SmartDashboard.getString("Autos/selected", "no auto selected")
-    var demoMode: Boolean
-        get() = demoModeEntry.get()
-        set(value) = demoModeEntry.set(value)
-    var aprilDemo: Boolean
-        get() = aprilDemoEntry.get()
-        set(value) = aprilDemoEntry.set(value)
+    val demoMode: Boolean
+        get() = demoSpeedEntry.getDouble(1.0) < 1.0
+    var demoReachLimit: Double
+        get() = demoReachLimitEntry.get()
+        set(value) = demoReachLimitEntry.set(value)
 
     init {
         println("NTClient says hi!!")
@@ -135,11 +133,14 @@ object NTClient {
         if (demoSpeedEntry.getDouble(1.0) != prevDemoSpeed) {
             DemoTab.demoSpeedInput.text = demoSpeedEntry.getDouble(1.0).toString()
         }
+        if (demoReachLimit != prevReachLimit) {
+            DemoTab.reachLimitInput.text = demoReachLimit.toString()
+        }
         SettingsTab.updateArmModeLabel()
         SettingsTab.updateArmModeButtons()
         isFloorConeEntry.set(LongFormat.isFloorCone)
         AutoConfig.showNodeAutoChanger()
-        DemoTab.updateDemoButton()
+        DemoTab.updateDemoButtons()
         prevDemoSpeed = demoSpeedEntry.getDouble(1.0)
     }
     fun setNodeDeckAuto() {
