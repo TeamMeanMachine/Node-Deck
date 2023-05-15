@@ -5,15 +5,21 @@ import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.layout.VBox
+import org.team2471.frc.nodeDeck.NTClient.demoBoundary
+import org.team2471.frc.nodeDeck.NTClient.demoBoundaryLimit
 import org.team2471.frc.nodeDeck.NTClient.demoReachLimit
 
 object DemoTab: VBox(10.0) {
     val demoSpeedInput = TextField("${NTClient.demoSpeedEntry.getDouble(1.0)}")
     val reachLimitInput = TextField("$demoReachLimit")
-    val demoSpeedLabel = Label("Demo Speed", demoSpeedInput)
-    val reachLimitLabel = Label("Arm Max Reach", reachLimitInput)
+    val demoBoundaryInput = TextField("$demoBoundaryLimit")
+    val demoBoundaryButton = Button("Toggle Demo Boundary")
     val demoSpeedOneButton = Button("1.0")
     val reachDefaultButton = Button("47.0")
+    val demoSpeedLabel = Label("Demo Speed", demoSpeedInput)
+    val reachLimitLabel = Label("Arm Max Reach", reachLimitInput)
+    val demoBoundaryLimitLabel = Label("Demo Boundary Width (Feet)", demoBoundaryInput)
+
 
     const val fontSize = 50
 
@@ -22,7 +28,22 @@ object DemoTab: VBox(10.0) {
         demoSpeedOneButton.style = "-fx-font-size: ${fontSize - 20.0} px"
         reachLimitLabel.style = "-fx-font-size: $fontSize px"
         reachDefaultButton.style = "-fx-font-size: ${fontSize - 20.0} px"
+        demoBoundaryButton.style = "-fx-font-size: $fontSize px"
+        demoBoundaryLimitLabel.style = "-fx-font-size: $fontSize px"
 
+        demoBoundaryButton.setOnAction {
+            demoBoundary = !demoBoundary
+            NTClient.setTables()
+        }
+        demoBoundaryInput.setPrefSize(140.0, 50.0)
+        demoBoundaryInput.setOnAction {
+            try {
+                demoBoundaryLimit = demoBoundaryInput.text.toDouble()
+            } catch (ex:Exception) {
+                demoBoundaryInput.text = demoBoundaryLimit.toString()
+                println(ex)
+            }
+        }
         demoSpeedInput.setPrefSize(140.0, 50.0)
         demoSpeedInput.setOnAction {
             try {
@@ -54,10 +75,15 @@ object DemoTab: VBox(10.0) {
             demoReachLimit = 47.0
         }
         DemoTab.alignment = Pos.TOP_CENTER
-        DemoTab.children.addAll(demoSpeedLabel, demoSpeedOneButton, reachLimitLabel, reachDefaultButton)
+        DemoTab.children.addAll(demoSpeedLabel, demoSpeedOneButton, reachLimitLabel, reachDefaultButton, demoBoundaryButton, demoBoundaryLimitLabel)
     }
 
     fun updateDemoButtons() {
         ColorOutline.checkAlliance()
+        if (demoBoundary) {
+            demoBoundaryButton.style = "-fx-font-size: $fontSize px; -fx-border-color: red; -fx-border-width: 10 10 10 10"
+        } else {
+            demoBoundaryButton.style = "-fx-font-size: $fontSize px"
+        }
     }
 }

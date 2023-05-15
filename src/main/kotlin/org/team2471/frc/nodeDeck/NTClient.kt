@@ -14,6 +14,7 @@ object NTClient {
     private val fmsTable = networkTableInstance.getTable("FMSInfo")
     private val nodeTable = networkTableInstance.getTable("NodeDeck")
     private val armTable = networkTableInstance.getTable("Arm")
+    private val driveTable = networkTableInstance.getTable("Drive")
 
     private val isRedEntry = fmsTable.getBooleanTopic("IsRedAlliance").subscribe(true)
     private val chargeInAutoEntry = nodeTable.getBooleanTopic("ChargeInAuto").publish()
@@ -30,9 +31,12 @@ object NTClient {
     private val autoFiveEntry = nodeTable.getIntegerTopic("5").publish()
     private val isFloorConeEntry = nodeTable.getBooleanTopic("isFloorCone").publish()
     private val demoReachLimitEntry = armTable.getDoubleTopic("Demo Reach Limit").getEntry(47.0)
+    private val demoBoundaryLimitEntry = driveTable.getDoubleTopic("Demo Mode Drive Limit").getEntry(1.0)
+    private val demoBoundaryEntry = driveTable.getBooleanTopic("Demo Boundary").getEntry(false)
     val demoSpeedEntry = SmartDashboard.getEntry("DemoSpeed")
     private var prevDemoSpeed = 1.0
     private var prevReachLimit = 47.0
+    private var prevDemoBoundaryLimit = 1.0
 
     private var reconnected: Boolean = true
     val isRed: Boolean
@@ -49,6 +53,12 @@ object NTClient {
     var demoReachLimit: Double
         get() = demoReachLimitEntry.get()
         set(value) = demoReachLimitEntry.set(value)
+    var demoBoundary: Boolean
+        get() = demoBoundaryEntry.get()
+        set(value) = demoBoundaryEntry.set(value)
+    var demoBoundaryLimit: Double
+        get() = demoBoundaryLimitEntry.get()
+        set(value) = demoBoundaryLimitEntry.set(value)
 
     init {
         println("NTClient says hi!!")
@@ -136,12 +146,17 @@ object NTClient {
         if (demoReachLimit != prevReachLimit) {
             DemoTab.reachLimitInput.text = demoReachLimit.toString()
         }
+        if (demoBoundaryLimit != prevDemoBoundaryLimit) {
+            DemoTab.reachLimitInput.text = demoReachLimit.toString()
+        }
         SettingsTab.updateArmModeLabel()
         SettingsTab.updateArmModeButtons()
         isFloorConeEntry.set(LongFormat.isFloorCone)
         AutoConfig.showNodeAutoChanger()
         DemoTab.updateDemoButtons()
+        prevReachLimit = demoReachLimit
         prevDemoSpeed = demoSpeedEntry.getDouble(1.0)
+        prevDemoBoundaryLimit = demoBoundaryLimit
     }
     fun setNodeDeckAuto() {
         SmartDashboard.putString("Autos/selected", "NodeDeck")
