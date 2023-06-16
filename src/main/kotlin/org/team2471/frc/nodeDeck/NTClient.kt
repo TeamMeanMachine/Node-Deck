@@ -33,6 +33,7 @@ object NTClient {
     private val demoReachLimitEntry = armTable.getDoubleTopic("Demo Reach Limit").getEntry(47.0)
     private val demoBoundaryLimitEntry = driveTable.getDoubleTopic("Demo Mode Drive Limit").getEntry(1.0)
     private val demoBoundaryEntry = driveTable.getBooleanTopic("Demo Boundary").getEntry(false)
+    private val tagLookingAtEntry = driveTable.getBooleanTopic("Demo Look At Tags").getEntry(false)
     val demoSpeedEntry = SmartDashboard.getEntry("DemoSpeed")
     private var prevDemoSpeed = 1.0
     private var prevReachLimit = 47.0
@@ -59,6 +60,9 @@ object NTClient {
     var demoBoundaryLimit: Double
         get() = demoBoundaryLimitEntry.get()
         set(value) = demoBoundaryLimitEntry.set(value)
+    var tagLookingAt: Boolean
+        get() = tagLookingAtEntry.get()
+        set(value) = tagLookingAtEntry.set(value)
 
     init {
         println("NTClient says hi!!")

@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox
 import org.team2471.frc.nodeDeck.NTClient.demoBoundary
 import org.team2471.frc.nodeDeck.NTClient.demoBoundaryLimit
 import org.team2471.frc.nodeDeck.NTClient.demoReachLimit
+import org.team2471.frc.nodeDeck.NTClient.tagLookingAt
 
 object DemoTab: VBox(10.0) {
     val demoSpeedInput = TextField("${NTClient.demoSpeedEntry.getDouble(1.0)}")
@@ -16,9 +17,11 @@ object DemoTab: VBox(10.0) {
     val demoBoundaryButton = Button("Toggle Demo Boundary")
     val demoSpeedOneButton = Button("1.0")
     val reachDefaultButton = Button("47.0")
+    val tagAimingButton = Button("Toggle Apriltag Aiming")
     val demoSpeedLabel = Label("Demo Speed", demoSpeedInput)
     val reachLimitLabel = Label("Arm Max Reach", reachLimitInput)
     val demoBoundaryLimitLabel = Label("Demo Boundary Width (Feet)", demoBoundaryInput)
+    val tagAimingLabel = Label("", tagAimingButton)
 
 
     const val fontSize = 50
@@ -30,6 +33,7 @@ object DemoTab: VBox(10.0) {
         reachDefaultButton.style = "-fx-font-size: ${fontSize - 20.0} px"
         demoBoundaryButton.style = "-fx-font-size: $fontSize px"
         demoBoundaryLimitLabel.style = "-fx-font-size: $fontSize px"
+        tagAimingLabel.style = "-fx-font-size: $fontSize px"
 
         demoBoundaryButton.setOnAction {
             demoBoundary = !demoBoundary
@@ -43,6 +47,11 @@ object DemoTab: VBox(10.0) {
                 demoBoundaryInput.text = demoBoundaryLimit.toString()
                 println(ex)
             }
+        }
+        tagAimingButton.setOnAction {
+            tagLookingAt = !tagLookingAt
+            updateDemoButtons()
+            NTClient.setTables()
         }
         demoSpeedInput.setPrefSize(140.0, 50.0)
         demoSpeedInput.setOnAction {
@@ -75,7 +84,7 @@ object DemoTab: VBox(10.0) {
             demoReachLimit = 47.0
         }
         DemoTab.alignment = Pos.TOP_CENTER
-        DemoTab.children.addAll(demoSpeedLabel, demoSpeedOneButton, reachLimitLabel, reachDefaultButton, demoBoundaryButton, demoBoundaryLimitLabel)
+        DemoTab.children.addAll(demoSpeedLabel, demoSpeedOneButton, reachLimitLabel, reachDefaultButton, demoBoundaryButton, demoBoundaryLimitLabel, tagAimingLabel)
     }
 
     fun updateDemoButtons() {
@@ -84,6 +93,11 @@ object DemoTab: VBox(10.0) {
             demoBoundaryButton.style = "-fx-font-size: $fontSize px; -fx-border-color: red; -fx-border-width: 10 10 10 10"
         } else {
             demoBoundaryButton.style = "-fx-font-size: $fontSize px"
+        }
+        if (tagLookingAt) {
+            tagAimingButton.style = "-fx-background-color: red; -fx-text-fill: white"
+        } else {
+            tagAimingButton.style = "-fx-text-fill: black"
         }
     }
 }
