@@ -1,25 +1,23 @@
 package org.team2471.frc.nodeDeck
 
 import javafx.geometry.Pos
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.TextField
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.layout.VBox
-import org.team2471.frc.nodeDeck.NTClient.demoBoundary
-import org.team2471.frc.nodeDeck.NTClient.demoBoundaryLimit
-import org.team2471.frc.nodeDeck.NTClient.demoReachLimit
-import org.team2471.frc.nodeDeck.NTClient.tagLookingAt
+import javafx.stage.Screen
 
 object DynamicTab: VBox(10.0) {
-    val test= TextField("Test")
+    val fieldImage = ImageView(Image("field-2023.png"))
 
-
-
-    const val fontSize = 50
 
     init {
-        test.style = "-fx-font-size: $fontSize px"
+        println("Dynamic Tab up and running")
+
+        fieldImage.fitWidth = Screen.getPrimary().visualBounds.width * 0.8
+
         DynamicTab.alignment = Pos.TOP_CENTER
-        DynamicTab.children.addAll(test)
+        DynamicTab.children.addAll(
+            fieldImage
+        )
     }
 }
