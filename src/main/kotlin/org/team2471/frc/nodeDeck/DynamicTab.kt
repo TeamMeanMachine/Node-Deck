@@ -1,10 +1,13 @@
 package org.team2471.frc.nodeDeck
 
 import javafx.geometry.Pos
+import javafx.scene.canvas.Canvas
+import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.stage.Screen
 
@@ -21,10 +24,14 @@ object DynamicTab: VBox(10.0) {
     private var fieldImage = ImageView(Image("field-2023.png"))
     var robotImage = ImageView(Image("robot.png"))
 
+    var fieldPane = StackPane()
+
     val fontSize = 30
 
     val sizeLabel = Label("Robot Size (cm):")
     val sizeInput = TextField("81.3")
+
+    val testButton = Button("Move Bot")
 
     init {
         println("Dynamic Tab up and running")
@@ -38,16 +45,26 @@ object DynamicTab: VBox(10.0) {
         sizeLabel.style = "-fx-font-weight: bold; -fx-font-size: ${fontSize} px"
         sizeInput.style = "-fx-font-size: ${fontSize} px"
 
+        fieldPane.children.addAll(
+            fieldImage, robotImage
+        )
+
         DynamicTab.alignment = Pos.TOP_CENTER
         DynamicTab.children.addAll(
-            fieldImage,
-            robotImage,
+            fieldPane,
             sizeLabel,
-            sizeInput
+            sizeInput,
+            testButton
         )
 
         sizeInput.setOnAction {
             robotImage = scaleImageToHeight(robotImage, (sizeInput.text.toDouble() * ppc))
+        }
+
+        testButton.setOnAction {
+            println("Before: ${robotImage.x}")
+            robotImage.x += 5
+            println("After: ${robotImage.x}")
         }
     }
 }
