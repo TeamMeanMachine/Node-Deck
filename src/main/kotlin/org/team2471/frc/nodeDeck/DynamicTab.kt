@@ -7,8 +7,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.layout.StackPane
-import javafx.scene.layout.VBox
+import javafx.scene.layout.*
 import javafx.stage.Screen
 
 fun scaleImageToHeight(image: ImageView, height: Double): ImageView {
@@ -21,11 +20,13 @@ fun scaleImage(image: ImageView, scaleFactor: Double): ImageView {
 }
 
 object DynamicTab: VBox(10.0) {
-    private var fieldImage = ImageView(Image("field-2023.png"))
+
+    private var fieldImage = scaleImageToHeight(ImageView(Image("field-2023.png")), Screen.getPrimary().bounds.height / 1.5)
     var robotImage = ImageView(Image("robot.png"))
 
-    var fieldPane = StackPane()
+    private var fieldPane = Pane()
 
+    val ppc = (fieldImage.fitHeight / 1462.0) * (250.0 / 156.0)
     val fontSize = 30
 
     val sizeLabel = Label("Robot Size (cm):")
@@ -36,17 +37,18 @@ object DynamicTab: VBox(10.0) {
     init {
         println("Dynamic Tab up and running")
 
-        fieldImage = scaleImageToHeight(fieldImage, Screen.getPrimary().bounds.height / 1.5)
+        fieldPane.resize(fieldImage.image.width, fieldImage.image.width)
 
-        val ppc = (fieldImage.fitHeight / 1462.0) * (250.0 / 156.0)
-        robotImage.x = fieldImage.x; robotImage.y = fieldImage.y
+
+        robotImage.x = 0.0; robotImage.y = 0.0
         robotImage = scaleImageToHeight(robotImage, (sizeInput.text.toDouble() * ppc))
 
         sizeLabel.style = "-fx-font-weight: bold; -fx-font-size: ${fontSize} px"
         sizeInput.style = "-fx-font-size: ${fontSize} px"
 
         fieldPane.children.addAll(
-            fieldImage, robotImage
+            fieldImage,
+            robotImage
         )
 
         DynamicTab.alignment = Pos.TOP_CENTER
@@ -62,9 +64,7 @@ object DynamicTab: VBox(10.0) {
         }
 
         testButton.setOnAction {
-            println("Before: ${robotImage.x}")
-            robotImage.x += 5
-            println("After: ${robotImage.x}")
+            robotImage.layoutY += 5
         }
     }
 }
