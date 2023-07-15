@@ -70,16 +70,16 @@ object DynamicTab: VBox(10.0) {
             robotImage.layoutY += 5
         }
 
-        fieldPane.setOnMousePressed { e -> updateMousePosition(e) }
-        fieldPane.setOnMouseDragged { e -> updateMousePosition(e) }
+//        fieldPane.setOnMousePressed { e -> updateMousePosition(e) }
+//        fieldPane.setOnMouseDragged { e -> updateMousePosition(e) }
 
-        robotImage.setOnDragDetected {
-            robotOriginalPos = Vector2(robotImage.layoutX, robotImage.layoutY)
-        }
+//        robotImage.setOnDragDetected {
+//            robotOriginalPos = Vector2(robotImage.layoutX, robotImage.layoutY)
+//        }
 
-        robotImage.setOnMouseDragged {
-            robotImage.layoutX = mousePos.x - robotOriginalPos.x
-            robotImage.layoutY = mousePos.y - robotOriginalPos.y
+        robotImage.setOnMouseDragged {event ->
+            robotImage.x = event.x - robotImage.image.width/2
+            robotImage.y = event.y - robotImage.image.height/2
         }
 
     }
