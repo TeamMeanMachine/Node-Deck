@@ -1,7 +1,7 @@
 package org.team2471.frc.nodeDeck
 
+import `dynamic-functions`.scaleImageToHeight
 import javafx.geometry.Pos
-import javafx.scene.canvas.Canvas
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
@@ -10,18 +10,9 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.*
 import javafx.stage.Screen
 
-fun scaleImageToHeight(image: ImageView, height: Double): ImageView {
-    return scaleImage(image, height / image.image.height)
-}
-fun scaleImage(image: ImageView, scaleFactor: Double): ImageView {
-    image.fitWidth = scaleFactor * image.image.width
-    image.fitHeight = scaleFactor * image.image.height
-    return image
-}
-
 object DynamicTab: VBox(10.0) {
 
-    private var fieldImage = scaleImageToHeight(ImageView(Image("field-2023.png")), Screen.getPrimary().bounds.height / 1.5)
+    private var fieldImage = scaleImageToHeight(ImageView(Image("field-2023.png")), Screen.getPrimary().bounds.height / 1.75)
     var robotImage = ImageView(Image("robot.png"))
 
     private var fieldPane = Pane()
