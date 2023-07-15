@@ -63,4 +63,8 @@ data class Vector2(var x: Double, var y: Double){
             else -> Vector2(x * (other.x - this.x) + this.x, x * (other.y - this.y) + this.y)
         }
     }
+
+    fun screenCoords(robotWidth: Double, fieldImageScale: Double): Position {
+        return Position(Vector2((((x - (robotWidth / 2)) / fieldImageScale) - 415) / 152.3,(((y - (robotWidth / 2)) / fieldImageScale) - 1177) / -144.35))
+    }
 }
