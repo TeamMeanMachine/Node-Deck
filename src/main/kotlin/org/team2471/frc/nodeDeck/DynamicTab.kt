@@ -1,8 +1,6 @@
 package org.team2471.frc.nodeDeck
 
-import `dynamic-functions`.mousePos
 import `dynamic-functions`.scaleImageToHeight
-import `dynamic-functions`.updateMousePosition
 import `dynamic-resources`.asFeet
 import `dynamic-resources`.meters
 import javafx.geometry.Pos
@@ -23,7 +21,6 @@ object DynamicTab: VBox(10.0) {
 
     private var fieldPane = Pane()
 
-    var robotOriginalPos = Vector2(robotImage.layoutX, robotImage.layoutY)
     val fieldImageScale = fieldImage.fitHeight / 1462.0
     val ppc = fieldImageScale * (250.0 / 156.0)
     val fontSize = 30
@@ -70,16 +67,9 @@ object DynamicTab: VBox(10.0) {
             robotImage.layoutY += 5
         }
 
-//        fieldPane.setOnMousePressed { e -> updateMousePosition(e) }
-//        fieldPane.setOnMouseDragged { e -> updateMousePosition(e) }
-
-//        robotImage.setOnDragDetected {
-//            robotOriginalPos = Vector2(robotImage.layoutX, robotImage.layoutY)
-//        }
-
         robotImage.setOnMouseDragged {event ->
-            robotImage.x = event.x - robotImage.image.width/2
-            robotImage.y = event.y - robotImage.image.height/2
+            robotImage.x = event.x - robotImage.fitWidth / 2
+            robotImage.y = event.y - robotImage.fitHeight / 2
         }
 
     }

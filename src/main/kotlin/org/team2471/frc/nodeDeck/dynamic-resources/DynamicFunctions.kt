@@ -18,8 +18,3 @@ fun scaleImage(image: ImageView, scaleFactor: Double): ImageView {
     image.fitHeight = scaleFactor * image.image.height
     return image
 }
-
-fun updateMousePosition(e: MouseEvent) {
-    mousePos.x = (e.getX() + 2)
-    mousePos.y = (e.getY() - 2)
-}
