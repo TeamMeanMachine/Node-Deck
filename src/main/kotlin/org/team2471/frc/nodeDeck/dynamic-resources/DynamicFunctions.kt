@@ -4,8 +4,6 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
 import org.team2471.frc.nodeDeck.`dynamic-resources`.Vector2
 
-val mousePos:Vector2 = Vector2(0.0, 0.0)
-
 fun scaleImageToHeight(image: ImageView, height: Double): ImageView {
     return scaleImage(image, height / image.image.height)
 }
