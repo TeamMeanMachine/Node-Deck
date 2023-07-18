@@ -2,7 +2,11 @@ package org.team2471.frc.nodeDeck.`dynamic-resources`
 
 import `dynamic-resources`.Angle
 import `dynamic-resources`.radians
+import java.math.BigDecimal
+import java.math.RoundingMode
+import kotlin.math.cos
 import kotlin.math.round
+import kotlin.math.sin
 
 data class Vector2(var x: Double, var y: Double){
     val length: Double get() = Math.sqrt(dot(this))
@@ -15,9 +19,13 @@ data class Vector2(var x: Double, var y: Double){
     }
 
     fun rotateRadians(radians: Double): Vector2 {
-        val c = Math.cos(radians)
-        val s = Math.sin(radians)
+        val c = cos(radians)
+        val s = sin(radians)
         return Vector2(x * c - y * s, x * s + y * c)
+    }
+
+    fun round(decimalPlaces: Int = 0): Vector2 {
+        return Vector2(BigDecimal(this.x).setScale(decimalPlaces, RoundingMode.HALF_EVEN).toDouble(), BigDecimal(this.y).setScale(decimalPlaces, RoundingMode.HALF_EVEN).toDouble())
     }
 
     fun rotateDegrees(degrees: Double): Vector2 = rotateRadians(Math.toRadians(degrees))

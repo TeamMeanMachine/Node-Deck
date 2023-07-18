@@ -1,48 +1,61 @@
 package org.team2471.frc.nodeDeck
 
+import `dynamic-functions`.calculateImageDrag
 import `dynamic-functions`.scaleImageToHeight
+import `dynamic-functions`.updatePath
 import `dynamic-resources`.asFeet
 import `dynamic-resources`.meters
-import `dynamic-resources`.radians
 import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.input.MouseButton
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
+import javafx.scene.paint.Paint
+import javafx.scene.shape.CubicCurve
 import javafx.stage.Screen
 import org.team2471.frc.nodeDeck.`dynamic-resources`.Position
 import org.team2471.frc.nodeDeck.`dynamic-resources`.Vector2
 import org.team2471.frc.nodeDeck.`dynamic-resources`.tmmCoords
-import kotlin.math.abs
-import kotlin.math.atan2
-import kotlin.math.round
-import kotlin.math.sign
+import kotlin.math.cos
+import kotlin.math.sin
 
 
 object DynamicTab: VBox(10.0) {
 
     private var fieldImage = scaleImageToHeight(ImageView(Image("field-2023.png")), Screen.getPrimary().bounds.height / 2)
 
-    private var robotImage = ImageView(Image("robot.png"))
-    private var pathStartImage = ImageView(Image("robot.png"))
-    private var pathEndImage = ImageView(Image("robot.png"))
+    var robotImage = ImageView(Image("robot.png"))
+    var pathStartImage = ImageView(Image("robot.png"))
+    var pathEndImage = ImageView(Image("robot.png"))
 
 
     private var fieldPane = Pane()
 
-    private val fieldImageScale = fieldImage.fitHeight / 1462.0
-    private val ppc = fieldImageScale * (250.0 / 156.0)
+    val fieldImageScale = fieldImage.fitHeight / 1462.0
+    val ppc = fieldImageScale * (250.0 / 156.0)
     private const val fontSize = 10
+    val snapRes = 0
+    const val curvature = 25
+
+    private var path:CubicCurve = CubicCurve(
+        pathStartImage.x,
+        pathStartImage.y,
+        robotImage.x,
+        robotImage.y,
+        robotImage.x,
+        robotImage.y,
+        pathEndImage.x,
+        pathEndImage.y,
+    )
 
     val robotPos: Position
-        get() = Vector2(robotImage.layoutX, robotImage.layoutY).screenCoords(robotImage.fitWidth, fieldImageScale)
+        get() = Vector2(robotImage.x, robotImage.y).screenCoords(robotImage.fitWidth, fieldImageScale)
 
     private val sizeLabel = Label("Robot Size (cm):")
 
-    private val sizeInput = TextField("81.3")
+    val sizeInput = TextField("81.3")
 
     init {
         println("Dynamic Tab up and running")
@@ -66,11 +79,14 @@ object DynamicTab: VBox(10.0) {
         sizeLabel.style = "-fx-font-weight: bold; -fx-font-size: $fontSize px"
         sizeInput.style = "-fx-font-size: $fontSize px"
 
+        path = updatePath()
+
         fieldPane.children.addAll(
             fieldImage,
             robotImage,
             pathStartImage,
-            pathEndImage
+            pathEndImage,
+            path
         )
 
         DynamicTab.alignment = Pos.TOP_CENTER
@@ -81,35 +97,22 @@ object DynamicTab: VBox(10.0) {
         )
 
         sizeInput.setOnAction {
-            robotImage = scaleImageToHeight(robotImage, (sizeInput.text.toDouble() * ppc))
-        }
-
-        robotImage.setOnMouseDragged {event ->
-            if (event.button == MouseButton.PRIMARY) {
-                if (event.isShiftDown) {
-                    val changeX = event.sceneX - robotImage.x - 30
-                    robotImage.x += (if (abs(changeX / ppc) / 100 >= 1) { round(1 * 100 * ppc) * changeX.sign } else 0) as Double
-                    robotImage.y -= -(event.sceneY - robotImage.y - 95.0)
-                }
-                robotImage.x += event.sceneX - robotImage.x - 30
-                robotImage.y -= -(event.sceneY - robotImage.y - 95.0)
-            } else {
-                robotImage.rotate = -atan2(-(event.sceneY - robotImage.y - 95), event.sceneX - robotImage.x - 30).radians.asDegrees + 90
+            if (sizeInput.text.toDouble() > 125.0) {
+                sizeInput.text = "125.0"
             }
+            robotImage = scaleImageToHeight(robotImage, (sizeInput.text.toDouble() * ppc))
+            pathStartImage = scaleImageToHeight(pathStartImage, (sizeInput.text.toDouble() * ppc))
+            pathEndImage = scaleImageToHeight(pathEndImage, (sizeInput.text.toDouble() * ppc))
         }
 
-        pathStartImage.setOnMouseDragged {event ->
-            pathStartImage.x = event.x - pathStartImage.fitWidth / 2
-            pathStartImage.y = event.y - pathStartImage.fitHeight / 2
-        }
+        robotImage = calculateImageDrag(robotImage)
 
-        pathEndImage.setOnMouseDragged {event ->
-            pathEndImage.x = event.x - pathEndImage.fitWidth / 2
-            pathEndImage.y = event.y - pathEndImage.fitHeight / 2
-        }
-        setOnKeyPressed {event ->
-            println(event.code)
-        }
+        pathStartImage = calculateImageDrag(pathStartImage)
 
+        pathEndImage = calculateImageDrag(pathEndImage)
+
+        fieldPane.setOnMouseDragged {
+            path = updatePath()
+        }
     }
 }
