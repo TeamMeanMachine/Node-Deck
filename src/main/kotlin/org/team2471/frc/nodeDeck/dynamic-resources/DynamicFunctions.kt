@@ -48,7 +48,11 @@ fun calculateImageDrag(imageView: ImageView): ImageView {
         } else {
             imageView.rotate = -atan2(-(event.sceneY - imageView.y - yOffset), event.sceneX - imageView.x - xOffset).radians.asDegrees + 90
             if (event.isShiftDown) {
-                imageView.rotate = floor(imageView.rotate / 15)
+                if (imageView.rotate < 0) {
+                    imageView.rotate = imageView.rotate + 360
+
+                }
+                imageView.rotate -= imageView.rotate % 45
             }
         }
     }
