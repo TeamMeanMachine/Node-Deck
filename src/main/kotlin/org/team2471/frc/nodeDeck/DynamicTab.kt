@@ -2,25 +2,41 @@ package org.team2471.frc.nodeDeck
 
 import `dynamic-functions`.calculateImageDrag
 import `dynamic-functions`.scaleImageToHeight
-import `dynamic-functions`.updatePath
-import `dynamic-resources`.asFeet
-import `dynamic-resources`.meters
+import `dynamic-resources`.*
+import javafx.animation.PathTransition
+import javafx.application.Platform
 import javafx.geometry.Pos
+import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
-import javafx.scene.paint.Paint
+import javafx.scene.paint.Color
 import javafx.scene.shape.CubicCurve
 import javafx.stage.Screen
+import javafx.util.Duration
 import org.team2471.frc.nodeDeck.`dynamic-resources`.Position
 import org.team2471.frc.nodeDeck.`dynamic-resources`.Vector2
 import org.team2471.frc.nodeDeck.`dynamic-resources`.tmmCoords
 import kotlin.math.cos
 import kotlin.math.sin
 
+fun updatePath() {
+    DynamicTab.path.startX = DynamicTab.pathStartImage.x + DynamicTab.pathStartImage.fitWidth / 2
+    DynamicTab.path.startY = DynamicTab.pathStartImage.y + DynamicTab.pathStartImage.fitWidth / 2
+    DynamicTab.path.controlX1 = DynamicTab.pathStartImage.x + DynamicTab.pathStartImage.fitWidth / 2
+    DynamicTab.path.controlY1 = DynamicTab.pathStartImage.y + DynamicTab.pathStartImage.fitWidth / 2
+    DynamicTab.path.controlX2 = DynamicTab.pathEndImage.x + DynamicTab.pathEndImage.fitWidth / 2 - (25 * cos((DynamicTab.pathEndImage.rotate - 90.0).degrees.asRadians))
+    DynamicTab.path.controlY2 = DynamicTab.pathEndImage.y + DynamicTab.pathEndImage.fitWidth / 2 - (25 * sin((DynamicTab.pathEndImage.rotate - 90.0).degrees.asRadians))
+    DynamicTab.path.endX = DynamicTab.pathEndImage.x + DynamicTab.pathEndImage.fitWidth / 2
+    DynamicTab.path.endY = DynamicTab.pathEndImage.y + DynamicTab.pathEndImage.fitWidth / 2
+
+    DynamicTab.path.fill = Color(0.0, 0.0, 0.0, 0.0)
+    DynamicTab.path.stroke = Color.BLACK
+    DynamicTab.path.strokeWidth = 4.0
+}
 
 object DynamicTab: VBox(10.0) {
 
@@ -29,6 +45,8 @@ object DynamicTab: VBox(10.0) {
     var robotImage = ImageView(Image("robot.png"))
     var pathStartImage = ImageView(Image("robot.png"))
     var pathEndImage = ImageView(Image("robot.png"))
+
+    private var goButton = Button("GO!")
 
 
     private var fieldPane = Pane()
@@ -39,16 +57,7 @@ object DynamicTab: VBox(10.0) {
     val snapRes = 0
     const val curvature = 25
 
-    private var path:CubicCurve = CubicCurve(
-        pathStartImage.x,
-        pathStartImage.y,
-        robotImage.x,
-        robotImage.y,
-        robotImage.x,
-        robotImage.y,
-        pathEndImage.x,
-        pathEndImage.y,
-    )
+    var path:CubicCurve = CubicCurve(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
     val robotPos: Position
         get() = Vector2(robotImage.x, robotImage.y).screenCoords(robotImage.fitWidth, fieldImageScale)
@@ -59,8 +68,6 @@ object DynamicTab: VBox(10.0) {
 
     init {
         println("Dynamic Tab up and running")
-
-
 
         fieldPane.resize(fieldImage.fitWidth, fieldImage.fitHeight)
 
@@ -79,21 +86,20 @@ object DynamicTab: VBox(10.0) {
         sizeLabel.style = "-fx-font-weight: bold; -fx-font-size: $fontSize px"
         sizeInput.style = "-fx-font-size: $fontSize px"
 
-        path = updatePath()
-
         fieldPane.children.addAll(
             fieldImage,
+            path,
             robotImage,
             pathStartImage,
-            pathEndImage,
-            path
+            pathEndImage
         )
 
         DynamicTab.alignment = Pos.TOP_CENTER
         DynamicTab.children.addAll(
             fieldPane,
             sizeLabel,
-            sizeInput
+            sizeInput,
+            goButton
         )
 
         sizeInput.setOnAction {
@@ -111,8 +117,20 @@ object DynamicTab: VBox(10.0) {
 
         pathEndImage = calculateImageDrag(pathEndImage)
 
+        fieldPane.setOnMouseMoved {
+            updatePath()
+        }
+
         fieldPane.setOnMouseDragged {
-            path = updatePath()
+            updatePath()
+        }
+
+        goButton.setOnAction {
+            val animation = PathTransition()
+            animation.path = path
+            animation.duration = Duration(1000.0)
+            animation.node = robotImage
+            animation.play()
         }
     }
 }

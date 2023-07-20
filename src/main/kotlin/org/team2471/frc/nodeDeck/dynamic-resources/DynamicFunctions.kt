@@ -4,7 +4,9 @@ import `dynamic-resources`.radians
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
+import javafx.scene.paint.Color
 import javafx.scene.shape.CubicCurve
+import javafx.scene.shape.StrokeType
 import org.team2471.frc.nodeDeck.DynamicTab
 import org.team2471.frc.nodeDeck.DynamicTab.fieldImageScale
 import org.team2471.frc.nodeDeck.DynamicTab.robotImage
@@ -57,17 +59,4 @@ fun calculateImageDrag(imageView: ImageView): ImageView {
         }
     }
     return imageView
-}
-
-fun updatePath(): CubicCurve {
-    return CubicCurve(
-        DynamicTab.pathStartImage.x,
-        DynamicTab.pathStartImage.y,
-        DynamicTab.robotImage.x,
-        DynamicTab.robotImage.y,
-        DynamicTab.robotImage.x,
-        DynamicTab.robotImage.y,
-        DynamicTab.pathEndImage.x,
-        DynamicTab.pathEndImage.y,
-    )
 }
