@@ -1,7 +1,8 @@
 package org.team2471.frc.nodeDeck.`dynamic-resources`
 
-import `dynamic-resources`.asMeters
-import `dynamic-resources`.feet
+import org.team2471.frc.lib.math.Vector2
+import org.team2471.frc.lib.units.asMeters
+import org.team2471.frc.lib.units.feet
 
 val fieldDimensionsInMeters = Vector2(26.29.feet.asMeters,54.27.feet.asMeters) // field diagram & json is 26.29, 54.27 but includes side walls and barriers
 val fieldCenterOffsetInMeters = fieldDimensionsInMeters/2.0
@@ -23,5 +24,11 @@ value class Position(val posAsWPI: Vector2) {
 inline val Vector2.tmmCoords get() = Position(Vector2((this.y.feet.asMeters + fieldCenterOffsetInMeters.y), -this.x.feet.asMeters + fieldCenterOffsetInMeters.x))
 inline val Vector2.wpiCoords get() = Position(this)
 
-//If you want to look at the .screenCoords function, look at line 67 Vector2.kt
-
+fun Vector2.screenCoords(robotWidth: Double, fieldImageScale: Double): Position {
+    return Position(
+        Vector2(
+            (((x - (robotWidth / 2)) / fieldImageScale) - 415) / 152.3,
+            (((y - (robotWidth / 2)) / fieldImageScale) - 1177) / -144.35
+        )
+    )
+}

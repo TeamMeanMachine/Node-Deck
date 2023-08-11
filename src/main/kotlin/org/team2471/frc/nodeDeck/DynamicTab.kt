@@ -2,7 +2,6 @@ package org.team2471.frc.nodeDeck
 
 import `dynamic-functions`.calculateImageDrag
 import `dynamic-functions`.scaleImageToHeight
-import `dynamic-resources`.*
 import javafx.animation.PathTransition
 import javafx.application.Platform
 import javafx.geometry.Pos
@@ -17,8 +16,13 @@ import javafx.scene.paint.Color
 import javafx.scene.shape.CubicCurve
 import javafx.stage.Screen
 import javafx.util.Duration
+import org.team2471.frc.lib.math.Vector2
+import org.team2471.frc.lib.units.asFeet
+import org.team2471.frc.lib.units.asRadians
+import org.team2471.frc.lib.units.degrees
+import org.team2471.frc.lib.units.meters
 import org.team2471.frc.nodeDeck.`dynamic-resources`.Position
-import org.team2471.frc.nodeDeck.`dynamic-resources`.Vector2
+import org.team2471.frc.nodeDeck.`dynamic-resources`.screenCoords
 import org.team2471.frc.nodeDeck.`dynamic-resources`.tmmCoords
 import kotlin.math.cos
 import kotlin.math.sin
@@ -49,13 +53,15 @@ object DynamicTab: VBox(10.0) {
     private var goButton = Button("GO!")
 
 
-    private var fieldPane = Pane()
+    var fieldPane = Pane()
 
     val fieldImageScale = fieldImage.fitHeight / 1462.0
     val ppc = fieldImageScale * (250.0 / 156.0)
     private const val fontSize = 10
     val snapRes = 0
     const val curvature = 25
+    const val maxVelocity = 20.0
+    const val maxAcceleration = 20.0
 
     var path:CubicCurve = CubicCurve(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 

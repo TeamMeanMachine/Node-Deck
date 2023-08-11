@@ -16,25 +16,28 @@ val mainClass = "org.team2471.frc.nodeDeck.Main"
 buildConfig {
     buildConfigField ("long", "BUILD_TIME", "${System.currentTimeMillis()}L")
 }
-tasks {
-    register("fatJar", Jar::class.java) {
-        archiveClassifier.set("all")
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        manifest {
-            attributes("Main-Class" to mainClass)
-        }
-        from(configurations.runtimeClasspath.get()
-            .onEach { println("add from dependencies: ${it.name}") }
-            .map { if (it.isDirectory) it else zipTree(it) })
-        val sourcesMain = sourceSets.main.get()
-        sourcesMain.allSource.forEach { println("add from sources: ${it.name}") }
-        from(sourcesMain.output)
-    }
-}
+//tasks {
+//    register("fatJar", Jar::class.java) {
+//        archiveClassifier.set("all")
+//        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+//        manifest {
+//            attributes("Main-Class" to mainClass)
+//        }
+//        from(configurations.runtimeClasspath.get()
+//            .onEach { println("add from dependencies: ${it.name}") }
+//            .map { if (it.isDirectory) it else zipTree(it) })
+//        val sourcesMain = sourceSets.main.get()
+//        sourcesMain.allSource.forEach { println("add from sources: ${it.name}") }
+//        from(sourcesMain.output)
+//    }
+//}
 
 repositories {
     mavenCentral()
-    maven { setUrl("https://frcmaven.wpi.edu/artifactory/release/")}
+    maven { setUrl("https://frcmaven.wpi.edu/artifactory/release/") }
+    maven { setUrl("https://plugins.gradle.org/m2/") }
+    maven { setUrl("https://maven.ctr-electronics.com/release/") }
+    maven { setUrl("https://maven.revrobotics.com/") }
 }
 
 javafx {
@@ -46,7 +49,9 @@ application {
 }
 
 dependencies {
+    implementation(project("meanlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("edu.wpi.first.wpimath:wpimath-java:$wpiLibVersion")
     implementation("edu.wpi.first.ntcore:ntcore-java:$wpiLibVersion")
     implementation("edu.wpi.first.ntcore:ntcore-jni:$wpiLibVersion:${if (OperatingSystem.current().isMacOsX) "osxuniversal" else "windowsx86-64"}")
     implementation("edu.wpi.first.wpiutil:wpiutil-java:$wpiLibVersion")

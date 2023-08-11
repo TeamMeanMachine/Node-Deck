@@ -1,19 +1,25 @@
 package `dynamic-functions`
 
-import `dynamic-resources`.radians
+import edu.wpi.first.math.trajectory.Trajectory
+import javafx.scene.canvas.GraphicsContext
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.paint.Color
 import javafx.scene.shape.CubicCurve
 import javafx.scene.shape.StrokeType
+import org.team2471.frc.lib.math.Vector2
+import org.team2471.frc.lib.motion_profiling.Path2D
+import org.team2471.frc.lib.units.asMeters
+import org.team2471.frc.lib.units.feet
+import org.team2471.frc.lib.units.radians
 import org.team2471.frc.nodeDeck.DynamicTab
 import org.team2471.frc.nodeDeck.DynamicTab.fieldImageScale
 import org.team2471.frc.nodeDeck.DynamicTab.robotImage
 import org.team2471.frc.nodeDeck.DynamicTab.robotPos
 import org.team2471.frc.nodeDeck.DynamicTab.snapRes
 import org.team2471.frc.nodeDeck.`dynamic-resources`.Position
-import org.team2471.frc.nodeDeck.`dynamic-resources`.Vector2
+import org.team2471.frc.nodeDeck.`dynamic-resources`.tmmCoords
 import org.team2471.frc.nodeDeck.`dynamic-resources`.wpiCoords
 import java.lang.Math.floorDiv
 import kotlin.coroutines.EmptyCoroutineContext.get
@@ -59,4 +65,37 @@ fun calculateImageDrag(imageView: ImageView): ImageView {
         }
     }
     return imageView
+}
+
+private fun drawPathLine(gc: GraphicsContext, p1: Vector2, p2: Vector2) {
+    val tp1 = p1.tmmCoords.toScreenCoords(robotImage.fitWidth, fieldImageScale)
+    val tp2 = p2.tmmCoords.toScreenCoords(robotImage.fitWidth, fieldImageScale)
+    gc.lineWidth = 2.0
+    gc.strokeLine(tp1.x, tp1.y, tp2.x, tp2.y)
+}
+fun Path2D.trajectory() : Trajectory {
+    return this.generateTrajectory(DynamicTab.maxVelocity.feet.asMeters, DynamicTab.maxAcceleration.feet.asMeters)
+}
+private fun drawPath(gc: GraphicsContext, path: Path2D?) {
+    if (path == null || path.duration == 0.0)
+        return
+    var totalTime = path.durationWithSpeed
+    var deltaT = totalTime / 200.0
+    var prevPos = path.getPosition(0.0)
+    val maxVelocity = DynamicTab.maxVelocity
+    var pos: Vector2 = path.getPosition(0.0)
+    var pwPath : Trajectory? = null
+    gc.stroke = Color.WHITE
+    var t = deltaT
+    while (t <= totalTime) {
+        val ease = t / totalTime
+        pos = path.getPosition(t)
+        gc.stroke = Color(ease * Color.WHITE.red, ease * Color.WHITE.green, ease * Color.WHITE.blue, 1.0)
+        // center line
+
+        drawPathLine(gc, prevPos, pos)
+        prevPos = Vector2(pos.x, pos.y)
+        //println(pos.y)
+        t += deltaT
+    }
 }
