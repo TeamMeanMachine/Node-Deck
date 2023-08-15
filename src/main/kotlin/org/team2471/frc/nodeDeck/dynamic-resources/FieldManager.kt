@@ -19,6 +19,12 @@ value class Position(val posAsWPI: Vector2) {
     fun toScreenCoords(robotWidth: Double, fieldImageScale: Double): Vector2 {
         return Vector2(fieldImageScale * ((152.3 * posAsWPI.x) + 415) + (robotWidth / 2),fieldImageScale * ((-144.35 * posAsWPI.y) + 1177) + (robotWidth / 2))
     }
+
+//    Because for some reason javafx's Path coords are different
+    fun toPathCoords(fieldImageScale: Double): Vector2 {
+        return Vector2(fieldImageScale * ((152.3 * posAsWPI.x) + 415) + 50,fieldImageScale * ((-144.35 * posAsWPI.y) + 1177) + 50)
+    // TODO:  mirror path over centre of field over both axes
+    }
 }
 
 inline val Vector2.tmmCoords get() = Position(Vector2((this.y.feet.asMeters + fieldCenterOffsetInMeters.y), -this.x.feet.asMeters + fieldCenterOffsetInMeters.x))

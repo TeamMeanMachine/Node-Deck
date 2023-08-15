@@ -2,6 +2,7 @@ package org.team2471.frc.nodeDeck
 
 import `dynamic-functions`.calculateImageDrag
 import `dynamic-functions`.scaleImageToHeight
+import `dynamic-functions`.toLinearFXPath
 import javafx.animation.PathTransition
 import javafx.application.Platform
 import javafx.geometry.Pos
@@ -14,33 +15,18 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.shape.CubicCurve
+import javafx.scene.shape.Path
 import javafx.stage.Screen
 import javafx.util.Duration
 import org.team2471.frc.lib.math.Vector2
-import org.team2471.frc.lib.units.asFeet
-import org.team2471.frc.lib.units.asRadians
-import org.team2471.frc.lib.units.degrees
-import org.team2471.frc.lib.units.meters
+import org.team2471.frc.lib.motion_profiling.MotionCurve
+import org.team2471.frc.lib.motion_profiling.Path2D
+import org.team2471.frc.lib.units.*
 import org.team2471.frc.nodeDeck.`dynamic-resources`.Position
 import org.team2471.frc.nodeDeck.`dynamic-resources`.screenCoords
 import org.team2471.frc.nodeDeck.`dynamic-resources`.tmmCoords
 import kotlin.math.cos
 import kotlin.math.sin
-
-fun updatePath() {
-    DynamicTab.path.startX = DynamicTab.pathStartImage.x + DynamicTab.pathStartImage.fitWidth / 2
-    DynamicTab.path.startY = DynamicTab.pathStartImage.y + DynamicTab.pathStartImage.fitWidth / 2
-    DynamicTab.path.controlX1 = DynamicTab.pathStartImage.x + DynamicTab.pathStartImage.fitWidth / 2
-    DynamicTab.path.controlY1 = DynamicTab.pathStartImage.y + DynamicTab.pathStartImage.fitWidth / 2
-    DynamicTab.path.controlX2 = DynamicTab.pathEndImage.x + DynamicTab.pathEndImage.fitWidth / 2 - (25 * cos((DynamicTab.pathEndImage.rotate - 90.0).degrees.asRadians))
-    DynamicTab.path.controlY2 = DynamicTab.pathEndImage.y + DynamicTab.pathEndImage.fitWidth / 2 - (25 * sin((DynamicTab.pathEndImage.rotate - 90.0).degrees.asRadians))
-    DynamicTab.path.endX = DynamicTab.pathEndImage.x + DynamicTab.pathEndImage.fitWidth / 2
-    DynamicTab.path.endY = DynamicTab.pathEndImage.y + DynamicTab.pathEndImage.fitWidth / 2
-
-    DynamicTab.path.fill = Color(0.0, 0.0, 0.0, 0.0)
-    DynamicTab.path.stroke = Color.BLACK
-    DynamicTab.path.strokeWidth = 4.0
-}
 
 object DynamicTab: VBox(10.0) {
 
@@ -63,7 +49,8 @@ object DynamicTab: VBox(10.0) {
     const val maxVelocity = 20.0
     const val maxAcceleration = 20.0
 
-    var path:CubicCurve = CubicCurve(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    var linearPath: Path? = Path()
+    var cubicPath: Path? = Path()
 
     val robotPos: Position
         get() = Vector2(robotImage.x, robotImage.y).screenCoords(robotImage.fitWidth, fieldImageScale)
@@ -77,12 +64,39 @@ object DynamicTab: VBox(10.0) {
 
         fieldPane.resize(fieldImage.fitWidth, fieldImage.fitHeight)
 
+        val testPath = Path2D("GoToScore")
+        testPath.addEasePoint(0.0, 0.0)
+        val p1 = Vector2(0.0, 0.0)
+        var p2 = Vector2(58.0.inches.asFeet, 16.0)
+        var p3 = Vector2(20.0, -20.0)
+
+        val rateCurve = MotionCurve()
+
+        rateCurve.setMarkBeginOrEndKeysToZeroSlope(false)
+        rateCurve.storeValue(1.0, 3.0)  // distance, rate
+        rateCurve.storeValue(8.0, 6.0)  // distance, rate
+        testPath.addVector2(p1)
+        testPath.addVector2(p2)
+        testPath.addVector2(p3)
+//        println("Final: $finalHeading  heading: ${heading.asDegrees}")
+        val distance = testPath.length
+
+        val rate = rateCurve.getValue(distance)
+        var time = distance / rate
+        var finalHeading = 0.0
+        testPath.addEasePoint(time, 1.0)
+
+        testPath.addHeadingPoint(time, finalHeading)
+
+        linearPath = testPath.toLinearFXPath()
+
         robotImage = scaleImageToHeight(robotImage, (sizeInput.text.toDouble() * ppc))
         pathStartImage = scaleImageToHeight(pathStartImage, (sizeInput.text.toDouble() * ppc))
         pathEndImage = scaleImageToHeight(pathEndImage, (sizeInput.text.toDouble() * ppc))
 
 
-        val robotStartPos = Vector2(0.0.meters.asFeet, 0.0).tmmCoords.toScreenCoords(robotImage.fitWidth, fieldImageScale)
+        val robotStartPos = Vector2(5.0, 0.0).tmmCoords.toScreenCoords(robotImage.fitWidth, fieldImageScale)
+        println("Robot: ${Pair(robotStartPos.x, robotStartPos.y)}")
         robotImage.x = robotStartPos.x; robotImage.y = robotStartPos.y
         pathStartImage.x = robotStartPos.x + 50.0; pathStartImage.y = robotStartPos.y + 50.0
         pathStartImage.opacity = 0.5
@@ -94,10 +108,9 @@ object DynamicTab: VBox(10.0) {
 
         fieldPane.children.addAll(
             fieldImage,
-            path,
-            robotImage,
-            pathStartImage,
-            pathEndImage
+            cubicPath,
+            linearPath,
+            robotImage
         )
 
         DynamicTab.alignment = Pos.TOP_CENTER
@@ -122,21 +135,5 @@ object DynamicTab: VBox(10.0) {
         pathStartImage = calculateImageDrag(pathStartImage)
 
         pathEndImage = calculateImageDrag(pathEndImage)
-
-        fieldPane.setOnMouseMoved {
-            updatePath()
-        }
-
-        fieldPane.setOnMouseDragged {
-            updatePath()
-        }
-
-        goButton.setOnAction {
-            val animation = PathTransition()
-            animation.path = path
-            animation.duration = Duration(1000.0)
-            animation.node = robotImage
-            animation.play()
-        }
     }
 }

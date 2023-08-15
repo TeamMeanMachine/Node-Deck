@@ -7,6 +7,10 @@ import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.paint.Color
 import javafx.scene.shape.CubicCurve
+import javafx.scene.shape.Line
+import javafx.scene.shape.LineTo
+import javafx.scene.shape.MoveTo
+import javafx.scene.shape.Path
 import javafx.scene.shape.StrokeType
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion_profiling.Path2D
@@ -67,35 +71,38 @@ fun calculateImageDrag(imageView: ImageView): ImageView {
     return imageView
 }
 
-private fun drawPathLine(gc: GraphicsContext, p1: Vector2, p2: Vector2) {
-    val tp1 = p1.tmmCoords.toScreenCoords(robotImage.fitWidth, fieldImageScale)
-    val tp2 = p2.tmmCoords.toScreenCoords(robotImage.fitWidth, fieldImageScale)
-    gc.lineWidth = 2.0
-    gc.strokeLine(tp1.x, tp1.y, tp2.x, tp2.y)
+private fun addPathLine(path: Path, point: Vector2) {
+    val tp = point.tmmCoords.toPathCoords(fieldImageScale)
+    path.strokeWidth = 2.0
+    path.elements.add(LineTo(tp.x, tp.y))
 }
-fun Path2D.trajectory() : Trajectory {
-    return this.generateTrajectory(DynamicTab.maxVelocity.feet.asMeters, DynamicTab.maxAcceleration.feet.asMeters)
+
+fun Path.addStartPoint(startPoint: Vector2) {
+    var startPoint = Vector2(0.0, 0.0).tmmCoords.toPathCoords(fieldImageScale)
+    this.elements.add(MoveTo(startPoint.x, startPoint.y))
 }
-private fun drawPath(gc: GraphicsContext, path: Path2D?) {
-    if (path == null || path.duration == 0.0)
-        return
-    var totalTime = path.durationWithSpeed
+
+fun Path2D.toLinearFXPath(): Path? {
+    if (this == null || this.duration == 0.0) {
+        return null
+    }
+    var outPath = Path()
+    var totalTime = this.durationWithSpeed
     var deltaT = totalTime / 200.0
-    var prevPos = path.getPosition(0.0)
-    val maxVelocity = DynamicTab.maxVelocity
-    var pos: Vector2 = path.getPosition(0.0)
-    var pwPath : Trajectory? = null
-    gc.stroke = Color.WHITE
+    var pos = this.getPosition(0.0)
     var t = deltaT
+
+    outPath.addStartPoint(pos)
+
     while (t <= totalTime) {
         val ease = t / totalTime
-        pos = path.getPosition(t)
-        gc.stroke = Color(ease * Color.WHITE.red, ease * Color.WHITE.green, ease * Color.WHITE.blue, 1.0)
-        // center line
+        pos = this.getPosition(t)
+        outPath.stroke = Color(ease * Color.WHITE.red, ease * Color.WHITE.green, ease * Color.WHITE.blue, 1.0)
 
-        drawPathLine(gc, prevPos, pos)
-        prevPos = Vector2(pos.x, pos.y)
-        //println(pos.y)
+        addPathLine(outPath, pos)
+
         t += deltaT
     }
+
+    return outPath
 }
