@@ -4,7 +4,9 @@ import `dynamic-functions`.calculateImageDrag
 import `dynamic-functions`.scaleImageToHeight
 import `dynamic-functions`.toLinearFXPath
 import javafx.animation.PathTransition
+import javafx.animation.RotateTransition
 import javafx.application.Platform
+import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -25,12 +27,13 @@ import org.team2471.frc.lib.units.*
 import org.team2471.frc.nodeDeck.`dynamic-resources`.Position
 import org.team2471.frc.nodeDeck.`dynamic-resources`.screenCoords
 import org.team2471.frc.nodeDeck.`dynamic-resources`.tmmCoords
+import org.team2471.frc.nodeDeck.`dynamic-resources`.wpiCoords
 import kotlin.math.cos
 import kotlin.math.sin
 
 object DynamicTab: VBox(10.0) {
 
-    private var fieldImage = scaleImageToHeight(ImageView(Image("field-2023.png")), Screen.getPrimary().bounds.height / 2)
+    private var fieldImage = scaleImageToHeight(ImageView(Image("field-2023.png")), Screen.getPrimary().bounds.height / 1.75)
 
     var robotImage = ImageView(Image("robot.png"))
     var pathStartImage = ImageView(Image("robot.png"))
@@ -66,9 +69,9 @@ object DynamicTab: VBox(10.0) {
 
         val testPath = Path2D("GoToScore")
         testPath.addEasePoint(0.0, 0.0)
-        val p1 = Vector2(0.0, 0.0)
-        var p2 = Vector2(58.0.inches.asFeet, 16.0)
-        var p3 = Vector2(20.0, -20.0)
+        val p1 = Vector2(0.0, 0.0).wpiCoords.toTmmCoords()
+        var p2 = Vector2(50.0, 26.0+ 7.inches.asFeet)
+        var p3 = Vector2(54.0 + 1.inches.asFeet, 26.0 + 7.inches.asFeet)
 
         val rateCurve = MotionCurve()
 
@@ -83,9 +86,9 @@ object DynamicTab: VBox(10.0) {
 
         val rate = rateCurve.getValue(distance)
         var time = distance / rate
-        var finalHeading = 0.0
+        var finalHeading = 180.0
         testPath.addEasePoint(time, 1.0)
-
+        testPath.addHeadingPoint(0.0, 0.0)
         testPath.addHeadingPoint(time, finalHeading)
 
         linearPath = testPath.toLinearFXPath()
@@ -95,8 +98,7 @@ object DynamicTab: VBox(10.0) {
         pathEndImage = scaleImageToHeight(pathEndImage, (sizeInput.text.toDouble() * ppc))
 
 
-        val robotStartPos = Vector2(5.0, 0.0).tmmCoords.toScreenCoords(robotImage.fitWidth, fieldImageScale)
-        println("Robot: ${Pair(robotStartPos.x, robotStartPos.y)}")
+        val robotStartPos = Vector2(0.0, 0.0).tmmCoords.toScreenCoords(robotImage.fitWidth, fieldImageScale)
         robotImage.x = robotStartPos.x; robotImage.y = robotStartPos.y
         pathStartImage.x = robotStartPos.x + 50.0; pathStartImage.y = robotStartPos.y + 50.0
         pathStartImage.opacity = 0.5
@@ -135,5 +137,21 @@ object DynamicTab: VBox(10.0) {
         pathStartImage = calculateImageDrag(pathStartImage)
 
         pathEndImage = calculateImageDrag(pathEndImage)
+
+        goButton.setOnAction {
+            val transAnimation = PathTransition()
+            transAnimation.path = linearPath
+            transAnimation.duration = Duration(testPath.duration * 1000)
+            transAnimation.node = robotImage
+
+            val rotAnimation = RotateTransition()
+            rotAnimation.duration = Duration(testPath.duration * 1000)
+            rotAnimation.node = robotImage
+            rotAnimation.fromAngle = testPath.getAbsoluteHeadingDegreesAt(0.0)
+            rotAnimation.toAngle = testPath.getAbsoluteHeadingDegreesAt(testPath.duration)
+
+            rotAnimation.play()
+            transAnimation.play()
+        }
     }
 }

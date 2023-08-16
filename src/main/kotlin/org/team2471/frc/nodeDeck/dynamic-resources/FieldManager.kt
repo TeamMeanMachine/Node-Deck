@@ -3,6 +3,7 @@ package org.team2471.frc.nodeDeck.`dynamic-resources`
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.units.asMeters
 import org.team2471.frc.lib.units.feet
+import java.util.Vector
 
 val fieldDimensionsInMeters = Vector2(26.29.feet.asMeters,54.27.feet.asMeters) // field diagram & json is 26.29, 54.27 but includes side walls and barriers
 val fieldCenterOffsetInMeters = fieldDimensionsInMeters/2.0
@@ -17,13 +18,18 @@ value class Position(val posAsWPI: Vector2) {
         return posAsWPI
     }
     fun toScreenCoords(robotWidth: Double, fieldImageScale: Double): Vector2 {
-        return Vector2(fieldImageScale * ((152.3 * posAsWPI.x) + 415) + (robotWidth / 2),fieldImageScale * ((-144.35 * posAsWPI.y) + 1177) + (robotWidth / 2))
+        return Vector2(
+            fieldImageScale * ((152.3 * posAsWPI.x) + 415) + (robotWidth / 2),
+            fieldImageScale * ((-144.35 * posAsWPI.y) + 1177) + (robotWidth / 2)
+        )
     }
 
 //    Because for some reason javafx's Path coords are different
     fun toPathCoords(fieldImageScale: Double): Vector2 {
-        return Vector2(fieldImageScale * ((152.3 * posAsWPI.x) + 415) + 50,fieldImageScale * ((-144.35 * posAsWPI.y) + 1177) + 50)
-    // TODO:  mirror path over centre of field over both axes
+        return Vector2(
+            fieldImageScale * ((-148.9 * posAsWPI.y) + 1264),
+            fieldImageScale * ((-231 * posAsWPI.x) + 3865)
+        )
     }
 }
 

@@ -71,14 +71,15 @@ fun calculateImageDrag(imageView: ImageView): ImageView {
     return imageView
 }
 
-private fun addPathLine(path: Path, point: Vector2) {
+private fun addPathLine(path: Path, point: Vector2, stroke: Color = Color.BLACK) {
     val tp = point.tmmCoords.toPathCoords(fieldImageScale)
     path.strokeWidth = 2.0
-    path.elements.add(LineTo(tp.x, tp.y))
+    var line = LineTo(tp.x, tp.y)
+    path.elements.add(line)
 }
 
 fun Path.addStartPoint(startPoint: Vector2) {
-    var startPoint = Vector2(0.0, 0.0).tmmCoords.toPathCoords(fieldImageScale)
+    var startPoint = startPoint.tmmCoords.toPathCoords(fieldImageScale)
     this.elements.add(MoveTo(startPoint.x, startPoint.y))
 }
 
@@ -97,7 +98,7 @@ fun Path2D.toLinearFXPath(): Path? {
     while (t <= totalTime) {
         val ease = t / totalTime
         pos = this.getPosition(t)
-        outPath.stroke = Color(ease * Color.WHITE.red, ease * Color.WHITE.green, ease * Color.WHITE.blue, 1.0)
+        val stroke = Color(ease * Color.WHITE.red, ease * Color.WHITE.green, ease * Color.WHITE.blue, 1.0)
 
         addPathLine(outPath, pos)
 
