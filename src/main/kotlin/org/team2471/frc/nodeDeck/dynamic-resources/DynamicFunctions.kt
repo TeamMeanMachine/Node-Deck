@@ -17,10 +17,11 @@ import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.lib.units.asMeters
 import org.team2471.frc.lib.units.feet
 import org.team2471.frc.lib.units.radians
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImageScale
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.robotImage
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.robotPos
+import org.team2471.frc.nodeDeck.DynamicPanes.SettingsPane.sizeInput
 import org.team2471.frc.nodeDeck.DynamicTab
-import org.team2471.frc.nodeDeck.DynamicTab.fieldImageScale
-import org.team2471.frc.nodeDeck.DynamicTab.robotImage
-import org.team2471.frc.nodeDeck.DynamicTab.robotPos
 import org.team2471.frc.nodeDeck.DynamicTab.snapRes
 import org.team2471.frc.nodeDeck.`dynamic-resources`.Position
 import org.team2471.frc.nodeDeck.`dynamic-resources`.tmmCoords
@@ -43,10 +44,10 @@ fun scaleImage(image: ImageView, scaleFactor: Double): ImageView {
 }
 
 val xOffset: Double
-    get() = (30 / 81.3) * DynamicTab.sizeInput.text.toDouble()
+    get() = (30 / 81.3) * sizeInput.text.toDouble()
 
 val yOffset: Double
-    get() = (90 / 81.3) * DynamicTab.sizeInput.text.toDouble()
+    get() = (90 / 81.3) * sizeInput.text.toDouble()
 fun calculateImageDrag(imageView: ImageView): ImageView {
     imageView.setOnMouseDragged { event ->
         if (event.button == MouseButton.PRIMARY) {
