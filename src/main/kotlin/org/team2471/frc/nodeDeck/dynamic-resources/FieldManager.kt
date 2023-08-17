@@ -27,8 +27,8 @@ value class Position(val posAsWPI: Vector2) {
 //    Because for some reason javafx's Path coords are different
     fun toPathCoords(fieldImageScale: Double): Vector2 {
         return Vector2(
-            fieldImageScale * ((-148.9 * posAsWPI.y) + 1264),
-            fieldImageScale * ((-231 * posAsWPI.x) + 3865)
+            fieldImageScale * ((-160 * posAsWPI.x) + 2210),
+            fieldImageScale * ((158 * posAsWPI.y) + 550)
         )
     }
 }

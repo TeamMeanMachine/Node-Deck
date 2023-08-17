@@ -1,6 +1,8 @@
 package `dynamic-functions`
 
 import edu.wpi.first.math.trajectory.Trajectory
+import javafx.animation.PathTransition
+import javafx.animation.RotateTransition
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseButton
@@ -12,11 +14,13 @@ import javafx.scene.shape.LineTo
 import javafx.scene.shape.MoveTo
 import javafx.scene.shape.Path
 import javafx.scene.shape.StrokeType
+import javafx.util.Duration
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.lib.units.asMeters
 import org.team2471.frc.lib.units.feet
 import org.team2471.frc.lib.units.radians
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImageScale
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.robotImage
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.robotPos
@@ -108,3 +112,5 @@ fun Path2D.toLinearFXPath(): Path? {
 
     return outPath
 }
+
+

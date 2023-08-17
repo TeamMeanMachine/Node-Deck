@@ -14,6 +14,7 @@ import javafx.scene.paint.Color
 import javafx.stage.Popup
 import javafx.stage.Screen
 import org.team2471.frc.nodeDeck.DynamicTab
+import org.team2471.frc.nodeDeck.DynamicTab.backgroundColor
 import org.team2471.frc.nodeDeck.NodeDeck
 
 
@@ -32,7 +33,7 @@ object SettingsPane {
 
 
     init  {
-        settingsPane.background = settingsBackground
+        settingsPane.background = Background.fill(backgroundColor)
 
         sizeLabel.style = "-fx-font-weight: bold; -fx-font-size: ${DynamicTab.fontSize} px"
         sizeLabel.textFill = Color.WHITE
