@@ -1,13 +1,23 @@
 package org.team2471.frc.nodeDeck
 
+import edu.wpi.first.networktables.NetworkTableEvent
 import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import javafx.application.Platform
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.team2471.frc.lib.motion_profiling.Autonomi
+import org.team2471.frc.lib.util.measureTimeFPGA
+import java.io.File
+import java.time.Instant
+import java.time.LocalDateTime.now
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
+
 
 object NTClient {
     val networkTableInstance = NetworkTableInstance.getDefault()
@@ -39,6 +49,9 @@ object NTClient {
     private var prevReachLimit = 47.0
     private var prevDemoBoundaryLimit = 1.0
 
+    private var genPathEntrySub =
+        NetworkTableInstance.getDefault().getTable("Drive").getStringTopic("Planned Path").subscribe("")
+
     private var reconnected: Boolean = true
     val isRed: Boolean
         get() = isRedEntry.get()
@@ -64,9 +77,47 @@ object NTClient {
         get() = tagLookingAtEntry.get()
         set(value) = tagLookingAtEntry.set(value)
 
+    val formatter = DateTimeFormatter
+        .ofPattern("yyyy-MM-dd'_'hh-mm-ss")
+
     init {
         println("NTClient says hi!!")
         initConnectionStatusCheck()
+
+        NetworkTableInstance.getDefault().addListener(
+            genPathEntrySub,
+            EnumSet.of(
+                NetworkTableEvent.Kind.kImmediate,
+                NetworkTableEvent.Kind.kPublish,
+                NetworkTableEvent.Kind.kValueAll
+            )
+        ) { event ->
+            println("Automous change detected")
+            var path2dFile: File? = null
+            var path2d = null
+            try {
+                path2dFile = File("generated_2d_path${formatter.format(Instant.now())}.json")
+                if (!path2dFile.createNewFile()) {
+                    println("Generated 2D path file already exists.")
+                }
+            } catch (_: Throwable) {
+                DriverStation.reportError("Something went wrong while saving 2D path.", false)
+                println("Something went wrong while saving 2D path.")
+            }
+
+            val json = event.valueData?.value?.string
+            if (json?.isNotEmpty() == true) {
+                if (path2dFile != null) {
+                    println("CacheFile != null. Hi.")
+                    path2dFile.writeText(json)
+                } else {
+                    println("cacheFile == null. Hi.")
+                }
+                println("New autonomi written to cache")
+            } else {
+                DriverStation.reportWarning("Empty autonomi received from network tables", false)
+            }
+        }
     }
 
     @OptIn(DelicateCoroutinesApi::class) //
