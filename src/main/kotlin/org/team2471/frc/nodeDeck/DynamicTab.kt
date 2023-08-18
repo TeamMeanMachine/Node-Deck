@@ -24,7 +24,6 @@ import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.lib.units.*
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.animateAlongPath
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath2D
@@ -76,13 +75,6 @@ object DynamicTab: VBox(10.0) {
 
         settingsButton.setOnAction {
             SettingsPane.toggleSettings()
-        }
-
-
-
-
-        goButton.setOnAction {
-            generatedPath?.let { it1 -> animateAlongPath(it1, generatedPath2D) }
         }
     }
 }

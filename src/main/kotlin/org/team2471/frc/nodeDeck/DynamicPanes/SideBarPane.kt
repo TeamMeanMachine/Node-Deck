@@ -1,7 +1,9 @@
 package org.team2471.frc.nodeDeck.DynamicPanes
 
+import javafx.animation.Animation
+import javafx.beans.Observable
 import javafx.beans.binding.Bindings
-import javafx.scene.control.Button
+import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.ToggleButton
@@ -9,17 +11,16 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Background
 import javafx.scene.layout.Pane
-import javafx.scene.paint.Color
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.animateAlongPath
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImageScale
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genRotAnimation
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genTransAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath2D
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomRotAnimation
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomTransAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odometryPath
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odometryPath2D
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.rotAnimation
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.transAnimation
-import org.team2471.frc.nodeDeck.DynamicTab
 import org.team2471.frc.nodeDeck.DynamicTab.backgroundColor
 
 object SideBarPane {
@@ -30,6 +31,8 @@ object SideBarPane {
     var hideIcon = Image("hide-icon.png")
     var playIcon = Image("play-icon.png")
     var pauseIcon = Image("pause-icon.png")
+
+    lateinit var isAnimLabel: ObservableBooleanValue
 
     init {
         sidebarPane.background = Background.fill(backgroundColor)
@@ -59,7 +62,10 @@ object SideBarPane {
                 var playButton = ToggleButton()
                 var playImage = ImageView()
 
+                var isOdom = node.accessibleText == "Odometry Path"
+
                 toggleButton.graphic = toggleImage
+
                 toggleImage.imageProperty().bind(
                     Bindings
                         .`when`(toggleButton.selectedProperty())
@@ -84,35 +90,52 @@ object SideBarPane {
 
                 if (isPath) {
                     playButton.graphic = playImage
-                    playImage.imageProperty().bind(
-                        Bindings
-                            .`when`(playButton.selectedProperty())
-                            .then(pauseIcon)
-                            .otherwise(playIcon)
-                    )
+                    if (isOdom) {
+                        playImage.imageProperty().bind(
+                            Bindings
+                                .`when`(odomTransAnimation.statusProperty().isEqualTo(Animation.Status.RUNNING))
+                                .then(pauseIcon)
+                                .otherwise(playIcon)
+                        )
+                    } else {
+                        playImage.imageProperty().bind(
+                            Bindings
+                                .`when`(genTransAnimation.statusProperty().isEqualTo(Animation.Status.RUNNING))
+                                .then(pauseIcon)
+                                .otherwise(playIcon)
+                        )
+                    }
                     playButton.background = Background.EMPTY
 
                     playButton.setOnAction {
-                        if (transAnimation.path == null) {
-                            if (node.accessibleText == "Generated Path") {
-                                generatedPath?.let { it1 -> animateAlongPath(it1, generatedPath2D) }
-                            } else {
-                                odometryPath?.let { it1 -> animateAlongPath(it1, odometryPath2D) }
-                            }
-                        } else if (transAnimation.path.accessibleText == label.text) {
-                            println("Hi")
-                            if (playButton.isSelected) {
-                                transAnimation.play()
-                                rotAnimation.play()
-                            } else {
-                                transAnimation.pause()
-                                rotAnimation.pause()
+                        if (isOdom) {
+                            println(odomTransAnimation.status == Animation.Status.STOPPED)
+                            if (odomTransAnimation.status == Animation.Status.RUNNING) {
+                                odomTransAnimation.pause()
+                                odomRotAnimation.pause()
+                            } else if (odomTransAnimation.status == Animation.Status.PAUSED) {
+                                odomTransAnimation.play()
+                                odomRotAnimation.play()
+                            } else if (odomTransAnimation.status == Animation.Status.STOPPED) {
+                                if (genTransAnimation.status == Animation.Status.RUNNING) {
+                                    genTransAnimation.stop()
+                                }
+                                odomTransAnimation.play()
+                                odomRotAnimation.play()
                             }
                         } else {
-                            if (node.accessibleText == "Generated Path") {
-                                generatedPath?.let { it1 -> animateAlongPath(it1, generatedPath2D) }
-                            } else {
-                                odometryPath?.let { it1 -> animateAlongPath(it1, odometryPath2D) }
+                            if (genTransAnimation.status == Animation.Status.RUNNING) {
+                                genTransAnimation.pause()
+                                genRotAnimation.pause()
+                            } else if (genTransAnimation.status == Animation.Status.PAUSED) {
+                                genTransAnimation.play()
+                                genRotAnimation.play()
+                            } else if (genTransAnimation.status == Animation.Status.STOPPED) {
+                                if (odomTransAnimation.status == Animation.Status.RUNNING) {
+                                    odomTransAnimation.stop()
+                                }
+                                genTransAnimation.playFromStart()
+                                genRotAnimation.playFromStart()
                             }
                         }
                     }

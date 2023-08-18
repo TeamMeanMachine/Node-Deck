@@ -25,11 +25,15 @@ import org.team2471.frc.nodeDeck.`dynamic-resources`.wpiCoords
 object FieldPane {
     var fieldPane = Pane()
 
-    private var fieldImage = scaleImageToHeight(ImageView(Image("field-2023.png")), Screen.getPrimary().bounds.height / 1.75)
+    private var fieldImage =
+        scaleImageToHeight(ImageView(Image("field-2023.png")), Screen.getPrimary().bounds.height / 1.75)
     var robotImage = ImageView(Image("robot.png"))
 
-    val transAnimation = PathTransition()
-    val rotAnimation = RotateTransition()
+    val genTransAnimation = PathTransition()
+    val genRotAnimation = RotateTransition()
+
+    val odomTransAnimation = PathTransition()
+    val odomRotAnimation = RotateTransition()
 
 
     var generatedPath: Path? = Path()
@@ -43,6 +47,7 @@ object FieldPane {
 
     val robotPos: Position
         get() = Vector2(robotImage.x, robotImage.y).screenCoords(robotImage.fitWidth, fieldImageScale)
+
     init {
         println("FieldPane Online!")
 
@@ -52,7 +57,7 @@ object FieldPane {
 
         generatedPath2D.addEasePoint(0.0, 0.0)
         var p1 = Vector2(0.0, 0.0).wpiCoords.toTmmCoords()
-        var p2 = Vector2(50.0, 26.0+ 7.inches.asFeet).wpiCoords.toTmmCoords()
+        var p2 = Vector2(50.0, 26.0 + 7.inches.asFeet).wpiCoords.toTmmCoords()
         var p3 = Vector2(54.0 + 1.inches.asFeet, 26.0 + 7.inches.asFeet).wpiCoords.toTmmCoords()
 
         var rateCurve = MotionCurve()
@@ -102,6 +107,9 @@ object FieldPane {
 
         odometryPath = odometryPath2D.toLinearFXPath()
 
+        updateGenAnimation()
+        updateOdomAnimation()
+
         val robotStartPos = Vector2(0.0, 0.0).tmmCoords.toScreenCoords(robotImage.fitWidth, fieldImageScale)
         robotImage.x = robotStartPos.x; robotImage.y = robotStartPos.y
 
@@ -120,17 +128,26 @@ object FieldPane {
         SideBarPane.sidebarUpdate()
     }
 
-    fun animateAlongPath(path: Path, path2D: Path2D) {
-        transAnimation.path = path
-        transAnimation.duration = Duration(path2D.duration * 1000)
-        transAnimation.node = robotImage
+    fun updateGenAnimation() {
+        genTransAnimation.path = generatedPath
+        genTransAnimation.duration = Duration(generatedPath2D.duration * 1000)
+        genTransAnimation.node = robotImage
 
-        rotAnimation.duration = Duration(path2D.duration * 1000)
-        rotAnimation.node = robotImage
-        rotAnimation.fromAngle = path2D.getAbsoluteHeadingDegreesAt(0.0)
-        rotAnimation.toAngle = path2D.getAbsoluteHeadingDegreesAt(path2D.duration)
+        genRotAnimation.duration = Duration(generatedPath2D.duration * 1000)
+        genRotAnimation.node = robotImage
+        genRotAnimation.fromAngle = generatedPath2D.getAbsoluteHeadingDegreesAt(0.0)
+        genRotAnimation.toAngle = generatedPath2D.getAbsoluteHeadingDegreesAt(generatedPath2D.duration)
 
-        rotAnimation.play()
-        transAnimation.play()
+    }
+
+    fun updateOdomAnimation() {
+        odomTransAnimation.path = odometryPath
+        odomTransAnimation.duration = Duration(odometryPath2D.duration * 1000)
+        odomTransAnimation.node = robotImage
+
+        odomRotAnimation.duration = Duration(odometryPath2D.duration * 1000)
+        odomRotAnimation.node = robotImage
+        odomRotAnimation.fromAngle = odometryPath2D.getAbsoluteHeadingDegreesAt(0.0)
+        odomRotAnimation.toAngle = odometryPath2D.getAbsoluteHeadingDegreesAt(odometryPath2D.duration)
     }
 }
