@@ -44,7 +44,6 @@ object DynamicTab: VBox(10.0) {
     private var settingsImage = scaleImageToHeight(ImageView(Image("settings-icon.png")), Screen.getPrimary().bounds.height / 40)
 
     private var settingsButton = Button()
-    private var goButton = Button("GO!")
 
     var tabPane = Pane()
 
@@ -63,7 +62,6 @@ object DynamicTab: VBox(10.0) {
 
         tabPane.children.addAll(
             fieldPane,
-            goButton,
             sidebarScrollPane,
             settingsButton
         )

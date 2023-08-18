@@ -86,6 +86,7 @@ object SideBarPane {
                 toggleImage.fitWidth = ((yPosIncrement * 0.75) / 100) * 126
 
                 label.layoutX = toggleImage.fitWidth + (75 * fieldImageScale)
+                label.layoutY = (toggleImage.fitHeight * 0.12)
                 label.style = "-fx-font-weight: bold; -fx-font-size: ${toggleImage.fitHeight * 0.75} px"
 
                 if (isPath) {
