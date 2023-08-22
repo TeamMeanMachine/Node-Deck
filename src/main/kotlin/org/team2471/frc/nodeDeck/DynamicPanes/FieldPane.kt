@@ -1,5 +1,6 @@
 package org.team2471.frc.nodeDeck.DynamicPanes
 
+import `dynamic-functions`.addStartPoint
 import `dynamic-functions`.scaleImageToHeight
 import `dynamic-functions`.toLinearFXPath
 import javafx.animation.Animation
@@ -13,6 +14,7 @@ import javafx.beans.value.ObservableValue
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
+import javafx.scene.shape.Circle
 import javafx.scene.shape.Path
 import javafx.stage.Screen
 import javafx.util.Duration
@@ -20,6 +22,8 @@ import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.lib.units.asFeet
+import org.team2471.frc.lib.units.asMeters
+import org.team2471.frc.lib.units.feet
 import org.team2471.frc.lib.units.inches
 import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.sliderLine
 import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.sliderPointPos
@@ -50,6 +54,8 @@ object FieldPane {
     var odometryPath: Path? = Path()
     val odometryPath2D = Path2D("Generated")
 
+    var zeroNode: Circle = Circle(5.0)
+
     val fieldImageScale = fieldImage.fitHeight / 1462.0
     val ppc = fieldImageScale * (250.0 / 156.0)
 
@@ -69,8 +75,8 @@ object FieldPane {
 
         generatedPath2D.addEasePoint(0.0, 0.0)
         var p1 = Vector2(0.0, 0.0).wpiCoords.toTmmCoords()
-        var p2 = Vector2(50.0, 26.0 + 7.inches.asFeet).wpiCoords.toTmmCoords()
-        var p3 = Vector2(54.0 + 1.inches.asFeet, 26.0 + 7.inches.asFeet).wpiCoords.toTmmCoords()
+        var p2 = Vector2(50.0.feet.asMeters, 26.0.feet.asMeters + 7.inches.asMeters).wpiCoords.toTmmCoords()
+        var p3 = Vector2(54.0.feet.asMeters + 1.inches.asMeters, 26.0.feet.asMeters + 7.inches.asMeters).wpiCoords.toTmmCoords()
 
         var rateCurve = MotionCurve()
 
@@ -156,11 +162,15 @@ object FieldPane {
         odometryPath?.accessibleText = "Odometry Path"
         robotImage.accessibleText = "Robot Image"
 
+        zeroNode.accessibleText = "Hi"
+
+
         fieldPane.children.addAll(
             fieldImage,
             odometryPath,
             generatedPath,
-            robotImage
+            robotImage,
+            zeroNode
         )
 
 

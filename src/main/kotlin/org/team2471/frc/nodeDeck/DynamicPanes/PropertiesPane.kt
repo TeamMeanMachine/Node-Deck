@@ -6,6 +6,7 @@ import javafx.beans.binding.Bindings.`when`
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.value.ObservableBooleanValue
+import javafx.scene.control.Button
 import javafx.scene.control.ToggleButton
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Background
@@ -29,6 +30,8 @@ object PropertiesPane {
 
     var playButton = ToggleButton()
     var playImage = ImageView()
+
+    var loadJsonButton = Button()
 
     var sliderPoint = Circle()
 
@@ -54,7 +57,8 @@ object PropertiesPane {
         playButton.layoutX = -15.0 * fieldImageScale
         playButton.layoutY = -2.0 * fieldImageScale
 
-
+        loadJsonButton.text = "Load Json File"
+        loadJsonButton.layoutY = 120 * fieldImageScale
 
 
         playButton.graphic = playImage
@@ -95,13 +99,18 @@ object PropertiesPane {
             }
         }
 
+        loadJsonButton.setOnAction {
+
+        }
+
         playImage.fitHeight = 60 * fieldImageScale
         playImage.fitWidth = playImage.fitHeight
 
         propertiesPane.children.addAll(
             sliderPoint,
             sliderLine,
-            playButton
+            playButton,
+            loadJsonButton
         )
     }
 

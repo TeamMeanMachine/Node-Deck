@@ -1,8 +1,11 @@
 package org.team2471.frc.nodeDeck.`dynamic-resources`
 
 import org.team2471.frc.lib.math.Vector2
+import org.team2471.frc.lib.units.asCm
 import org.team2471.frc.lib.units.asMeters
 import org.team2471.frc.lib.units.feet
+import org.team2471.frc.lib.units.meters
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.ppc
 import java.util.Vector
 
 val fieldDimensionsInMeters = Vector2(26.29.feet.asMeters,54.27.feet.asMeters) // field diagram & json is 26.29, 54.27 but includes side walls and barriers
@@ -27,13 +30,13 @@ value class Position(val posAsWPI: Vector2) {
 //    Because for some reason javafx's Path coords are different
     fun toPathCoords(fieldImageScale: Double): Vector2 {
         return Vector2(
-            fieldImageScale * ((-160 * posAsWPI.x) + 2210),
-            fieldImageScale * ((158 * posAsWPI.y) + 550)
+            ppc * posAsWPI.x.meters.asCm,
+            ppc * posAsWPI.y.meters.asCm
         )
     }
 }
 
-inline val Vector2.tmmCoords get() = Position(Vector2((this.y.feet.asMeters + fieldCenterOffsetInMeters.y), -this.x.feet.asMeters + fieldCenterOffsetInMeters.x))
+inline val Vector2.tmmCoords get() = Position(Vector2((-this.y.feet.asMeters + fieldCenterOffsetInMeters.y), this.x.feet.asMeters + fieldCenterOffsetInMeters.x))
 inline val Vector2.wpiCoords get() = Position(this)
 
 fun Vector2.screenCoords(robotWidth: Double, fieldImageScale: Double): Position {

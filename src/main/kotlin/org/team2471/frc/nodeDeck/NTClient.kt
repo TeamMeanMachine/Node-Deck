@@ -1,5 +1,7 @@
 package org.team2471.frc.nodeDeck
 
+import com.google.gson.Gson
+import `dynamic-functions`.toLinearFXPath
 import edu.wpi.first.networktables.NetworkTableEvent
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DriverStation
@@ -9,13 +11,12 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.team2471.frc.lib.motion_profiling.Autonomi
-import org.team2471.frc.lib.util.measureTimeFPGA
+import org.team2471.frc.lib.motion_profiling.Path2D
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane
 import java.io.File
+import java.text.SimpleDateFormat
 import java.time.Instant
-import java.time.LocalDateTime.now
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import java.time.LocalDate
 import java.util.*
 
 
@@ -77,8 +78,8 @@ object NTClient {
         get() = tagLookingAtEntry.get()
         set(value) = tagLookingAtEntry.set(value)
 
-    val formatter = DateTimeFormatter
-        .ofPattern("yyyy-MM-dd'_'hh-mm-ss")
+    var formatter = SimpleDateFormat("dd-MM-yyyy_HH-mm-ss")
+
 
     init {
         println("NTClient says hi!!")
@@ -95,13 +96,15 @@ object NTClient {
             println("Automous change detected")
             var path2dFile: File? = null
             var path2d = null
+            var gson = Gson()
+            println("generated_2d_path${Instant.now().toString().replace(":", "-")}.json")
             try {
-                path2dFile = File("generated_2d_path${formatter.format(Instant.now())}.json")
+                path2dFile = File("PathJSONs/generated_2d_path${Instant.now().toString().replace(":", "-")}.json")
                 if (!path2dFile.createNewFile()) {
                     println("Generated 2D path file already exists.")
                 }
-            } catch (_: Throwable) {
-                DriverStation.reportError("Something went wrong while saving 2D path.", false)
+            } catch (error: Throwable) {
+                DriverStation.reportError("Something went wrong while saving 2D path. Error: ${error}", false)
                 println("Something went wrong while saving 2D path.")
             }
 
@@ -109,6 +112,7 @@ object NTClient {
             if (json?.isNotEmpty() == true) {
                 if (path2dFile != null) {
                     println("CacheFile != null. Hi.")
+                    FieldPane.generatedPath = gson.fromJson(json, Path2D::class.java).toLinearFXPath()
                     path2dFile.writeText(json)
                 } else {
                     println("cacheFile == null. Hi.")

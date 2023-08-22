@@ -59,6 +59,7 @@ dependencies {
     implementation("edu.wpi.first.wpilibj:wpilibj-java:$wpiLibVersion")
     implementation("edu.wpi.first.hal:hal-java:$wpiLibVersion")
     implementation("edu.wpi.first.hal:hal-jni:$wpiLibVersion:${if (OperatingSystem.current().isMacOsX) "osxuniversal" else "windowsx86-64"}")
+    implementation("com.google.code.gson:gson:2.8.8")
 }
 java {
     withSourcesJar()
