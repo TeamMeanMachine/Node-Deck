@@ -2,8 +2,14 @@ package org.team2471.frc.nodeDeck.DynamicPanes
 
 import `dynamic-functions`.scaleImageToHeight
 import `dynamic-functions`.toLinearFXPath
+import javafx.animation.Animation
 import javafx.animation.PathTransition
 import javafx.animation.RotateTransition
+import javafx.beans.property.BooleanProperty
+import javafx.beans.property.BooleanProperty.booleanProperty
+import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
@@ -15,17 +21,19 @@ import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.lib.units.asFeet
 import org.team2471.frc.lib.units.inches
+import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.sliderLine
+import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.sliderPointPos
 import org.team2471.frc.nodeDeck.DynamicPanes.SettingsPane.sizeInput
-import org.team2471.frc.nodeDeck.DynamicTab
 import org.team2471.frc.nodeDeck.`dynamic-resources`.Position
 import org.team2471.frc.nodeDeck.`dynamic-resources`.screenCoords
 import org.team2471.frc.nodeDeck.`dynamic-resources`.tmmCoords
 import org.team2471.frc.nodeDeck.`dynamic-resources`.wpiCoords
 
+
 object FieldPane {
     var fieldPane = Pane()
 
-    private var fieldImage =
+    var fieldImage =
         scaleImageToHeight(ImageView(Image("field-2023.png")), Screen.getPrimary().bounds.height / 1.75)
     var robotImage = ImageView(Image("robot.png"))
 
@@ -48,8 +56,12 @@ object FieldPane {
     val robotPos: Position
         get() = Vector2(robotImage.x, robotImage.y).screenCoords(robotImage.fitWidth, fieldImageScale)
 
+    var isAnimationPlaying: BooleanProperty = SimpleBooleanProperty(false)
+
     init {
         println("FieldPane Online!")
+
+
 
         fieldPane.resize(fieldImage.fitWidth, fieldImage.fitHeight)
 
@@ -110,6 +122,32 @@ object FieldPane {
         updateGenAnimation()
         updateOdomAnimation()
 
+        genTransAnimation.statusProperty().addListener { _, _, _ ->
+            isAnimationPlaying.set(
+                genTransAnimation.status.equals(Animation.Status.RUNNING) || odomTransAnimation.status.equals(Animation.Status.RUNNING)
+            )
+        }
+
+        odomTransAnimation.statusProperty().addListener { _, _, _ ->
+            isAnimationPlaying.set(
+                genTransAnimation.status.equals(Animation.Status.RUNNING) || odomTransAnimation.status.equals(Animation.Status.RUNNING)
+            )
+        }
+
+        genTransAnimation.currentTimeProperty().addListener { _, _, _ ->
+            sliderPointPos.set(
+                ((genTransAnimation.currentTime.toMillis() / genTransAnimation.duration.toMillis()) * (sliderLine.endX - sliderLine.startX)) + (120 * fieldImageScale)
+            )
+
+        }
+
+        odomTransAnimation.currentTimeProperty().addListener { _, _, _ ->
+            sliderPointPos.set(
+                ((odomTransAnimation.currentTime.toMillis() / odomTransAnimation.duration.toMillis()) * (sliderLine.endX - sliderLine.startX)) + (120 * fieldImageScale)
+            )
+
+        }
+
         val robotStartPos = Vector2(0.0, 0.0).tmmCoords.toScreenCoords(robotImage.fitWidth, fieldImageScale)
         robotImage.x = robotStartPos.x; robotImage.y = robotStartPos.y
 
@@ -124,6 +162,7 @@ object FieldPane {
             generatedPath,
             robotImage
         )
+
 
         SideBarPane.sidebarUpdate()
     }

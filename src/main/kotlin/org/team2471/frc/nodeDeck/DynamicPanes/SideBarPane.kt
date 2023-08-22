@@ -1,27 +1,24 @@
 package org.team2471.frc.nodeDeck.DynamicPanes
 
 import javafx.animation.Animation
-import javafx.beans.Observable
 import javafx.beans.binding.Bindings
-import javafx.beans.value.ObservableBooleanValue
+import javafx.scene.Node
+import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.ToggleButton
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.layout.Background
-import javafx.scene.layout.Pane
+import javafx.scene.layout.*
+import javafx.scene.paint.Color
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImageScale
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genRotAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genTransAnimation
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath2D
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomRotAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomTransAnimation
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odometryPath
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odometryPath2D
 import org.team2471.frc.nodeDeck.DynamicTab.backgroundColor
+
 
 object SideBarPane {
     var sidebarScrollPane = ScrollPane()
@@ -32,7 +29,9 @@ object SideBarPane {
     var playIcon = Image("play-icon.png")
     var pauseIcon = Image("pause-icon.png")
 
-    lateinit var isAnimLabel: ObservableBooleanValue
+    lateinit var selectedNode: Node
+    var isOdomAnimationSelected: Boolean? = null
+
 
     init {
         sidebarPane.background = Background.fill(backgroundColor)
@@ -54,6 +53,8 @@ object SideBarPane {
 
                 val isPath = "Path" in node.accessibleText
 
+                var selectButton = Button()
+
                 var toggleButton = ToggleButton()
                 var toggleImage = ImageView()
 
@@ -63,6 +64,11 @@ object SideBarPane {
                 var playImage = ImageView()
 
                 var isOdom = node.accessibleText == "Odometry Path"
+
+//                selectButton.background = Background.EMPTY
+                selectButton.maxHeight = yPosIncrement
+                selectButton.maxWidth = 1000 * fieldImageScale
+                selectButton.resize(yPosIncrement, 1000 * fieldImageScale)
 
                 toggleButton.graphic = toggleImage
 
@@ -110,7 +116,6 @@ object SideBarPane {
 
                     playButton.setOnAction {
                         if (isOdom) {
-                            println(odomTransAnimation.status == Animation.Status.STOPPED)
                             if (odomTransAnimation.status == Animation.Status.RUNNING) {
                                 odomTransAnimation.pause()
                                 odomRotAnimation.pause()
@@ -156,12 +161,33 @@ object SideBarPane {
                     )
                 pane.layoutY = yPos
 
+                pane.border = Border(BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))
+
+                pane.setOnMouseClicked {
+                   selectNode(node, if (isPath) isOdom else null, pane)
+                }
+
+                if (!isOdom) {
+                    selectNode(node, if (isPath) isOdom else null, pane)
+                }
                 sidebarPane.children.addAll(
                     pane
                 )
 
                 yPos += yPosIncrement
             }
+        }
+    }
+
+    fun selectNode(node: Node, isOdomAnimation: Boolean?, nodePane: Pane) {
+        selectedNode = node
+        isOdomAnimationSelected = isOdomAnimation
+        for (pane in sidebarPane.children) {
+            if (pane is Pane) {
+                pane.background = Background.fill(backgroundColor)
+            }
+
+            nodePane.background = Background.fill(backgroundColor.brighter())
         }
     }
 }
