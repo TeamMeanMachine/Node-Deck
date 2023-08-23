@@ -112,7 +112,6 @@ object NTClient {
             if (json?.isNotEmpty() == true) {
                 if (path2dFile != null) {
                     println("CacheFile != null. Hi.")
-                    FieldPane.generatedPath = gson.fromJson(json, Path2D::class.java).toLinearFXPath()
                     path2dFile.writeText(json)
                 } else {
                     println("cacheFile == null. Hi.")

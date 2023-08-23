@@ -84,8 +84,6 @@ private fun addPathLine(path: Path, point: Vector2, stroke: Color = Color.BLACK)
 }
 
 fun Path.addStartPoint(startPoint: Vector2) {
-    println(Vector2(0.0, 0.0).wpiCoords.toTmmCoords())
-    println(Vector2(0.0, 0.0).wpiCoords.toTmmCoords().tmmCoords.toWpiCoords())
     var startPoint = startPoint.tmmCoords.toScreenCoords()
     this.elements.add(MoveTo(startPoint.x, startPoint.y))
 }

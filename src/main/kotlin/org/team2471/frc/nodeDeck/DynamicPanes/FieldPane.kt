@@ -46,7 +46,7 @@ object FieldPane {
 
 
     var generatedPath: Path? = Path()
-    val generatedPath2D = Path2D("Generated")
+    var generatedPath2D = Path2D("Generated")
 
     var odometryPath: Path? = Path()
     val odometryPath2D = Path2D("Generated")
@@ -156,15 +156,20 @@ object FieldPane {
         odometryPath?.accessibleText = "Odometry Path"
         robotImage.accessibleText = "Robot Image"
 
-        fieldPane.children.addAll(
+        updateFieldPane()
+
+
+        SideBarPane.sidebarUpdate()
+        FilePane.filePaneUpdate()
+    }
+
+    fun updateFieldPane() {
+        fieldPane.children.setAll(
             fieldImage,
             odometryPath,
             generatedPath,
             robotImage
         )
-
-
-        SideBarPane.sidebarUpdate()
     }
 
     fun updateGenAnimation() {
