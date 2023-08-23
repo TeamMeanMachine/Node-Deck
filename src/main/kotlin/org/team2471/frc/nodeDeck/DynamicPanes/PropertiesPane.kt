@@ -31,8 +31,6 @@ object PropertiesPane {
     var playButton = ToggleButton()
     var playImage = ImageView()
 
-    var loadJsonButton = Button()
-
     var sliderPoint = Circle()
 
     var sliderLine = Line()
@@ -56,10 +54,6 @@ object PropertiesPane {
 
         playButton.layoutX = -15.0 * fieldImageScale
         playButton.layoutY = -2.0 * fieldImageScale
-
-        loadJsonButton.text = "Load Json File"
-        loadJsonButton.layoutY = 120 * fieldImageScale
-
 
         playButton.graphic = playImage
         playImage.imageProperty().bind(
@@ -99,18 +93,13 @@ object PropertiesPane {
             }
         }
 
-        loadJsonButton.setOnAction {
-
-        }
-
         playImage.fitHeight = 60 * fieldImageScale
         playImage.fitWidth = playImage.fitHeight
 
         propertiesPane.children.addAll(
             sliderPoint,
             sliderLine,
-            playButton,
-            loadJsonButton
+            playButton
         )
     }
 

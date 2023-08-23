@@ -16,6 +16,7 @@ import javafx.stage.Screen
 import org.team2471.frc.nodeDeck.DynamicTab
 import org.team2471.frc.nodeDeck.DynamicTab.backgroundColor
 import org.team2471.frc.nodeDeck.NodeDeck
+import org.team2471.frc.nodeDeck.`dynamic-resources`.ppc
 
 
 object SettingsPane {
@@ -54,7 +55,7 @@ object SettingsPane {
             if (sizeInput.text.toDouble() > 125.0) {
                 sizeInput.text = "125.0"
             }
-            FieldPane.robotImage = scaleImageToHeight(FieldPane.robotImage, (sizeInput.text.toDouble() * FieldPane.ppc))
+            FieldPane.robotImage = scaleImageToHeight(FieldPane.robotImage, (sizeInput.text.toDouble() * ppc))
         }
     }
 

@@ -58,7 +58,7 @@ fun calculateImageDrag(imageView: ImageView): ImageView {
             imageView.x += event.sceneX - imageView.x - xOffset
             imageView.y += event.sceneY - imageView.y - yOffset
             if (event.isShiftDown) {
-                val snappedPos = robotPos.toWpiCoords().round(snapRes).wpiCoords.toScreenCoords(robotImage.fitWidth, fieldImageScale)
+                val snappedPos = robotPos.toWpiCoords().round(snapRes).wpiCoords.toScreenCoords(robotImage.fitWidth)
                 imageView.x = snappedPos.x
                 imageView.y = snappedPos.y
             }
@@ -77,14 +77,16 @@ fun calculateImageDrag(imageView: ImageView): ImageView {
 }
 
 private fun addPathLine(path: Path, point: Vector2, stroke: Color = Color.BLACK) {
-    val tp = point.tmmCoords.toPathCoords(fieldImageScale)
+    val tp = point.tmmCoords.toScreenCoords()
     path.strokeWidth = 2.0
     var line = LineTo(tp.x, tp.y)
     path.elements.add(line)
 }
 
 fun Path.addStartPoint(startPoint: Vector2) {
-    var startPoint = startPoint.tmmCoords.toPathCoords(fieldImageScale)
+    println(Vector2(0.0, 0.0).wpiCoords.toTmmCoords())
+    println(Vector2(0.0, 0.0).wpiCoords.toTmmCoords().tmmCoords.toWpiCoords())
+    var startPoint = startPoint.tmmCoords.toScreenCoords()
     this.elements.add(MoveTo(startPoint.x, startPoint.y))
 }
 

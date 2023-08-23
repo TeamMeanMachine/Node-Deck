@@ -27,7 +27,6 @@ import org.team2471.frc.lib.units.*
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath2D
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.ppc
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.robotImage
 import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.propertiesPane
 import org.team2471.frc.nodeDeck.DynamicPanes.SettingsPane

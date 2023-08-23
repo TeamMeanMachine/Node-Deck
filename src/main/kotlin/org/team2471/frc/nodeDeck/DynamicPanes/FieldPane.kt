@@ -28,10 +28,7 @@ import org.team2471.frc.lib.units.inches
 import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.sliderLine
 import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.sliderPointPos
 import org.team2471.frc.nodeDeck.DynamicPanes.SettingsPane.sizeInput
-import org.team2471.frc.nodeDeck.`dynamic-resources`.Position
-import org.team2471.frc.nodeDeck.`dynamic-resources`.screenCoords
-import org.team2471.frc.nodeDeck.`dynamic-resources`.tmmCoords
-import org.team2471.frc.nodeDeck.`dynamic-resources`.wpiCoords
+import org.team2471.frc.nodeDeck.`dynamic-resources`.*
 
 
 object FieldPane {
@@ -54,10 +51,7 @@ object FieldPane {
     var odometryPath: Path? = Path()
     val odometryPath2D = Path2D("Generated")
 
-    var zeroNode: Circle = Circle(5.0)
-
     val fieldImageScale = fieldImage.fitHeight / 1462.0
-    val ppc = fieldImageScale * (250.0 / 156.0)
 
     val robotPos: Position
         get() = Vector2(robotImage.x, robotImage.y).screenCoords(robotImage.fitWidth, fieldImageScale)
@@ -154,7 +148,7 @@ object FieldPane {
 
         }
 
-        val robotStartPos = Vector2(0.0, 0.0).tmmCoords.toScreenCoords(robotImage.fitWidth, fieldImageScale)
+        val robotStartPos = Vector2(0.0, 0.0).tmmCoords.toScreenCoords(robotImage.fitWidth)
         robotImage.x = robotStartPos.x; robotImage.y = robotStartPos.y
 
         fieldImage.accessibleText = "Field Image"
@@ -162,15 +156,11 @@ object FieldPane {
         odometryPath?.accessibleText = "Odometry Path"
         robotImage.accessibleText = "Robot Image"
 
-        zeroNode.accessibleText = "Hi"
-
-
         fieldPane.children.addAll(
             fieldImage,
             odometryPath,
             generatedPath,
-            robotImage,
-            zeroNode
+            robotImage
         )
 
 
