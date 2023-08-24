@@ -14,6 +14,7 @@ import javafx.scene.paint.Color
 import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath2D
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.updateFieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.updateGenAnimation
 import org.team2471.frc.nodeDeck.DynamicTab
@@ -59,6 +60,19 @@ object FilePane {
                 loadButton.resize(yPosIncrement, 1000 * FieldPane.fieldImageScale)
                 loadButton.background = Background.EMPTY
 
+                //FOR SOME REASON THE DURATION OF THE PATH2D IS NULL
+                loadButton.setOnMouseClicked {
+                    var file = File(pane.accessibleText)
+                    generatedPath2D = gson.fromJson(file.readText(), Path2D::class.java)
+                    println("${generatedPath2D.duration}****************************************************")
+                    generatedPath = generatedPath2D.toLinearFXPath()
+                    updateFieldPane()
+                    updateGenAnimation()
+//                    FieldPane.generatedPath = FieldPane.odometryPath
+//                    FieldPane.generatedPath2D = FieldPane.odometryPath2D
+//                    updateGenAnimation()
+                }
+
                 loadImage.fitHeight = (yPosIncrement * 0.75)
                 loadImage.fitWidth = ((yPosIncrement * 0.75) / 1024) * 615
 
@@ -85,20 +99,6 @@ object FilePane {
                 )
 
                 pane.layoutY = yPos
-
-//                FOR SOME REASON THE DURATION OF THE PATH2D IS NULL
-                pane.setOnMouseClicked {
-                    var file = File(pane.accessibleText)
-                    println(gson.fromJson(file.readText(), Path2D::class.java)._xyCurve.getPositionAtDistance(2.0))
-                    FieldPane.generatedPath2D = gson.fromJson(file.readText(), Path2D::class.java)
-                    FieldPane.generatedPath = FieldPane.generatedPath2D.toLinearFXPath()
-                    updateFieldPane()
-                    updateGenAnimation()
-                    println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-//                    FieldPane.generatedPath = FieldPane.odometryPath
-//                    FieldPane.generatedPath2D = FieldPane.odometryPath2D
-//                    updateGenAnimation()
-                }
 
                 filePane.children.add(pane)
 

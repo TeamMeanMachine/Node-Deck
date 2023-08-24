@@ -160,6 +160,7 @@ object FieldPane {
 
 
         SideBarPane.sidebarUpdate()
+
         FilePane.filePaneUpdate()
     }
 

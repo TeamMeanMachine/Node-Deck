@@ -11,6 +11,7 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.*
 import javafx.scene.paint.Color
+import javafx.scene.shape.Rectangle
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImageScale
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genRotAnimation
@@ -63,7 +64,15 @@ object SideBarPane {
                 var playButton = ToggleButton()
                 var playImage = ImageView()
 
+                var selectedBox = Rectangle(775 * fieldImageScale, yPosIncrement)
+
                 var isOdom = node.accessibleText == "Odometry Path"
+
+                selectedBox.arcHeight = 50.0 * fieldImageScale
+                selectedBox.arcWidth = 50.0 * fieldImageScale
+                selectedBox.fill = backgroundColor.brighter()
+
+//                selectedBox.opacity = 0.0
 
 //                selectButton.background = Background.EMPTY
                 selectButton.maxHeight = yPosIncrement
@@ -158,18 +167,20 @@ object SideBarPane {
                 pane.children.addAll(
                     toggleButton,
                     label
-                    )
+                )
                 pane.layoutY = yPos
 
-                pane.border = Border(BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))
+
+                pane.children.add(0, selectedBox)
+//                pane.border = Border(BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))
 
                 pane.setOnMouseClicked {
                    selectNode(node, if (isPath) isOdom else null, pane)
                 }
 
-                if (!isOdom) {
-                    selectNode(node, if (isPath) isOdom else null, pane)
-                }
+
+                selectNode(node, if (isPath) isOdom else null, pane)
+
                 sidebarPane.children.addAll(
                     pane
                 )
@@ -184,10 +195,10 @@ object SideBarPane {
         isOdomAnimationSelected = isOdomAnimation
         for (pane in sidebarPane.children) {
             if (pane is Pane) {
-                pane.background = Background.fill(backgroundColor)
+                pane.children[0].opacity = 0.0
             }
 
-            nodePane.background = Background.fill(backgroundColor.brighter())
+            nodePane.children[0].opacity = 1.0
         }
     }
 }
