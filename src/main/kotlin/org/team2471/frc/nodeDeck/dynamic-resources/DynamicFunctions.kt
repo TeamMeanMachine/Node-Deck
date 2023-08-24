@@ -8,12 +8,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.paint.Color
-import javafx.scene.shape.CubicCurve
-import javafx.scene.shape.Line
-import javafx.scene.shape.LineTo
-import javafx.scene.shape.MoveTo
-import javafx.scene.shape.Path
-import javafx.scene.shape.StrokeType
+import javafx.scene.shape.*
 import javafx.util.Duration
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion_profiling.Path2D
@@ -22,9 +17,16 @@ import org.team2471.frc.lib.units.feet
 import org.team2471.frc.lib.units.radians
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImageScale
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genRotAnimation
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genTransAnimation
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.isAnimationPlaying
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomRotAnimation
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomTransAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.robotImage
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.robotPos
+import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.sliderPointPos
 import org.team2471.frc.nodeDeck.DynamicPanes.SettingsPane.sizeInput
+import org.team2471.frc.nodeDeck.DynamicPanes.SideBarPane.isOdomAnimationSelected
 import org.team2471.frc.nodeDeck.DynamicTab
 import org.team2471.frc.nodeDeck.DynamicTab.snapRes
 import org.team2471.frc.nodeDeck.`dynamic-resources`.Position
@@ -74,6 +76,34 @@ fun calculateImageDrag(imageView: ImageView): ImageView {
         }
     }
     return imageView
+}
+
+fun calculateSliderDrag(point: Circle, minX: Double, maxX: Double): Circle {
+    point.setOnMouseDragged { event ->
+        if (!isAnimationPlaying.get()) {
+            if (event.button == MouseButton.PRIMARY) {
+                sliderPointPos.set((sliderPointPos.get() + event.sceneX - point.centerX - point.radius).coerceIn(minX, maxX))
+                if (isOdomAnimationSelected == true) {
+                    odomTransAnimation.play()
+                    odomTransAnimation.pause()
+                    odomTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * odomTransAnimation.duration.toMillis()))
+
+                    odomRotAnimation.play()
+                    odomRotAnimation.pause()
+                    odomRotAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * odomRotAnimation.duration.toMillis()))
+                } else if (isOdomAnimationSelected == false) {
+                    genTransAnimation.play()
+                    genTransAnimation.pause()
+                    genTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * genTransAnimation.duration.toMillis()))
+
+                    genRotAnimation.play()
+                    genRotAnimation.pause()
+                    genRotAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * genRotAnimation.duration.toMillis()))
+                }
+            }
+        }
+    }
+    return point
 }
 
 private fun addPathLine(path: Path, point: Vector2, stroke: Color = Color.BLACK) {

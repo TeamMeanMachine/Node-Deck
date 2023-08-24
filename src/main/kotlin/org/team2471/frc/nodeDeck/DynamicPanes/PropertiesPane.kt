@@ -1,5 +1,6 @@
 package org.team2471.frc.nodeDeck.DynamicPanes
 
+import `dynamic-functions`.calculateSliderDrag
 import javafx.animation.Animation
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.Bindings.`when`
@@ -65,7 +66,6 @@ object PropertiesPane {
         playButton.background = Background.EMPTY
 
         playButton.setOnAction {
-            println(isOdomAnimationSelected)
             if (isAnimationPlaying.get()) {
                 if (odomTransAnimation.status.equals(Animation.Status.RUNNING)) {
                     odomRotAnimation.pause()
@@ -97,10 +97,11 @@ object PropertiesPane {
         playImage.fitWidth = playImage.fitHeight
 
         propertiesPane.children.addAll(
-            sliderPoint,
             sliderLine,
+            sliderPoint,
             playButton
         )
+        calculateSliderDrag(sliderPoint, sliderLine.startX, sliderLine.endX)
     }
 
 
