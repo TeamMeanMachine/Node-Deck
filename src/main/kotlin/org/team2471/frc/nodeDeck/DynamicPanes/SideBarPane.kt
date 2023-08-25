@@ -14,9 +14,7 @@ import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImageScale
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genRotAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genTransAnimation
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomRotAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomTransAnimation
 import org.team2471.frc.nodeDeck.DynamicTab.backgroundColor
 
@@ -127,30 +125,24 @@ object SideBarPane {
                         if (isOdom) {
                             if (odomTransAnimation.status == Animation.Status.RUNNING) {
                                 odomTransAnimation.pause()
-                                odomRotAnimation.pause()
                             } else if (odomTransAnimation.status == Animation.Status.PAUSED) {
                                 odomTransAnimation.play()
-                                odomRotAnimation.play()
                             } else if (odomTransAnimation.status == Animation.Status.STOPPED) {
                                 if (genTransAnimation.status == Animation.Status.RUNNING) {
                                     genTransAnimation.stop()
                                 }
                                 odomTransAnimation.play()
-                                odomRotAnimation.play()
                             }
                         } else {
                             if (genTransAnimation.status == Animation.Status.RUNNING) {
                                 genTransAnimation.pause()
-                                genRotAnimation.pause()
                             } else if (genTransAnimation.status == Animation.Status.PAUSED) {
                                 genTransAnimation.play()
-                                genRotAnimation.play()
                             } else if (genTransAnimation.status == Animation.Status.STOPPED) {
                                 if (odomTransAnimation.status == Animation.Status.RUNNING) {
                                     odomTransAnimation.stop()
                                 }
                                 genTransAnimation.playFromStart()
-                                genRotAnimation.playFromStart()
                             }
                         }
                     }
