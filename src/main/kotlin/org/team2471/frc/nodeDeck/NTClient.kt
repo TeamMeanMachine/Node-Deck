@@ -11,6 +11,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane
 import java.io.File
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.util.*
+import kotlin.io.path.Path
 
 
 object NTClient {
@@ -52,6 +54,11 @@ object NTClient {
 
     private var genPathEntrySub =
         NetworkTableInstance.getDefault().getTable("Drive").getStringTopic("Planned Path").subscribe("")
+    private var odomPathEntrySub =
+        NetworkTableInstance.getDefault().getTable("Drive").getDoubleArrayTopic("Actual Route").subscribe(doubleArrayOf())
+    private var odomPath = Path2D("odom path")
+    private var lastOdomEntry = doubleArrayOf()
+    private var lastPathInitiation = ""
 
     private var reconnected: Boolean = true
     val isRed: Boolean
@@ -92,6 +99,7 @@ object NTClient {
                 NetworkTableEvent.Kind.kPublish,
                 NetworkTableEvent.Kind.kValueAll
             )
+
         ) { event ->
             println("Automous change detected")
             var path2dFile: File? = null
@@ -99,7 +107,8 @@ object NTClient {
             var gson = Gson()
             println("generated_2d_path${Instant.now().toString().replace(":", "-")}.json")
             try {
-                path2dFile = File("PathJSONs/generated_2d_path${Instant.now().toString().replace(":", "-")}.json")
+                lastPathInitiation = Instant.now().toString().replace(":", "-")
+                path2dFile = File("PathJSONs/generated_2d_path$lastPathInitiation.json")
                 if (!path2dFile.createNewFile()) {
                     println("Generated 2D path file already exists.")
                 }
@@ -121,7 +130,59 @@ object NTClient {
                 DriverStation.reportWarning("Empty autonomi received from network tables", false)
             }
         }
+
+        NetworkTableInstance.getDefault().addListener(
+            odomPathEntrySub,
+            EnumSet.of(
+                NetworkTableEvent.Kind.kImmediate,
+                NetworkTableEvent.Kind.kPublish,
+                NetworkTableEvent.Kind.kValueAll
+            )
+
+        ) { event ->
+            if (event.equals(doubleArrayOf())) {
+                if (lastOdomEntry.size != 0) {
+                    var path2dFile: File? = null
+                    var gson = Gson()
+
+                    try {
+                        path2dFile = File("PathJSONs/generated_2d_path$lastPathInitiation.json")
+                        if (!path2dFile!!.createNewFile()) {
+                            println("Generated 2D path file already exists.")
+                        }
+                    } catch (error: Throwable) {
+                        DriverStation.reportError("Something went wrong while saving 2D path. Error: ${error}", false)
+                        println("Something went wrong while saving 2D path.")
+                    }
+
+                    val json = event.valueData?.value?.string
+                    if (json?.isNotEmpty() == true) {
+                        if (path2dFile != null) {
+                            println("CacheFile != null. Hi.")
+                            path2dFile!!.writeText(json)
+                        } else {
+                            println("cacheFile == null. Hi.")
+                        }
+                        println("New autonomi written to cache")
+                    } else {
+                        DriverStation.reportWarning("Empty autonomi received from network tables", false)
+                    }
+
+                }
+            } else {
+                if (lastOdomEntry.isEmpty()) {
+                    odomPath = Path2D()
+                    odomPath.addEasePoint(0.0, 0.0)
+                } else {
+                    odomPath.addVector2(Vector2(event.valueData.value.doubleArray[1], event.valueData.value.doubleArray[2]))
+                    odomPath.addHeadingPoint(event.valueData.value.doubleArray[0], event.valueData.value.doubleArray[3])
+                }
+            }
+            lastOdomEntry = event.valueData.value.doubleArray
+        }
     }
+
+
 
     @OptIn(DelicateCoroutinesApi::class) //
     fun connect() {

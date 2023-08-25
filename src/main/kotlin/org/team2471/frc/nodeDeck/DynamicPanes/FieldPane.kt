@@ -1,27 +1,23 @@
 package org.team2471.frc.nodeDeck.DynamicPanes
 
-import `dynamic-functions`.addStartPoint
 import `dynamic-functions`.scaleImageToHeight
 import `dynamic-functions`.toLinearFXPath
 import javafx.animation.Animation
 import javafx.animation.PathTransition
 import javafx.animation.RotateTransition
 import javafx.beans.property.BooleanProperty
-import javafx.beans.property.BooleanProperty.booleanProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
-import javafx.scene.shape.Circle
 import javafx.scene.shape.Path
 import javafx.stage.Screen
 import javafx.util.Duration
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.motion_profiling.Path2D
-import org.team2471.frc.lib.units.asFeet
 import org.team2471.frc.lib.units.asMeters
 import org.team2471.frc.lib.units.feet
 import org.team2471.frc.lib.units.inches
@@ -39,10 +35,8 @@ object FieldPane {
     var robotImage = ImageView(Image("robot.png"))
 
     val genTransAnimation = PathTransition()
-    val genRotAnimation = RotateTransition()
 
     val odomTransAnimation = PathTransition()
-    val odomRotAnimation = RotateTransition()
 
 
     var generatedPath: Path? = Path()
@@ -178,10 +172,9 @@ object FieldPane {
         genTransAnimation.duration = Duration(generatedPath2D.duration * 1000)
         genTransAnimation.node = robotImage
 
-        genRotAnimation.duration = Duration(generatedPath2D.duration * 1000)
-        genRotAnimation.node = robotImage
-        genRotAnimation.fromAngle = generatedPath2D.getAbsoluteHeadingDegreesAt(0.0)
-        genRotAnimation.toAngle = generatedPath2D.getAbsoluteHeadingDegreesAt(generatedPath2D.duration)
+        genTransAnimation.currentTimeProperty().addListener { observable, oldValue, newValue ->
+            robotImage.rotate = generatedPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
+        }
 
     }
 
@@ -190,9 +183,8 @@ object FieldPane {
         odomTransAnimation.duration = Duration(odometryPath2D.duration * 1000)
         odomTransAnimation.node = robotImage
 
-        odomRotAnimation.duration = Duration(odometryPath2D.duration * 1000)
-        odomRotAnimation.node = robotImage
-        odomRotAnimation.fromAngle = odometryPath2D.getAbsoluteHeadingDegreesAt(0.0)
-        odomRotAnimation.toAngle = odometryPath2D.getAbsoluteHeadingDegreesAt(odometryPath2D.duration)
+        odomTransAnimation.currentTimeProperty().addListener { observable, oldValue, newValue ->
+            robotImage.rotate = odometryPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
+        }
     }
 }
