@@ -59,9 +59,6 @@ object SideBarPane {
 
                 var label = Label(node.accessibleText)
 
-                var playButton = ToggleButton()
-                var playImage = ImageView()
-
                 var selectedBox = Rectangle(775 * fieldImageScale, yPosIncrement)
 
                 var isOdom = node.accessibleText == "Odometry Path"
@@ -101,60 +98,6 @@ object SideBarPane {
                 label.layoutX = toggleImage.fitWidth + (75 * fieldImageScale)
                 label.layoutY = (toggleImage.fitHeight * 0.12)
                 label.style = "-fx-font-weight: bold; -fx-font-size: ${toggleImage.fitHeight * 0.75} px"
-
-                if (isPath) {
-                    playButton.graphic = playImage
-                    if (isOdom) {
-                        playImage.imageProperty().bind(
-                            Bindings
-                                .`when`(odomTransAnimation.statusProperty().isEqualTo(Animation.Status.RUNNING))
-                                .then(pauseIcon)
-                                .otherwise(playIcon)
-                        )
-                    } else {
-                        playImage.imageProperty().bind(
-                            Bindings
-                                .`when`(genTransAnimation.statusProperty().isEqualTo(Animation.Status.RUNNING))
-                                .then(pauseIcon)
-                                .otherwise(playIcon)
-                        )
-                    }
-                    playButton.background = Background.EMPTY
-
-                    playButton.setOnAction {
-                        if (isOdom) {
-                            if (odomTransAnimation.status == Animation.Status.RUNNING) {
-                                odomTransAnimation.pause()
-                            } else if (odomTransAnimation.status == Animation.Status.PAUSED) {
-                                odomTransAnimation.play()
-                            } else if (odomTransAnimation.status == Animation.Status.STOPPED) {
-                                if (genTransAnimation.status == Animation.Status.RUNNING) {
-                                    genTransAnimation.stop()
-                                }
-                                odomTransAnimation.play()
-                            }
-                        } else {
-                            if (genTransAnimation.status == Animation.Status.RUNNING) {
-                                genTransAnimation.pause()
-                            } else if (genTransAnimation.status == Animation.Status.PAUSED) {
-                                genTransAnimation.play()
-                            } else if (genTransAnimation.status == Animation.Status.STOPPED) {
-                                if (odomTransAnimation.status == Animation.Status.RUNNING) {
-                                    odomTransAnimation.stop()
-                                }
-                                genTransAnimation.playFromStart()
-                            }
-                        }
-                    }
-
-                    playImage.fitHeight = (yPosIncrement * 0.75)
-                    playImage.fitWidth = playImage.fitHeight
-
-                    playButton.layoutX = label.layoutX + (500 * fieldImageScale)
-
-                    pane.children.add(playButton)
-
-                }
 
                 pane.children.addAll(
                     toggleButton,

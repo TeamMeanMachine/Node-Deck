@@ -55,7 +55,8 @@ object SettingsPane {
             if (sizeInput.text.toDouble() > 125.0) {
                 sizeInput.text = "125.0"
             }
-            FieldPane.robotImage = scaleImageToHeight(FieldPane.robotImage, (sizeInput.text.toDouble() * ppc))
+            FieldPane.genRobotImage = scaleImageToHeight(FieldPane.genRobotImage, (sizeInput.text.toDouble() * ppc))
+            FieldPane.odomRobotImage = scaleImageToHeight(FieldPane.odomRobotImage, (sizeInput.text.toDouble() * ppc))
         }
     }
 

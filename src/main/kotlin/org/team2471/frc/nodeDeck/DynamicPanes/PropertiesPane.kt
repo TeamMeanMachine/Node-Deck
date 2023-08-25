@@ -64,23 +64,7 @@ object PropertiesPane {
         playButton.background = Background.EMPTY
 
         playButton.setOnAction {
-            if (isAnimationPlaying.get()) {
-                if (odomTransAnimation.status.equals(Animation.Status.RUNNING)) {
-                    odomTransAnimation.pause()
-                } else if (genTransAnimation.status.equals(Animation.Status.RUNNING)) {
-                    genTransAnimation.pause()
-                }
-            } else if (isOdomAnimationSelected == true) {
-                genTransAnimation.stop()
-                odomTransAnimation.play()
-            } else if (isOdomAnimationSelected == false) {
-                odomTransAnimation.stop()
-                genTransAnimation.play()
-            } else if (odomTransAnimation.status.equals(Animation.Status.PAUSED)) {
-                odomTransAnimation.play()
-            } else if (genTransAnimation.status.equals(Animation.Status.PAUSED)) {
-                genTransAnimation.play()
-            }
+            isAnimationPlaying.set(!isAnimationPlaying.get())
         }
 
         playImage.fitHeight = 60 * fieldImageScale

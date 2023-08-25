@@ -32,7 +32,9 @@ object FieldPane {
 
     var fieldImage =
         scaleImageToHeight(ImageView(Image("field-2023.png")), Screen.getPrimary().bounds.height / 1.75)
-    var robotImage = ImageView(Image("robot.png"))
+
+    var genRobotImage = ImageView(Image("robot.png"))
+    var odomRobotImage = ImageView(Image("robot.png"))
 
     val genTransAnimation = PathTransition()
 
@@ -47,8 +49,12 @@ object FieldPane {
 
     val fieldImageScale = fieldImage.fitHeight / 1462.0
 
-    val robotPos: Position
-        get() = Vector2(robotImage.x, robotImage.y).screenCoords(robotImage.fitWidth, fieldImageScale)
+    val genRobotPos: Position
+        get() = Vector2(genRobotImage.x, genRobotImage.y).screenCoords(genRobotImage.fitWidth, fieldImageScale)
+
+    val odomRobotPos: Position
+        get() = Vector2(odomRobotImage.x, odomRobotImage.y).screenCoords(odomRobotImage.fitWidth, fieldImageScale)
+
 
     var isAnimationPlaying: BooleanProperty = SimpleBooleanProperty(false)
 
@@ -59,7 +65,8 @@ object FieldPane {
 
         fieldPane.resize(fieldImage.fitWidth, fieldImage.fitHeight)
 
-        robotImage = scaleImageToHeight(robotImage, (sizeInput.text.toDouble() * ppc))
+        genRobotImage = scaleImageToHeight(genRobotImage, (sizeInput.text.toDouble() * ppc))
+        odomRobotImage = scaleImageToHeight(odomRobotImage, (sizeInput.text.toDouble() * ppc))
 
         generatedPath2D.addEasePoint(0.0, 0.0)
         var p1 = Vector2(0.0, 0.0).wpiCoords.toTmmCoords()
@@ -89,10 +96,9 @@ object FieldPane {
 
 
         odometryPath2D.addEasePoint(0.0, 0.0)
-        p1 = Vector2(5.0, 5.0).wpiCoords.toTmmCoords()
-        p2 = Vector2(0.0, 0.0)
-        p3 = Vector2(5.0, 5.0)
-
+        p1 = Vector2(54.0.feet.asMeters + 1.inches.asMeters, 26.0.feet.asMeters + 7.inches.asMeters).wpiCoords.toTmmCoords()
+        p2 = Vector2(50.0.feet.asMeters, 26.0.feet.asMeters + 7.inches.asMeters).wpiCoords.toTmmCoords()
+        p3 = Vector2(0.0, 0.0).wpiCoords.toTmmCoords()
         rateCurve = MotionCurve()
 
         rateCurve.setMarkBeginOrEndKeysToZeroSlope(false)
@@ -116,16 +122,14 @@ object FieldPane {
         updateGenAnimation()
         updateOdomAnimation()
 
-        genTransAnimation.statusProperty().addListener { _, _, _ ->
-            isAnimationPlaying.set(
-                genTransAnimation.status.equals(Animation.Status.RUNNING) || odomTransAnimation.status.equals(Animation.Status.RUNNING)
-            )
-        }
-
-        odomTransAnimation.statusProperty().addListener { _, _, _ ->
-            isAnimationPlaying.set(
-                genTransAnimation.status.equals(Animation.Status.RUNNING) || odomTransAnimation.status.equals(Animation.Status.RUNNING)
-            )
+        isAnimationPlaying.addListener { _, _, new ->
+            if (new) {
+                genTransAnimation.play()
+                odomTransAnimation.play()
+            } else {
+                genTransAnimation.pause()
+                odomTransAnimation.pause()
+            }
         }
 
         genTransAnimation.currentTimeProperty().addListener { _, _, _ ->
@@ -142,13 +146,17 @@ object FieldPane {
 
         }
 
-        val robotStartPos = Vector2(0.0, 0.0).tmmCoords.toScreenCoords(robotImage.fitWidth)
-        robotImage.x = robotStartPos.x; robotImage.y = robotStartPos.y
+        val genRobotStartPos = Vector2(0.0, 0.0).tmmCoords.toScreenCoords(genRobotImage.fitWidth)
+        genRobotImage.x = genRobotStartPos.x; genRobotImage.y = genRobotStartPos.y
+
+        val odomRobotStartPos = Vector2(0.0, 0.0).tmmCoords.toScreenCoords(odomRobotImage.fitWidth)
+        odomRobotImage.x = odomRobotStartPos.x; odomRobotImage.y = odomRobotStartPos.y
 
         fieldImage.accessibleText = "Field Image"
         generatedPath?.accessibleText = "Generated Path"
         odometryPath?.accessibleText = "Odometry Path"
-        robotImage.accessibleText = "Robot Image"
+        genRobotImage.accessibleText = "Generated Robot"
+        odomRobotImage.accessibleText = "Odometry Robot"
 
         updateFieldPane()
 
@@ -163,17 +171,18 @@ object FieldPane {
             fieldImage,
             odometryPath,
             generatedPath,
-            robotImage
+            genRobotImage,
+            odomRobotImage
         )
     }
 
     fun updateGenAnimation() {
         genTransAnimation.path = generatedPath
         genTransAnimation.duration = Duration(generatedPath2D.duration * 1000)
-        genTransAnimation.node = robotImage
+        genTransAnimation.node = genRobotImage
 
         genTransAnimation.currentTimeProperty().addListener { observable, oldValue, newValue ->
-            robotImage.rotate = generatedPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
+            genRobotImage.rotate = generatedPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
         }
 
     }
@@ -181,10 +190,10 @@ object FieldPane {
     fun updateOdomAnimation() {
         odomTransAnimation.path = odometryPath
         odomTransAnimation.duration = Duration(odometryPath2D.duration * 1000)
-        odomTransAnimation.node = robotImage
+        odomTransAnimation.node = odomRobotImage
 
         odomTransAnimation.currentTimeProperty().addListener { observable, oldValue, newValue ->
-            robotImage.rotate = odometryPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
+            odomRobotImage.rotate = odometryPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
         }
     }
 }

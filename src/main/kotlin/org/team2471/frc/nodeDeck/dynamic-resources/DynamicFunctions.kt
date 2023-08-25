@@ -20,8 +20,6 @@ import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImageScale
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genTransAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.isAnimationPlaying
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomTransAnimation
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.robotImage
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.robotPos
 import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.sliderPointPos
 import org.team2471.frc.nodeDeck.DynamicPanes.SettingsPane.sizeInput
 import org.team2471.frc.nodeDeck.DynamicPanes.SideBarPane.isOdomAnimationSelected
@@ -57,11 +55,6 @@ fun calculateImageDrag(imageView: ImageView): ImageView {
         if (event.button == MouseButton.PRIMARY) {
             imageView.x += event.sceneX - imageView.x - xOffset
             imageView.y += event.sceneY - imageView.y - yOffset
-            if (event.isShiftDown) {
-                val snappedPos = robotPos.toWpiCoords().round(snapRes).wpiCoords.toScreenCoords(robotImage.fitWidth)
-                imageView.x = snappedPos.x
-                imageView.y = snappedPos.y
-            }
         } else {
             imageView.rotate = -atan2(-(event.sceneY - imageView.y - yOffset), event.sceneX - imageView.x - xOffset).radians.asDegrees + 90
             if (event.isShiftDown) {
@@ -81,17 +74,14 @@ fun calculateSliderDrag(point: Circle, minX: Double, maxX: Double): Circle {
         if (!isAnimationPlaying.get()) {
             if (event.button == MouseButton.PRIMARY) {
                 sliderPointPos.set((sliderPointPos.get() + event.sceneX - point.centerX - point.radius).coerceIn(minX, maxX))
-                if (isOdomAnimationSelected == true) {
-                    odomTransAnimation.play()
-                    odomTransAnimation.pause()
-                    odomTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * odomTransAnimation.duration.toMillis()))
+                odomTransAnimation.play()
+                odomTransAnimation.pause()
+                odomTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * odomTransAnimation.duration.toMillis()))
 
-                } else if (isOdomAnimationSelected == false) {
-                    genTransAnimation.play()
-                    genTransAnimation.pause()
-                    genTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * genTransAnimation.duration.toMillis()))
+                genTransAnimation.play()
+                genTransAnimation.pause()
+                genTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * genTransAnimation.duration.toMillis()))
 
-                }
             }
         }
     }
