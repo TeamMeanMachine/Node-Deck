@@ -17,10 +17,8 @@ import org.team2471.frc.lib.units.feet
 import org.team2471.frc.lib.units.radians
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImageScale
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genRotAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genTransAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.isAnimationPlaying
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomRotAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomTransAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.robotImage
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.robotPos
@@ -88,17 +86,11 @@ fun calculateSliderDrag(point: Circle, minX: Double, maxX: Double): Circle {
                     odomTransAnimation.pause()
                     odomTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * odomTransAnimation.duration.toMillis()))
 
-                    odomRotAnimation.play()
-                    odomRotAnimation.pause()
-                    odomRotAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * odomRotAnimation.duration.toMillis()))
                 } else if (isOdomAnimationSelected == false) {
                     genTransAnimation.play()
                     genTransAnimation.pause()
                     genTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * genTransAnimation.duration.toMillis()))
 
-                    genRotAnimation.play()
-                    genRotAnimation.pause()
-                    genRotAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * genRotAnimation.duration.toMillis()))
                 }
             }
         }

@@ -62,19 +62,24 @@ object FilePane {
 
                 //FOR SOME REASON THE DURATION OF THE PATH2D IS NULL
                 loadButton.setOnMouseClicked {
+                    println("Loading path")
                     var file = File(pane.accessibleText)
                     generatedPath2D = gson.fromJson(file.readText(), Path2D::class.java)
 
                     var key = generatedPath2D.easeCurve.headKey
-                    while (key.nextKey != null) {
-                        key = key.nextKey
+                    if (key != null) {
+                        while (key.nextKey != null) {
+                            key = key.nextKey
+                        }
                     }
                     generatedPath2D.easeCurve.tailKey = key
+
 //                    println("${generatedPath2D.duration}****************************************************")
                     key = generatedPath2D.headingCurve.headKey
-
-                    while (key.nextKey != null) {
-                        key = key.nextKey
+                    if (key != null) {
+                        while (key.nextKey != null) {
+                            key = key.nextKey
+                        }
                     }
                     generatedPath2D.headingCurve.tailKey = key
 
