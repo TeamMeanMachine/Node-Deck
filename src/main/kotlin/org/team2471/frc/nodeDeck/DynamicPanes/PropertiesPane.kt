@@ -1,13 +1,11 @@
 package org.team2471.frc.nodeDeck.DynamicPanes
 
 import `dynamic-functions`.calculateSliderDrag
-import javafx.animation.Animation
 import javafx.beans.binding.Bindings
-import javafx.beans.binding.Bindings.`when`
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty
-import javafx.beans.value.ObservableBooleanValue
-import javafx.scene.control.Button
+import javafx.scene.control.Label
+import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Background
@@ -15,20 +13,22 @@ import javafx.scene.layout.Pane
 import javafx.scene.shape.Circle
 import javafx.scene.shape.Line
 import javafx.scene.shape.StrokeLineCap
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImage
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImageScale
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genTransAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.isAnimationPlaying
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomTransAnimation
-import org.team2471.frc.nodeDeck.DynamicPanes.SideBarPane.isOdomAnimationSelected
-import org.team2471.frc.nodeDeck.DynamicPanes.SideBarPane.selectedNode
 
 object PropertiesPane {
     var propertiesPane = Pane()
 
     var playButton = ToggleButton()
     var playImage = ImageView()
+
+    var timeLabel = Label("0.0/0.0")
+    var posLabel = Label("Position: ")
+    var xLabel = Label("X: ")
+    var yLabel = Label("Y: ")
+
+    var posBox = TextField()
 
     var sliderPoint = Circle()
 
@@ -70,10 +70,20 @@ object PropertiesPane {
         playImage.fitHeight = 60 * fieldImageScale
         playImage.fitWidth = playImage.fitHeight
 
+        timeLabel.layoutX = 10 * fieldImageScale
+        timeLabel.layoutY = 80 * fieldImageScale
+        timeLabel.style = "-fx-font-weight: bold; -fx-font-size: ${50 * fieldImageScale} px"
+
+        posLabel.layoutX = 180 * fieldImageScale
+        posLabel.layoutY = 80 * fieldImageScale
+        posLabel.style = "-fx-font-weight: bold; -fx-font-size: ${50 * fieldImageScale} px"
+
         propertiesPane.children.addAll(
             sliderLine,
             sliderPoint,
-            playButton
+            playButton,
+            timeLabel,
+            posLabel
         )
         calculateSliderDrag(sliderPoint, sliderLine.startX, sliderLine.endX)
     }

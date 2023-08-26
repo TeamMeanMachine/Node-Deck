@@ -1,5 +1,6 @@
 package org.team2471.frc.nodeDeck.DynamicPanes
 
+import `dynamic-functions`.roundTo
 import `dynamic-functions`.scaleImageToHeight
 import `dynamic-functions`.toLinearFXPath
 import javafx.animation.Animation
@@ -23,6 +24,7 @@ import org.team2471.frc.lib.units.feet
 import org.team2471.frc.lib.units.inches
 import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.sliderLine
 import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.sliderPointPos
+import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.timeLabel
 import org.team2471.frc.nodeDeck.DynamicPanes.SettingsPane.sizeInput
 import org.team2471.frc.nodeDeck.`dynamic-resources`.*
 
@@ -136,6 +138,7 @@ object FieldPane {
             sliderPointPos.set(
                 ((genTransAnimation.currentTime.toMillis() / genTransAnimation.duration.toMillis()) * (sliderLine.endX - sliderLine.startX)) + (120 * fieldImageScale)
             )
+            timeLabel.text = "${genTransAnimation.currentTime.toSeconds().roundTo(1)}/${genTransAnimation.duration.toSeconds().roundTo(1)}"
 
         }
 
@@ -143,6 +146,7 @@ object FieldPane {
             sliderPointPos.set(
                 ((odomTransAnimation.currentTime.toMillis() / odomTransAnimation.duration.toMillis()) * (sliderLine.endX - sliderLine.startX)) + (120 * fieldImageScale)
             )
+            timeLabel.text = "${odomTransAnimation.currentTime.toSeconds().roundTo(1)}/${odomTransAnimation.duration.toSeconds().roundTo(1)}"
 
         }
 
