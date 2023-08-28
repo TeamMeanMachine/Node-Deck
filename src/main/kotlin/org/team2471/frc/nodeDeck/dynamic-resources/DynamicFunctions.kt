@@ -32,142 +32,150 @@ import java.lang.Math.floorDiv
 import kotlin.coroutines.EmptyCoroutineContext.get
 import kotlin.math.*
 
-// This function takes an ImageView and a desired height as parameters.
-// It scales the image to the specified height and returns the scaled ImageView.
+// Returns a scaled ImageView with given height and a preserved aspect ratio
 fun scaleImageToHeight(image: ImageView, height: Double): ImageView {
-    return scaleImage(image, height / image.image.height)
+    // Calculates the scaling factor based off of the image's height and the desired height
+    val scalingFactor = height / image.image.height
+    // uses the scaleImage function to scale the image with the calculated scaling factor and returns the scaled image
+    return scaleImage(image, scalingFactor)
 }
-
-// This function takes an ImageView and a desired width as parameters.
-// It scales the image to the specified width and returns the scaled ImageView.
+// Returns a scaled ImageView with given width and a preserved aspect ratio
 fun scaleImageToWidth(image: ImageView, width: Double): ImageView {
-    return scaleImage(image, width / image.image.width)
+    // Calculates the scaling factor based off of the image's width and the desired width
+    val scalingFactor = width / image.image.width
+    // uses the scaleImage function to scale the image with the calculated scaling factor and returns the scaled image
+    return scaleImage(image, scalingFactor)
 }
 
-// This function takes an ImageView and a scaleFactor as parameters.
-// It scales the image by multiplying the fitWidth and fitHeight of the ImageView by the scaleFactor.
-// It then returns the updated ImageView.
+
+// Scales an ImageView to a given scale factor
 fun scaleImage(image: ImageView, scaleFactor: Double): ImageView {
+    // Fits the width and height of the image to the original height multiplied by the given scale factor
     image.fitWidth = scaleFactor * image.image.width
     image.fitHeight = scaleFactor * image.image.height
+
+    // Returns the scaled image
     return image
 }
 
+// Stores the offset in the X direction from the top-left corner of the robot to where the mouse drags the robot image
 val xOffset: Double
     get() = (30 / 81.3) * sizeInput.text.toDouble()
 
+// Stores the offset in the Y direction from the top-left corner of the robot to where the mouse drags the robot image
 val yOffset: Double
     get() = (90 / 81.3) * sizeInput.text.toDouble()
 
-// This function calculates the drag behavior for an ImageView.
-// When the mouse is dragged on the ImageView, it checks if the primary button is pressed.
-// If so, it updates the x and y positions of the ImageView based on the mouse movement and the xOffset and yOffset.
-// If the primary button is not pressed, it updates the rotation of the ImageView based on the mouse movement and the xOffset and yOffset.
-// If the shift key is pressed, it adjusts the rotation angle to snap to 45-degree increments.
-// Finally, it returns the updated ImageView.
+// Calculates the translation and rotation of the robot image based off the mouse position when the mouse drags the robot image
 fun calculateImageDrag(imageView: ImageView): ImageView {
+    // Triggers the calculation when the mouse is dragging the image parameter
     imageView.setOnMouseDragged { event ->
+
+        // Checks if the button pressed is the left mouse button
         if (event.button == MouseButton.PRIMARY) {
+            // Calculates the translation of the image based off the mouse position (event) and the X/Y offsets
             imageView.x += event.sceneX - imageView.x - xOffset
             imageView.y += event.sceneY - imageView.y - yOffset
         } else {
-            imageView.rotate = -atan2(-(event.sceneY - imageView.y - yOffset), event.sceneX - imageView.x - xOffset).radians.asDegrees + 90
+            // On right click, calculates the desired rotation of the image using the ArcTangent function and the offset from the mouse to the centre of the image
+            imageView.rotate = -atan2(
+                -(event.sceneY - imageView.y - yOffset),
+                event.sceneX - imageView.x - xOffset
+            ).radians.asDegrees + 90
+            // If the shift key is held down, snap the rotation of the image in 45 degree increments using the modulo operator
             if (event.isShiftDown) {
+                // Fixes weird issues with going from 359 degrees to 0 degrees
                 if (imageView.rotate < 0) {
                     imageView.rotate = imageView.rotate + 360
-
                 }
                 imageView.rotate -= imageView.rotate % 45
             }
         }
     }
+    // Returns the rotated and translated imageView
     return imageView
 }
 
-// This function calculates the drag behavior for a slider point represented by a Circle.
-// When the mouse is dragged on the Circle, it checks if the animation is not currently playing.
-// If the primary button is pressed, it updates the position of the slider point based on the mouse movement and the specified minX and maxX values.
-// It then adjusts the progress of the odomTransAnimation and genTransAnimation based on the new position of the slider point.
-// Finally, it returns the updated Circle representing the slider point.
+// Calculates the translation of a point along the X-Axis and coerces it between the minimum and maximum X values
 fun calculateSliderDrag(point: Circle, minX: Double, maxX: Double): Circle {
+    // Triggers the calculation when the mouse is dragging the point on the slider
     point.setOnMouseDragged { event ->
+        // Checks if an Animation is currently playing because we don't want both the animation and the dragging trying to update the slider position
         if (!isAnimationPlaying.get()) {
             if (event.button == MouseButton.PRIMARY) {
-                sliderPointPos.set((sliderPointPos.get() + event.sceneX - point.centerX - point.radius).coerceIn(minX, maxX))
+                // Changes the position of the slider so that it is at the same position as the mouse, taking into account the minimum and maximum X values
+                sliderPointPos.set(
+                    (sliderPointPos.get() + event.sceneX - point.centerX - point.radius).coerceIn(
+                        minX,
+                        maxX
+                    )
+                )
+                // Starts the odometry animation then jumps to the right duration based off of where the slider is positioned
                 odomTransAnimation.play()
                 odomTransAnimation.pause()
-                odomTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * odomTransAnimation.duration.toMillis()))
-
+                odomTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX)) * odomTransAnimation.duration.toMillis()))
+                // Starts the generated animation and jumps to the right duration based off of where the slider is positioned
                 genTransAnimation.play()
                 genTransAnimation.pause()
-                genTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX))  * genTransAnimation.duration.toMillis()))
+                genTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX)) * genTransAnimation.duration.toMillis()))
 
             }
         }
     }
+    // Returns the translated point
     return point
 }
 
-// This is a private function called addPathLine.
-// It takes a Path, a Vector2 point, and an optional stroke color as parameters.
-// The function converts the point coordinates to screen coordinates using the tmmCoords and toScreenCoords methods.
-// It sets the stroke width of the path to 2.0.
-// Then, it creates a new LineTo element with the converted coordinates and adds it to the path's elements.
-// This function is used to add a line segment to a path.
-private fun addPathLine(path: Path, point: Vector2, stroke: Color = Color.BLACK) {
+// Adds a line to the given point in TMM coordinates to the given path
+private fun addPathLine(path: Path, point: Vector2) {
+    // Converts the point to the screen coordinates
     val tp = point.tmmCoords.toScreenCoords()
-    path.strokeWidth = 2.0
+    // Creates the line to the given point
     var line = LineTo(tp.x, tp.y)
+    // Adds the line to the path
     path.elements.add(line)
 }
 
-// This extension function adds a starting point to a Path.
-// It takes a Vector2 startPoint as a parameter and converts its coordinates to screen coordinates using the tmmCoords and toScreenCoords methods.
-// Then, it adds a MoveTo element to the Path with the converted coordinates.
+// Adds a start point (Move to) to the given path
 fun Path.addStartPoint(startPoint: Vector2) {
+    // Converts the start point to screen coordinates
     var startPoint = startPoint.tmmCoords.toScreenCoords()
+    // Adds the start point to the path
     this.elements.add(MoveTo(startPoint.x, startPoint.y))
 }
 
-// This function converts a Path2D object to a JavaFX Path object.
-// If the input Path2D is null or has a duration of 0.0, it returns null.
-// It creates a new Path object called outPath.
-// It calculates the total time based on the durationWithSpeed property of the input Path2D.
-// It sets deltaT as totalTime divided by 200.0.
-// It initializes the pos variable with the position at time 0.0.
-// It initializes t as deltaT.
-
-// It adds the starting point to the outPath using the addStartPoint extension function.
-
-// It enters a loop that runs as long as t is less than or equal to totalTime.
-// Inside the loop, it calculates the ease value as t divided by totalTime.
-// It updates the pos variable with the position at time t.
-// It creates a stroke color based on the ease value and a predefined white color.
-// It adds a line segment to the outPath using the addPathLine function.
-
-// Finally, it returns the outPath.
+// Converts meanlib's Path2D to a JavaFX Path
 fun Path2D.toLinearFXPath(): Path? {
+    // Checks if the path is empty or null
     if (this == null || this.duration == 0.0) {
         return null
     }
+    // Initializes a new path
     var outPath = Path()
+    // Gets the total length of the Path2d, as well as the starting pos and the time to step forwards each loop
     var totalTime = this.durationWithSpeed
     var deltaT = totalTime / 200.0
     var pos = this.getPosition(0.0)
     var t = deltaT
 
+    // Adds the starting position to the output path
     outPath.addStartPoint(pos)
 
+    // Loops through the path, checking the position of the path every deltaT seconds, and adds the position to the output path
     while (t <= totalTime) {
-        val ease = t / totalTime
+        // Gets the position of the path at the current time
         pos = this.getPosition(t)
-        val stroke = Color(ease * Color.WHITE.red, ease * Color.WHITE.green, ease * Color.WHITE.blue, 1.0)
 
+        // Adds the position to the output path
         addPathLine(outPath, pos)
-
+        // Increments time
         t += deltaT
     }
 
+    // Sets the width of the path
+    outPath.strokeWidth = 2.0
+
+    // Returns the output path
     return outPath
 }
 
