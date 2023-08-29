@@ -20,6 +20,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.util.*
 import kotlin.io.path.Path
+import kotlin.reflect.typeOf
 
 
 object NTClient {
@@ -59,6 +60,7 @@ object NTClient {
     private var odomPath = Path2D("odom path")
     private var lastOdomEntry = doubleArrayOf()
     private var lastPathInitiation = ""
+    private var savedPath = ArrayList<DoubleArray>()
 
     private var reconnected: Boolean = true
     val isRed: Boolean
@@ -102,32 +104,34 @@ object NTClient {
 
         ) { event ->
             println("Automous change detected")
-            var path2dFile: File? = null
-            var path2d = null
-            var gson = Gson()
-            println("generated_2d_path${Instant.now().toString().replace(":", "-")}.json")
-            try {
-                lastPathInitiation = Instant.now().toString().replace(":", "-")
-                path2dFile = File("PathJSONs/generated_2d_path$lastPathInitiation.json")
-                if (!path2dFile.createNewFile()) {
-                    println("Generated 2D path file already exists.")
+            if (event.valueData != null) {
+                var path2dFile: File? = null
+                var path2d = null
+                var gson = Gson()
+                println("generated_2d_path${Instant.now().toString().replace(":", "-")}.json")
+                try {
+                    lastPathInitiation = Instant.now().toString().replace(":", "-")
+                    path2dFile = File("PathJSONs/generated_2d_path$lastPathInitiation.json")
+                    if (!path2dFile.createNewFile()) {
+                        println("Generated 2D path file already exists.")
+                    }
+                } catch (error: Throwable) {
+                    DriverStation.reportError("Something went wrong while saving 2D path. Error: ${error}", false)
+                    println("Something went wrong while saving 2D path.")
                 }
-            } catch (error: Throwable) {
-                DriverStation.reportError("Something went wrong while saving 2D path. Error: ${error}", false)
-                println("Something went wrong while saving 2D path.")
-            }
 
-            val json = event.valueData?.value?.string
-            if (json?.isNotEmpty() == true) {
-                if (path2dFile != null) {
-                    println("CacheFile != null. Hi.")
-                    path2dFile.writeText(json)
+                val json = event.valueData?.value?.string
+                if (json?.isNotEmpty() == true) {
+                    if (path2dFile != null) {
+                        println("CacheFile != null. Hi.")
+                        path2dFile.writeText(json)
+                    } else {
+                        println("cacheFile == null. Hi.")
+                    }
+                    println("New autonomi written to cache")
                 } else {
-                    println("cacheFile == null. Hi.")
+                    DriverStation.reportWarning("Empty autonomi received from network tables", false)
                 }
-                println("New autonomi written to cache")
-            } else {
-                DriverStation.reportWarning("Empty autonomi received from network tables", false)
             }
         }
 
@@ -140,22 +144,30 @@ object NTClient {
             )
 
         ) { event ->
-            if (event.equals(doubleArrayOf())) {
-                if (lastOdomEntry.size != 0) {
+            if (event.valueData != null) {
+                if (event.valueData.value.doubleArray.isNotEmpty()) {
+                    savedPath.add(event.valueData.value.doubleArray)
+                } else if (lastOdomEntry.isNotEmpty()) {
+
+                    val duration = savedPath.last()[0] - savedPath[0][0]
+
+                    odomPath = Path2D("odom path")
+                    odomPath.addEasePoint(0.0, 0.0)
+
+                    for (entry in savedPath) {
+                        odomPath.addVector2(Vector2(entry[1], entry[2]))
+                        odomPath.addHeadingPoint(entry[0] - savedPath[0][0], entry[3])
+                    }
+                    odomPath.addEasePoint(duration, 1.0)
                     var path2dFile: File? = null
                     var gson = Gson()
-
                     try {
-                        path2dFile = File("PathJSONs/generated_2d_path$lastPathInitiation.json")
-                        if (!path2dFile!!.createNewFile()) {
-                            println("Generated 2D path file already exists.")
-                        }
+                        path2dFile = File("PathJSONs/odometry_2d_path$lastPathInitiation.json")
                     } catch (error: Throwable) {
-                        DriverStation.reportError("Something went wrong while saving 2D path. Error: ${error}", false)
-                        println("Something went wrong while saving 2D path.")
+                        println("Something went wrong while saving 2D path. Error: $error")
                     }
 
-                    val json = event.valueData?.value?.string
+                    val json = gson.toJson(odomPath)
                     if (json?.isNotEmpty() == true) {
                         if (path2dFile != null) {
                             println("CacheFile != null. Hi.")
@@ -167,18 +179,10 @@ object NTClient {
                     } else {
                         DriverStation.reportWarning("Empty autonomi received from network tables", false)
                     }
-
+                    savedPath.clear()
                 }
-            } else {
-                if (lastOdomEntry.isEmpty()) {
-                    odomPath = Path2D()
-                    odomPath.addEasePoint(0.0, 0.0)
-                } else {
-                    odomPath.addVector2(Vector2(event.valueData.value.doubleArray[1], event.valueData.value.doubleArray[2]))
-                    odomPath.addHeadingPoint(event.valueData.value.doubleArray[0], event.valueData.value.doubleArray[3])
-                }
+                lastOdomEntry = event.valueData.value.doubleArray
             }
-            lastOdomEntry = event.valueData.value.doubleArray
         }
     }
 

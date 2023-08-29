@@ -47,7 +47,7 @@ object FieldPane {
     var generatedPath2D = Path2D("Generated")
 
     var odometryPath: Path? = Path()
-    val odometryPath2D = Path2D("Generated")
+    var odometryPath2D = Path2D("Generated")
 
     val fieldImageScale = fieldImage.fitHeight / 1462.0
 

@@ -15,8 +15,11 @@ import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath2D
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odometryPath
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odometryPath2D
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.updateFieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.updateGenAnimation
+import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.updateOdomAnimation
 import org.team2471.frc.nodeDeck.DynamicTab
 import java.io.File
 
@@ -60,7 +63,6 @@ object FilePane {
                 loadButton.resize(yPosIncrement, 1000 * FieldPane.fieldImageScale)
                 loadButton.background = Background.EMPTY
 
-                //FOR SOME REASON THE DURATION OF THE PATH2D IS NULL
                 loadButton.setOnMouseClicked {
                     println("Loading path")
                     var file = File(pane.accessibleText)
@@ -83,10 +85,32 @@ object FilePane {
                     }
                     generatedPath2D.headingCurve.tailKey = key
 
-                    generatedPath = generatedPath2D.toLinearFXPath()
+                    file = File(pane.accessibleText.replace("generated", "odometry"))
+                    odometryPath2D = gson.fromJson(file.readText(), Path2D::class.java)
+
+                    key = odometryPath2D.easeCurve.headKey
+                    if (key != null) {
+                        while (key.nextKey != null) {
+                            key = key.nextKey
+                        }
+                    }
+                    odometryPath2D.easeCurve.tailKey = key
+
+                    key = odometryPath2D.headingCurve.headKey
+                    if (key != null) {
+                        while (key.nextKey != null) {
+                            key = key.nextKey
+                        }
+                    }
+                    odometryPath2D.headingCurve.tailKey = key
+
+                    odometryPath = odometryPath2D.toLinearFXPath()
+
+                    println("${odometryPath2D.duration}******************************************")
 
                     updateFieldPane()
                     updateGenAnimation()
+                    updateOdomAnimation()
 //                    FieldPane.generatedPath = FieldPane.odometryPath
 //                    FieldPane.generatedPath2D = FieldPane.odometryPath2D
 //                    updateGenAnimation()
@@ -99,27 +123,31 @@ object FilePane {
 
                 if (fileName.startsWith("generated_2d_path")) {
                     fileName = fileName.removePrefix("generated_2d_path")
-                    labelText = "Gen-"
+                    labelText = "Path-"
+
+
+                    labelText += (fileName.take(10))
+                    fileName = fileName.removePrefix(fileName.take(10) + "T")
+                    labelText += "_" + fileName.take(5).replace("-", ":")
+                    label.text = labelText
+
+                    label.layoutX = loadImage.fitWidth + (75 * FieldPane.fieldImageScale)
+                    label.layoutY = (loadImage.fitHeight * 0.125)
+                    label.style = "-fx-font-weight: bold; -fx-font-size: ${loadImage.fitHeight * 0.75} px"
+
+                    loadButton.graphic = loadImage
+
+                    pane.children.addAll(
+                        loadButton,
+                        label
+                    )
+
+                    pane.layoutY = yPos
+
+                    filePane.children.add(pane)
                 }
-                labelText += (fileName.take(10))
-                fileName = fileName.removePrefix(fileName.take(10) + "T")
-                labelText += "_" + fileName.take(5).replace("-", ":")
-                label.text = labelText
 
-                label.layoutX = loadImage.fitWidth + (75 * FieldPane.fieldImageScale)
-                label.layoutY = (loadImage.fitHeight * 0.125)
-                label.style = "-fx-font-weight: bold; -fx-font-size: ${loadImage.fitHeight * 0.75} px"
 
-                loadButton.graphic = loadImage
-
-                pane.children.addAll(
-                    loadButton,
-                    label
-                )
-
-                pane.layoutY = yPos
-
-                filePane.children.add(pane)
 
                 yPos += yPosIncrement
             }
