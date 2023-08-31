@@ -76,7 +76,6 @@ object FilePane {
                     }
                     generatedPath2D.easeCurve.tailKey = key
 
-//                    println("${generatedPath2D.duration}****************************************************")
                     key = generatedPath2D.headingCurve.headKey
                     if (key != null) {
                         while (key.nextKey != null) {
@@ -84,6 +83,10 @@ object FilePane {
                         }
                     }
                     generatedPath2D.headingCurve.tailKey = key
+
+                    generatedPath = generatedPath2D.toLinearFXPath()
+                    println("${generatedPath2D.duration}****************************************************")
+
 
                     file = File(pane.accessibleText.replace("generated", "odometry"))
                     odometryPath2D = gson.fromJson(file.readText(), Path2D::class.java)
@@ -106,7 +109,7 @@ object FilePane {
 
                     odometryPath = odometryPath2D.toLinearFXPath()
 
-                    println("${odometryPath2D.duration}******************************************")
+                    println("${odometryPath2D}******************************************")
 
                     updateFieldPane()
                     updateGenAnimation()
