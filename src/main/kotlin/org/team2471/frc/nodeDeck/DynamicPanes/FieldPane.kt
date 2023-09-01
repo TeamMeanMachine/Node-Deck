@@ -134,20 +134,15 @@ object FieldPane {
             }
         }
 
-        genTransAnimation.currentTimeProperty().addListener { _, _, _ ->
+        genTransAnimation.currentTimeProperty().addListener { _, _, newValue ->
             sliderPointPos.set(
                 ((genTransAnimation.currentTime.toMillis() / genTransAnimation.duration.toMillis()) * (sliderLine.endX - sliderLine.startX)) + (120 * fieldImageScale)
             )
             timeLabel.text = "${genTransAnimation.currentTime.toSeconds().roundTo(1)}/${genTransAnimation.duration.toSeconds().roundTo(1)}"
+            genRobotImage.rotate = generatedPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
 
-        }
-
-        odomTransAnimation.currentTimeProperty().addListener { _, _, _ ->
-            sliderPointPos.set(
-                ((odomTransAnimation.currentTime.toMillis() / odomTransAnimation.duration.toMillis()) * (sliderLine.endX - sliderLine.startX)) + (120 * fieldImageScale)
-            )
-            timeLabel.text = "${odomTransAnimation.currentTime.toSeconds().roundTo(1)}/${odomTransAnimation.duration.toSeconds().roundTo(1)}"
-
+            odomRobotImage.rotate = odometryPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
+            println(odometryPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds()))
         }
 
         val genRobotStartPos = Vector2(0.0, 0.0).tmmCoords.toScreenCoords(genRobotImage.fitWidth)
@@ -185,9 +180,7 @@ object FieldPane {
         genTransAnimation.duration = Duration(generatedPath2D.duration * 1000)
         genTransAnimation.node = genRobotImage
 
-        genTransAnimation.currentTimeProperty().addListener { observable, oldValue, newValue ->
-            genRobotImage.rotate = generatedPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
-        }
+
 
     }
 
@@ -196,8 +189,8 @@ object FieldPane {
         odomTransAnimation.duration = Duration(odometryPath2D.duration * 1000)
         odomTransAnimation.node = odomRobotImage
 
-        odomTransAnimation.currentTimeProperty().addListener { observable, oldValue, newValue ->
-            odomRobotImage.rotate = odometryPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
-        }
+
+
+
     }
 }

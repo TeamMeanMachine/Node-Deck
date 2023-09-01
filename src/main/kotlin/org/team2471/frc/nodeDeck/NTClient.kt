@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane
+import org.team2471.frc.nodeDeck.DynamicPanes.FilePane.filePaneUpdate
 import java.io.File
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -104,7 +105,7 @@ object NTClient {
 
         ) { event ->
             println("Automous change detected")
-            if (event.valueData != null) {
+            if (event.valueData != null && event.valueData.value.string != "") {
                 var path2dFile: File? = null
                 var path2d = null
                 var gson = Gson()
@@ -133,6 +134,7 @@ object NTClient {
                     DriverStation.reportWarning("Empty autonomi received from network tables", false)
                 }
             }
+            filePaneUpdate()
         }
 
         NetworkTableInstance.getDefault().addListener(
@@ -184,6 +186,7 @@ object NTClient {
                 lastOdomEntry = event.valueData.value.doubleArray
             }
         }
+        filePaneUpdate()
     }
 
 

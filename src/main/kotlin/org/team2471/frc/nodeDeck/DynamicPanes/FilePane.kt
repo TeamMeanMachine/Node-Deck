@@ -41,6 +41,7 @@ object FilePane {
 
     }
 
+    // TODO: Add refresh button to call filePaneUpdate 
     fun filePaneUpdate() {
         var yPos = 0.0
         val yPosIncrement = 100 * FieldPane.fieldImageScale
@@ -84,6 +85,8 @@ object FilePane {
                         }
                     }
                     generatedPath2D.headingCurve.tailKey = key
+
+                    generatedPath = generatedPath2D.toLinearFXPath()
 
                     file = File(pane.accessibleText.replace("generated", "odometry"))
                     odometryPath2D = gson.fromJson(file.readText(), Path2D::class.java)
