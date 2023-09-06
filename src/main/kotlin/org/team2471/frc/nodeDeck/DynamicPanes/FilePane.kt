@@ -8,10 +8,12 @@ import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.ToggleButton
+import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.*
 import javafx.scene.paint.Color
 import org.team2471.frc.lib.motion_profiling.Path2D
+import org.team2471.frc.nodeDeck.AutoInterface
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath2D
@@ -21,12 +23,19 @@ import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.updateFieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.updateGenAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.updateOdomAnimation
 import org.team2471.frc.nodeDeck.DynamicTab
+import org.team2471.frc.nodeDeck.DynamicTab.settingsImage
 import java.io.File
 
 object FilePane {
     var fileScrollPane = ScrollPane()
     var filePane = Pane()
     var gson = Gson()
+
+    var refreshImage = ImageView(Image("refresh-icon.png", settingsImage.fitWidth, settingsImage.fitWidth, true, false))
+
+    var refreshButton = Button()
+
+
 
     init {
         filePane.background = Background.fill(DynamicTab.backgroundColor)
@@ -37,6 +46,18 @@ object FilePane {
         fileScrollPane.layoutY = fieldPane.height
         fileScrollPane.content = filePane
         fileScrollPane.isFitToWidth = true
+
+        refreshButton.background = Background.EMPTY
+        refreshButton.graphic = refreshImage
+        refreshButton.layoutX = filePane.width - refreshImage.fitWidth - 10
+
+        filePane.children.addAll(
+            refreshButton
+        )
+
+        refreshButton.setOnAction {
+            filePaneUpdate()
+        }
 
 
     }

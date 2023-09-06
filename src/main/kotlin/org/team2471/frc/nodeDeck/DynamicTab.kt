@@ -42,7 +42,7 @@ object DynamicTab: VBox(10.0) {
 
     var backgroundColor = Color.color(168.0 / 255, 168.0 / 255, 168.0 / 255)
 
-    private var settingsImage = scaleImageToHeight(ImageView(Image("settings-icon.png")), Screen.getPrimary().bounds.height / 40)
+    var settingsImage = scaleImageToHeight(ImageView(Image("settings-icon.png")), Screen.getPrimary().bounds.height / 40)
 
     private var settingsButton = Button()
 
