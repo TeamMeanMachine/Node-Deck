@@ -1,6 +1,6 @@
 package org.team2471.frc.nodeDeck.DynamicPanes
 
-import `dynamic-functions`.calculateSliderDrag
+import org.team2471.frc.nodeDeck.`dynamic-resources`.calculateSliderDrag
 import javafx.beans.binding.Bindings
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty

@@ -1,19 +1,14 @@
 package org.team2471.frc.nodeDeck.DynamicPanes
 
 import com.google.gson.Gson
-import `dynamic-functions`.toLinearFXPath
-import javafx.animation.Animation
-import javafx.beans.binding.Bindings
+import org.team2471.frc.nodeDeck.`dynamic-resources`.toLinearFXPath
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
-import javafx.scene.control.ToggleButton
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.*
-import javafx.scene.paint.Color
 import org.team2471.frc.lib.motion_profiling.Path2D
-import org.team2471.frc.nodeDeck.AutoInterface
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath2D

@@ -1,15 +1,11 @@
 package org.team2471.frc.nodeDeck.DynamicPanes
 
-import `dynamic-functions`.roundTo
-import `dynamic-functions`.scaleImageToHeight
-import `dynamic-functions`.toLinearFXPath
-import javafx.animation.Animation
+import org.team2471.frc.nodeDeck.`dynamic-resources`.roundTo
+import org.team2471.frc.nodeDeck.`dynamic-resources`.scaleImageToHeight
+import org.team2471.frc.nodeDeck.`dynamic-resources`.toLinearFXPath
 import javafx.animation.PathTransition
-import javafx.animation.RotateTransition
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.value.ChangeListener
-import javafx.beans.value.ObservableValue
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
@@ -33,7 +29,7 @@ object FieldPane {
     var fieldPane = Pane()
 
     var fieldImage =
-        scaleImageToHeight(ImageView(Image("field-2023.png")), Screen.getPrimary().bounds.height / 1.75)
+        autoScaleImage(ImageView(Image("field-2023.png")), Screen.getPrimary().bounds.height / 1.75, Screen.getPrimary().bounds.width * 0.75)
 
     var genRobotImage = ImageView(Image("robot.png"))
     var odomRobotImage = ImageView(Image("robot.png"))

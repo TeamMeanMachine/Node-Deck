@@ -1,7 +1,6 @@
 package org.team2471.frc.nodeDeck
 
 import com.google.gson.Gson
-import `dynamic-functions`.toLinearFXPath
 import edu.wpi.first.networktables.NetworkTableEvent
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DriverStation
@@ -13,15 +12,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion_profiling.Path2D
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane
 import org.team2471.frc.nodeDeck.DynamicPanes.FilePane.filePaneUpdate
 import java.io.File
 import java.text.SimpleDateFormat
 import java.time.Instant
-import java.time.LocalDate
 import java.util.*
-import kotlin.io.path.Path
-import kotlin.reflect.typeOf
 
 
 object NTClient {

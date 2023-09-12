@@ -1,36 +1,26 @@
-package `dynamic-functions`
+package org.team2471.frc.nodeDeck.`dynamic-resources`
 
-import edu.wpi.first.math.trajectory.Trajectory
-import javafx.animation.PathTransition
-import javafx.animation.RotateTransition
-import javafx.scene.canvas.GraphicsContext
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseButton
-import javafx.scene.input.MouseEvent
-import javafx.scene.paint.Color
 import javafx.scene.shape.*
 import javafx.util.Duration
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion_profiling.Path2D
-import org.team2471.frc.lib.units.asMeters
-import org.team2471.frc.lib.units.feet
 import org.team2471.frc.lib.units.radians
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImageScale
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genTransAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.isAnimationPlaying
 import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomTransAnimation
 import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.sliderPointPos
 import org.team2471.frc.nodeDeck.DynamicPanes.SettingsPane.sizeInput
-import org.team2471.frc.nodeDeck.DynamicPanes.SideBarPane.isOdomAnimationSelected
-import org.team2471.frc.nodeDeck.DynamicTab
-import org.team2471.frc.nodeDeck.DynamicTab.snapRes
-import org.team2471.frc.nodeDeck.`dynamic-resources`.Position
-import org.team2471.frc.nodeDeck.`dynamic-resources`.tmmCoords
-import org.team2471.frc.nodeDeck.`dynamic-resources`.wpiCoords
-import java.lang.Math.floorDiv
-import kotlin.coroutines.EmptyCoroutineContext.get
 import kotlin.math.*
+import kotlin.time.times
+
+// Returns ImageView scaled to either maxHeight or maxWidth, whichever would be smaller.
+fun autoScaleImage(imageView: ImageView, maxHeight: Double, maxWidth: Double): ImageView {
+    val aspectRatio = imageView.image.width / imageView.image.height
+    val scaleFactor = if (maxHeight * aspectRatio < maxWidth / aspectRatio) maxHeight / imageView.image.height else maxWidth / imageView.image.width
+    return scaleImage(imageView, scaleFactor)
+}
 
 // Returns a scaled ImageView with given height and a preserved aspect ratio
 fun scaleImageToHeight(image: ImageView, height: Double): ImageView {
