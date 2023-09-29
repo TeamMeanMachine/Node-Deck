@@ -1,6 +1,6 @@
 package org.team2471.frc.nodeDeck
 
-import org.team2471.frc.nodeDeck.`dynamic-resources`.scaleImageToHeight
+import chairlib.javafx.scaleImageToHeight
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.image.Image
@@ -10,11 +10,13 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.stage.Screen
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
-import org.team2471.frc.nodeDeck.DynamicPanes.FilePane.fileScrollPane
-import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.propertiesPane
-import org.team2471.frc.nodeDeck.DynamicPanes.SettingsPane
-import org.team2471.frc.nodeDeck.DynamicPanes.SideBarPane.sidebarScrollPane
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldPane
+import org.team2471.frc.nodeDeck.dynamicPanes.FilePane.fileScrollPane
+import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.propertiesPane
+import org.team2471.frc.nodeDeck.dynamicPanes.SettingsPane
+import org.team2471.frc.nodeDeck.dynamicPanes.SettingsPane.settingsPopup
+import org.team2471.frc.nodeDeck.dynamicPanes.SideBarPane.sidebarScrollPane
+import kotlin.io.println as println1
 
 
 object DynamicTab: VBox(10.0) {
@@ -31,8 +33,7 @@ object DynamicTab: VBox(10.0) {
     val snapRes = 0
 
     init {
-        println("Dynamic Tab up and running")
-
+        println1("Dynamic Tab up and running")
         settingsButton.graphic = settingsImage
         settingsButton.background = Background.EMPTY
         settingsButton.layoutX = Screen.getPrimary().bounds.width - 35 - settingsImage.fitWidth
@@ -52,6 +53,11 @@ object DynamicTab: VBox(10.0) {
         DynamicTab.children.addAll(
             tabPane
         )
+        tabPane.setOnMouseClicked {
+            if (settingsPopup.isShowing) {
+                settingsPopup.hide()
+            }
+        }
 
         settingsButton.setOnAction {
             SettingsPane.toggleSettings()

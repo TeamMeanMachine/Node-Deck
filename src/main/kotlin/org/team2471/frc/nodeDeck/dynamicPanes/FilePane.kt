@@ -1,7 +1,7 @@
-package org.team2471.frc.nodeDeck.DynamicPanes
+package org.team2471.frc.nodeDeck.dynamicPanes
 
 import com.google.gson.Gson
-import org.team2471.frc.nodeDeck.`dynamic-resources`.toLinearFXPath
+import org.team2471.frc.nodeDeck.dynamicResources.toLinearFXPath
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
@@ -9,16 +9,17 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.*
 import org.team2471.frc.lib.motion_profiling.Path2D
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.generatedPath2D
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odometryPath
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odometryPath2D
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.updateFieldPane
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.updateGenAnimation
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.updateOdomAnimation
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldPane
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.generatedPath
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.generatedPath2D
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.odometryPath
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.odometryPath2D
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.updateFieldPane
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.updateGenAnimation
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.updateOdomAnimation
 import org.team2471.frc.nodeDeck.DynamicTab
 import org.team2471.frc.nodeDeck.DynamicTab.settingsImage
+import org.team2471.frc.nodeDeck.dynamicPanes.SettingsPane.settingsPopup
 import java.io.File
 
 object FilePane {
@@ -51,13 +52,15 @@ object FilePane {
         )
 
         refreshButton.setOnAction {
-            filePaneUpdate()
+            if (!settingsPopup.isShowing) {
+                filePaneUpdate()
+            }
         }
 
 
     }
 
-    // TODO: Add refresh button to call filePaneUpdate
+    // TODO: Fix refresh button to call filePaneUpdate
     fun filePaneUpdate() {
         var yPos = 0.0
         val yPosIncrement = 100 * FieldPane.fieldImageScale
@@ -81,25 +84,28 @@ object FilePane {
                 loadButton.background = Background.EMPTY
 
                 loadButton.setOnMouseClicked {
-                    println("Loading path")
-                    var file = File(pane.accessibleText)
-                    generatedPath2D = Path2D.fromJsonString(file.readText())
+                    if (!settingsPopup.isShowing) {
 
-                    generatedPath = generatedPath2D.toLinearFXPath()
+                        println("Loading path")
+                        var file = File(pane.accessibleText)
+                        generatedPath2D = Path2D.fromJsonString(file.readText())
 
-                    file = File(pane.accessibleText.replace("generated", "odometry"))
-                    odometryPath2D = Path2D.fromJsonString(file.readText())
+                        generatedPath = generatedPath2D.toLinearFXPath()
 
-                    odometryPath = odometryPath2D.toLinearFXPath()
+                        file = File(pane.accessibleText.replace("generated", "odometry"))
+                        odometryPath2D = Path2D.fromJsonString(file.readText())
 
-                    println("${odometryPath2D.duration}******************************************")
+                        odometryPath = odometryPath2D.toLinearFXPath()
 
-                    updateFieldPane()
-                    updateGenAnimation()
-                    updateOdomAnimation()
+                        println("${odometryPath2D.duration}******************************************")
+
+                        updateFieldPane()
+                        updateGenAnimation()
+                        updateOdomAnimation()
 //                    FieldPane.generatedPath = FieldPane.odometryPath
 //                    FieldPane.generatedPath2D = FieldPane.odometryPath2D
 //                    updateGenAnimation()
+                    }
                 }
 
                 loadImage.fitHeight = (yPosIncrement * 0.75)

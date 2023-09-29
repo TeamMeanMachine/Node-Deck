@@ -1,8 +1,9 @@
-package org.team2471.frc.nodeDeck.DynamicPanes
+package org.team2471.frc.nodeDeck.dynamicPanes
 
-import org.team2471.frc.nodeDeck.`dynamic-resources`.roundTo
-import org.team2471.frc.nodeDeck.`dynamic-resources`.scaleImageToHeight
-import org.team2471.frc.nodeDeck.`dynamic-resources`.toLinearFXPath
+import chairlib.javafx.autoScaleImage
+import chairlib.javafx.scaleImageToHeight
+import org.team2471.frc.nodeDeck.dynamicResources.roundTo
+import org.team2471.frc.nodeDeck.dynamicResources.toLinearFXPath
 import javafx.animation.PathTransition
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
@@ -18,11 +19,13 @@ import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.lib.units.asMeters
 import org.team2471.frc.lib.units.feet
 import org.team2471.frc.lib.units.inches
-import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.sliderLine
-import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.sliderPointPos
-import org.team2471.frc.nodeDeck.DynamicPanes.PropertiesPane.timeLabel
-import org.team2471.frc.nodeDeck.DynamicPanes.SettingsPane.sizeInput
-import org.team2471.frc.nodeDeck.`dynamic-resources`.*
+import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.sliderLine
+import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.sliderPointPos
+import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.timeLabel
+import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.xLabel
+import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.yLabel
+import org.team2471.frc.nodeDeck.dynamicPanes.SettingsPane.sizeInput
+import org.team2471.frc.nodeDeck.dynamicResources.*
 
 
 object FieldPane {
@@ -135,11 +138,18 @@ object FieldPane {
                 ((genTransAnimation.currentTime.toMillis() / genTransAnimation.duration.toMillis()) * (sliderLine.endX - sliderLine.startX)) + (120 * fieldImageScale)
             )
             timeLabel.text = "${genTransAnimation.currentTime.toSeconds().roundTo(1)}/${genTransAnimation.duration.toSeconds().roundTo(1)}"
+
+            xLabel.text = "X: ${if (SideBarPane.isOdomRobotSelected == true) odometryPath2D.getPosition(newValue.toSeconds()).x.roundTo(1) else if (SideBarPane.isOdomRobotSelected == false) generatedPath2D.getPosition(newValue.toSeconds()).x.roundTo(1) else 0.0} ft"
+
+            yLabel.text = "Y: ${if (SideBarPane.isOdomRobotSelected == true) odometryPath2D.getPosition(newValue.toSeconds()).y.roundTo(1) else if (SideBarPane.isOdomRobotSelected == false) generatedPath2D.getPosition(newValue.toSeconds()).y.roundTo(1) else 0.0} ft"
+
             genRobotImage.rotate = generatedPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
 
             odomRobotImage.rotate = odometryPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
             println(odometryPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds()))
         }
+
+
 
         val genRobotStartPos = Vector2(0.0, 0.0).tmmCoords.toScreenCoords(genRobotImage.fitWidth)
         genRobotImage.x = genRobotStartPos.x; genRobotImage.y = genRobotStartPos.y

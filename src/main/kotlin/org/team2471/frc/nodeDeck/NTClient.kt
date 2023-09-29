@@ -12,7 +12,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion_profiling.Path2D
-import org.team2471.frc.nodeDeck.DynamicPanes.FilePane.filePaneUpdate
+import org.team2471.frc.nodeDeck.dynamicPanes.FilePane.filePaneUpdate
 import java.io.File
 import java.text.SimpleDateFormat
 import java.time.Instant

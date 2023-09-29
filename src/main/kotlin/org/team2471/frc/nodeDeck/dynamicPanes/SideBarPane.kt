@@ -1,6 +1,5 @@
-package org.team2471.frc.nodeDeck.DynamicPanes
+package org.team2471.frc.nodeDeck.dynamicPanes
 
-import javafx.animation.Animation
 import javafx.beans.binding.Bindings
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -10,13 +9,12 @@ import javafx.scene.control.ToggleButton
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.*
-import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImageScale
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldPane
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.genTransAnimation
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.odomTransAnimation
+import javafx.stage.Screen
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldImageScale
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldPane
 import org.team2471.frc.nodeDeck.DynamicTab.backgroundColor
+import org.team2471.frc.nodeDeck.dynamicPanes.SettingsPane.settingsPopup
 
 
 object SideBarPane {
@@ -30,27 +28,34 @@ object SideBarPane {
 
     lateinit var selectedNode: Node
     var isOdomAnimationSelected: Boolean? = null
+    var isOdomRobotSelected: Boolean? = null
 
 
     init {
         sidebarPane.background = Background.fill(backgroundColor)
 
-        sidebarScrollPane.background = Background.EMPTY
+
 
         sidebarScrollPane.layoutX = fieldPane.width
         sidebarScrollPane.content = sidebarPane
-        sidebarScrollPane.isFitToWidth = true
+        sidebarScrollPane.maxHeight = fieldPane.height
+        sidebarScrollPane.minHeight = 100 * fieldImageScale
+        sidebarScrollPane.maxWidth = Screen.getPrimary().bounds.width - fieldPane.width
+        sidebarScrollPane.vbarPolicy = ScrollPane.ScrollBarPolicy.AS_NEEDED
+        sidebarScrollPane.hbarPolicy = ScrollPane.ScrollBarPolicy.NEVER
+        sidebarScrollPane.background = Background.EMPTY
 
     }
 
     fun sidebarUpdate() {
         var yPos = 0.0
-        val yPosIncrement = 100 * fieldImageScale
+        val yPosIncrement = 125 * fieldImageScale
         for (node in fieldPane.children.asReversed()) {
             if (node.accessibleText != "Field Image") {
                 var pane = Pane()
 
                 val isPath = "Path" in node.accessibleText
+                val isRobot = "Robot" in node.accessibleText
 
                 var selectButton = Button()
 
@@ -61,7 +66,8 @@ object SideBarPane {
 
                 var selectedBox = Rectangle(775 * fieldImageScale, yPosIncrement)
 
-                var isOdom = node.accessibleText == "Odometry Path"
+                var isOdomPath = if (isPath) node.accessibleText == "Odometry Path" else null
+                var isOdomRobot = if (isRobot) node.accessibleText == "Odometry Robot" else null
 
                 selectedBox.arcHeight = 50.0 * fieldImageScale
                 selectedBox.arcWidth = 50.0 * fieldImageScale
@@ -75,20 +81,24 @@ object SideBarPane {
                 selectButton.resize(yPosIncrement, 1000 * fieldImageScale)
 
                 toggleButton.graphic = toggleImage
+                toggleImage.image = showIcon
 
-                toggleImage.imageProperty().bind(
-                    Bindings
-                        .`when`(toggleButton.selectedProperty())
-                        .then(hideIcon)
-                        .otherwise(showIcon)
-                )
+                node.opacityProperty().addListener{_, oldOpacity, newOpacity ->
+                    if (newOpacity == 0.0){
+                        toggleImage.image = hideIcon
+                    } else {
+                        toggleImage.image = showIcon
+                    }
+                }
                 toggleButton.background = Background.EMPTY
 
                 toggleButton.setOnAction {
-                    if (node.opacity > 0.0) {
-                        node.opacity = 0.0
-                    } else {
-                        node.opacity = 100.0
+                    if (!SettingsPane.settingsPopup.isShowing) {
+                        if (node.opacity > 0.0) {
+                            node.opacity = 0.0
+                        } else {
+                            node.opacity = 100.0
+                        }
                     }
                 }
 
@@ -110,24 +120,29 @@ object SideBarPane {
 //                pane.border = Border(BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))
 
                 pane.setOnMouseClicked {
-                   selectNode(node, if (isPath) isOdom else null, pane)
+                    if (!SettingsPane.settingsPopup.isShowing) {
+                        selectNode(node, isOdomPath, isOdomRobot, pane)
+                    }
                 }
 
 
-                selectNode(node, if (isPath) isOdom else null, pane)
+                selectNode(node, isOdomPath, isOdomRobot, pane)
 
                 sidebarPane.children.addAll(
                     pane
                 )
+
+                sidebarScrollPane.content = sidebarPane
 
                 yPos += yPosIncrement
             }
         }
     }
 
-    fun selectNode(node: Node, isOdomAnimation: Boolean?, nodePane: Pane) {
+    fun selectNode(node: Node, isOdomAnimation: Boolean?, isOdomRobot: Boolean?, nodePane: Pane) {
         selectedNode = node
         isOdomAnimationSelected = isOdomAnimation
+        isOdomRobotSelected = isOdomRobot
         for (pane in sidebarPane.children) {
             if (pane is Pane) {
                 pane.children[0].opacity = 0.0

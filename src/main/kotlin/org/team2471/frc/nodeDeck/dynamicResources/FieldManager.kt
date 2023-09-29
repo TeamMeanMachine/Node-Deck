@@ -1,8 +1,10 @@
-package org.team2471.frc.nodeDeck.`dynamic-resources`
+package org.team2471.frc.nodeDeck.dynamicResources
 
+import com.google.gson.Gson
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.units.*
-import org.team2471.frc.nodeDeck.DynamicPanes.FieldPane.fieldImageScale
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldImageScale
+import java.io.File
 
 // Define the dimensions of the field in meters
 val fieldDimensionsInMeters = Vector2(26.29.feet.asMeters, 54.27.feet.asMeters) // field diagram & json is 26.29, 54.27 but includes side walls and barriers
@@ -10,14 +12,15 @@ val fieldDimensionsInMeters = Vector2(26.29.feet.asMeters, 54.27.feet.asMeters) 
 // Calculate the center offset of the field in meters
 val fieldCenterOffsetInMeters = fieldDimensionsInMeters / 2.0
 
-// Define the position of the zero point of the field image in WPI coordinates
+// The pixel value of the WPI Zero position in the field image
 val fieldImageWPIZeroPos = Vector2(481.0, 1374.0)
 
 // Define the position of the opposite corner of the field image in WPI coordinates
 val fieldImageOppositeCornerPos = Vector2(3125.0, 89.0)
 
 // Calculate the pixels per centimeter based on the field image scale
-val ppc = (fieldImageScale * (fieldImageWPIZeroPos.y - fieldImageOppositeCornerPos.y)) / fieldDimensionsInMeters.x.meters.asCm
+val ppc: Double
+    get() = (fieldImageScale * (fieldImageWPIZeroPos.y - fieldImageOppositeCornerPos.y)) / fieldDimensionsInMeters.x.meters.asCm
 
 // Define a value class for representing positions in WPI coordinates
 @JvmInline
@@ -69,4 +72,9 @@ fun Vector2.screenCoords(robotWidth: Double, fieldImageScale: Double): Position 
             y
         )
     )
+}
+
+data class fieldImageProperties(val fileName: String, val name: String, val imageWPIZeroPos: Vector2, val imageOppositeCornerPos: Vector2) {
+    val ppc: Double
+        get() = (fieldImageScale * (imageWPIZeroPos.y - imageOppositeCornerPos.y)) / fieldDimensionsInMeters.x.meters.asCm
 }
