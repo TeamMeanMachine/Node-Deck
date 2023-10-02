@@ -58,7 +58,6 @@ object DynamicTab: VBox(10.0) {
                 settingsPopup.hide()
             }
         }
-
         settingsButton.setOnAction {
             SettingsPane.toggleSettings()
         }

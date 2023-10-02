@@ -1,6 +1,7 @@
 package org.team2471.frc.nodeDeck.dynamicPanes
 
 import com.google.gson.Gson
+import javafx.application.Platform
 import org.team2471.frc.nodeDeck.dynamicResources.toLinearFXPath
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -135,8 +136,9 @@ object FilePane {
                     )
 
                     pane.layoutY = yPos
-
-                    filePane.children.add(pane)
+                    Platform.runLater {
+                        filePane.children.add(pane)
+                    }
                 }
 
 
