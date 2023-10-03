@@ -60,34 +60,34 @@ fun calculateSliderDrag(point: Circle, line: Line, minX: Double, maxX: Double): 
     // Triggers the calculation when the mouse is dragging the point on the slider
     point.setOnMouseDragged { event ->
         if (!SettingsPane.settingsPopup.isShowing) {
-            // Checks if an Animation is currently playing because we don't want both the animation and the dragging trying to update the slider position
-            if (!isAnimationPlaying.get()) {
-                if (event.button == MouseButton.PRIMARY) {
-                    // Changes the position of the slider so that it is at the same position as the mouse, taking into account the minimum and maximum X values
-                    sliderPointPos.set(
-                        (sliderPointPos.get() + event.sceneX - point.centerX - point.radius).coerceIn(
-                            minX,
-                            maxX
-                        )
+            genTransAnimation.pause()
+            odomTransAnimation.pause()
+            if (event.button == MouseButton.PRIMARY) {
+                // Changes the position of the slider so that it is at the same position as the mouse, taking into account the minimum and maximum X values
+                sliderPointPos.set(
+                    (sliderPointPos.get() + event.sceneX - point.centerX - point.radius).coerceIn(
+                        minX,
+                        maxX
                     )
-                    // Starts the odometry animation then jumps to the right duration based off of where the slider is positioned
-                    odomTransAnimation.play()
-                    odomTransAnimation.pause()
-                    odomTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX)) * odomTransAnimation.duration.toMillis()))
-                    // Starts the generated animation and jumps to the right duration based off of where the slider is positioned
-                    genTransAnimation.play()
-                    genTransAnimation.pause()
-                    genTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX)) * genTransAnimation.duration.toMillis()))
+                )
+                // Starts the odometry animation then jumps to the right duration based off of where the slider is positioned
+                odomTransAnimation.play()
+                odomTransAnimation.pause()
+                odomTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX)) * odomTransAnimation.duration.toMillis()))
+                // Starts the generated animation and jumps to the right duration based off of where the slider is positioned
+                genTransAnimation.play()
+                genTransAnimation.pause()
+                genTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX)) * genTransAnimation.duration.toMillis()))
 
-                }
             }
         }
     }
     line.setOnMouseDragged { event ->
         if (!SettingsPane.settingsPopup.isShowing) {
-            // Checks if an Animation is currently playing because we don't want both the animation and the dragging trying to update the slider position
-            if (!isAnimationPlaying.get()) {
-                if (event.button == MouseButton.PRIMARY) {
+            genTransAnimation.pause()
+            odomTransAnimation.pause()
+
+            if (event.button == MouseButton.PRIMARY) {
                     // Changes the position of the slider so that it is at the same position as the mouse, taking into account the minimum and maximum X values
                     sliderPointPos.set(
                         (sliderPointPos.get() + event.sceneX - point.centerX - point.radius).coerceIn(
@@ -108,7 +108,6 @@ fun calculateSliderDrag(point: Circle, line: Line, minX: Double, maxX: Double): 
             }
 
         }
-    }
     // Returns the translated point
     return point
 }
