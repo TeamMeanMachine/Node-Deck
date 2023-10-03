@@ -20,13 +20,14 @@ import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.updateGenAnimation
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.updateOdomAnimation
 import org.team2471.frc.nodeDeck.DynamicTab
 import org.team2471.frc.nodeDeck.DynamicTab.settingsImage
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.genTransAnimation
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.odomTransAnimation
 import org.team2471.frc.nodeDeck.dynamicPanes.SettingsPane.settingsPopup
 import java.io.File
 
 object FilePane {
     var fileScrollPane = ScrollPane()
     var filePane = Pane()
-    var gson = Gson()
 
     var refreshImage = ImageView(Image("refresh-icon.png", settingsImage.fitWidth, settingsImage.fitWidth, true, false))
 
@@ -86,7 +87,8 @@ object FilePane {
 
                 loadButton.setOnMouseClicked {
                     if (!settingsPopup.isShowing) {
-
+                        genTransAnimation.stop()
+                        odomTransAnimation.stop()
                         println("Loading path")
                         var file = File(pane.accessibleText)
                         generatedPath2D = Path2D.fromJsonString(file.readText())
