@@ -9,6 +9,7 @@ import javafx.scene.control.ScrollPane
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.*
+import javafx.stage.Screen
 import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldPane
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.generatedPath
@@ -47,7 +48,7 @@ object FilePane {
 
         refreshButton.background = Background.EMPTY
         refreshButton.graphic = refreshImage
-        refreshButton.layoutX = filePane.width - refreshImage.fitWidth - 10
+        refreshButton.layoutX = Screen.getPrimary().bounds.width - fieldPane.width - 40 - refreshImage.fitWidth - 10
 
         filePane.children.addAll(
             refreshButton
