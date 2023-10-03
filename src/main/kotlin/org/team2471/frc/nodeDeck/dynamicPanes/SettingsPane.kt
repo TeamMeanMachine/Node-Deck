@@ -1,9 +1,10 @@
 package org.team2471.frc.nodeDeck.dynamicPanes
 
 import chairlib.javafx.scaleImageToHeight
+import javafx.collections.FXCollections.observableArrayList
+import javafx.collections.ObservableList
 import javafx.geometry.Insets
-import javafx.scene.control.Label
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import javafx.scene.effect.ColorAdjust
 import javafx.scene.effect.GaussianBlur
 import javafx.scene.layout.Background
@@ -17,6 +18,8 @@ import org.team2471.frc.nodeDeck.DynamicTab.backgroundColor
 import org.team2471.frc.nodeDeck.DynamicTab.tabPane
 import org.team2471.frc.nodeDeck.NodeDeck
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldImageScale
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.genRobotImage
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.odomRobotImage
 import org.team2471.frc.nodeDeck.dynamicResources.ppc
 
 
@@ -26,26 +29,47 @@ object SettingsPane {
     val settingsPopup = Popup()
 
 
-    var settingsBackground = Background(BackgroundFill(Color.color(35.0 / 255, 35.0 / 255, 35.0 / 255), CornerRadii(20 * fieldImageScale), Insets.EMPTY))
+    val settingsBackground = Background(BackgroundFill(Color.color(35.0 / 255, 35.0 / 255, 35.0 / 255), CornerRadii(20 * fieldImageScale), Insets.EMPTY))
+    val lightSettingsBackground = Background(BackgroundFill(Color.color(150.0 / 255.0, 150.0 / 255.0, 150.0 / 255.0), CornerRadii(20 * fieldImageScale), Insets.EMPTY))
+
     private val sizeLabel = Label("Robot Size (cm):")
 
     val sizeInput = TextField("81.3")
+
+    private val differentiationLabel = Label("Gen/Odom Differentiation Method:")
+
+    val differentiationDropdown = ComboBox(observableArrayList("Generated Ghosted", "Odometry Ghosted"))
 
 
 
     init  {
         settingsPane.background = settingsBackground
 
-        sizeLabel.style = "-fx-font-weight: bold; -fx-font-size: ${DynamicTab.fontSize} px"
+        sizeLabel.style = "-fx-font-weight: bold; -fx-font-size: ${DynamicTab.fontSize * 1.5} px"
         sizeLabel.textFill = Color.WHITE
         sizeLabel.layoutY += 5 * fieldImageScale
 
-        sizeInput.style = "-fx-font-size: ${DynamicTab.fontSize} px"
-        sizeInput.layoutY = sizeInput.layoutY + 20
+        sizeInput.style = "-fx-font-size: ${DynamicTab.fontSize * 1.5} px"
+        sizeInput.background = lightSettingsBackground
+        sizeInput.layoutY += 75 * fieldImageScale
+
+        differentiationLabel.style = "-fx-font-weight: bold; -fx-font-size: ${DynamicTab.fontSize * 1.5} px"
+        differentiationLabel.textFill = Color.WHITE
+        differentiationLabel.layoutY += 200 * fieldImageScale
+
+        differentiationDropdown.style = "-fx-font-size: ${DynamicTab.fontSize * 1.5}"
+        differentiationDropdown.background = lightSettingsBackground
+        differentiationDropdown.layoutY += (275 * fieldImageScale)
+        differentiationDropdown.selectionModel.selectFirst()
+
+        genRobotImage.opacity = 0.5
+        odomRobotImage.opacity = 1.0
 
         settingsPane.children.addAll(
             sizeLabel,
-            sizeInput
+            sizeInput,
+            differentiationLabel,
+            differentiationDropdown
         )
 
         settingsPopup.content.addAll(
@@ -58,6 +82,17 @@ object SettingsPane {
             }
             FieldPane.genRobotImage = scaleImageToHeight(FieldPane.genRobotImage, (sizeInput.text.toDouble() * ppc))
             FieldPane.odomRobotImage = scaleImageToHeight(FieldPane.odomRobotImage, (sizeInput.text.toDouble() * ppc))
+        }
+
+        differentiationDropdown.valueProperty().addListener{ _, _, newValue ->
+            println("Hi-------------------------------")
+            if (newValue == "Generated Ghosted") {
+                genRobotImage.opacity = 0.5
+                odomRobotImage.opacity = 1.0
+            } else {
+                genRobotImage.opacity = 1.0
+                odomRobotImage.opacity = 0.5
+            }
         }
 
         settingsPopup.setOnShowing {

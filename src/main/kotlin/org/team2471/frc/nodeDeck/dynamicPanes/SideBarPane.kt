@@ -30,6 +30,9 @@ object SideBarPane {
     var isOdomAnimationSelected: Boolean? = null
     var isOdomRobotSelected: Boolean? = null
 
+    var prevOdomOpacity = 1.0
+    var prevGenOpacity = 1.0
+
 
     init {
         sidebarPane.background = Background.fill(backgroundColor)
@@ -95,9 +98,20 @@ object SideBarPane {
                 toggleButton.setOnAction {
                     if (!SettingsPane.settingsPopup.isShowing) {
                         if (node.opacity > 0.0) {
+                            if (isOdomRobot == true) {
+                                prevOdomOpacity = node.opacity
+                            } else if (isOdomRobot == false) {
+                                prevGenOpacity = node.opacity
+                            }
                             node.opacity = 0.0
                         } else {
-                            node.opacity = 100.0
+                            if (isOdomRobot == true) {
+                                node.opacity = prevOdomOpacity
+                            } else if (isOdomRobot == false) {
+                                node.opacity = prevGenOpacity
+                            } else {
+                                node.opacity = 1.0
+                            }
                         }
                     }
                 }
