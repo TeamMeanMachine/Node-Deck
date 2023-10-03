@@ -17,6 +17,7 @@ import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.lib.units.asMeters
+import org.team2471.frc.lib.units.degrees
 import org.team2471.frc.lib.units.feet
 import org.team2471.frc.lib.units.inches
 import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.posLabel
@@ -145,10 +146,10 @@ object FieldPane {
                 if (SideBarPane.isOdomRobotSelected == true) odometryPath2D.getPosition(newValue.toSeconds()).y.roundTo(1) else if (SideBarPane.isOdomRobotSelected == false) generatedPath2D.getPosition(newValue.toSeconds()).y.roundTo(1) else 0.0
             } ft"
 
-            genRobotImage.rotate = generatedPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
+            genRobotImage.rotate = generatedPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds()).degrees.tmm.toScreen.asDegrees
 
-            odomRobotImage.rotate = odometryPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
-            println(odometryPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds()))
+            odomRobotImage.rotate = odometryPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds()).degrees.tmm.toScreen.asDegrees
+//            println(odometryPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds()))
         }
 
 

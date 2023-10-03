@@ -78,3 +78,11 @@ data class fieldImageProperties(val fileName: String, val name: String, val imag
     val ppc: Double
         get() = (fieldImageScale * (imageWPIZeroPos.y - imageOppositeCornerPos.y)) / fieldDimensionsInWPI.y.meters.asCm
 }
+
+inline val Angle.wpi get() = this
+inline val Angle.tmm get() = this - 90.degrees
+inline val Angle.screen get() = this
+
+inline val Angle.toWpi get() = this
+inline val Angle.toTmm get() = this + 90.degrees
+inline val Angle.toScreen get() = this
