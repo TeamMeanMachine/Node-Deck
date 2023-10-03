@@ -15,6 +15,7 @@ import javafx.scene.shape.Line
 import javafx.scene.shape.StrokeLineCap
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldImageScale
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldPane
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.genTransAnimation
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.isAnimationPlaying
 
 object PropertiesPane {
@@ -24,9 +25,7 @@ object PropertiesPane {
     var playImage = ImageView()
 
     var timeLabel = Label("0.0/0.0")
-    var posLabel = Label("Position: ")
-    var xLabel = Label("X: ")
-    var yLabel = Label("Y: ")
+    var posLabel = Label("Position: X: Y:")
     var offsetLabel = Label("Position: ")
     var xOffsetLabel = Label("X: ")
     var yOffsetLabel = Label("Y: ")
@@ -81,22 +80,12 @@ object PropertiesPane {
 
         timeLabel.widthProperty().addListener { _, _, newValue ->
             posLabel.layoutXProperty().set(newValue.toDouble() + timeLabel.layoutX + (20 * fieldImageScale ))
-            xLabel.layoutXProperty().set(posLabel.layoutX + posLabel.width + timeLabel.layoutX + (20 * fieldImageScale ))
-            yLabel.layoutXProperty().set(xLabel.layoutX + posLabel.width + timeLabel.layoutX + (20 * fieldImageScale ))
         }
 
         posLabel.layoutXProperty().set(timeLabel.layoutX + timeLabel.layoutX + (20 * fieldImageScale ))
-        xLabel.layoutXProperty().set(posLabel.layoutX + posLabel.width + timeLabel.layoutX + (20 * fieldImageScale ))
-        yLabel.layoutXProperty().set(xLabel.layoutX + posLabel.width + timeLabel.layoutX + (20 * fieldImageScale ))
 
         posLabel.layoutY = 80 * fieldImageScale
         posLabel.style = "-fx-font-weight: bold; -fx-font-size: ${75 * fieldImageScale} px"
-
-        xLabel.layoutY = 80 * fieldImageScale
-        xLabel.style = "-fx-font-weight: bold; -fx-font-size: ${75 * fieldImageScale} px"
-
-        yLabel.layoutY = 80 * fieldImageScale
-        yLabel.style = "-fx-font-weight: bold; -fx-font-size: ${75 * fieldImageScale} px"
 
 
 
@@ -106,8 +95,6 @@ object PropertiesPane {
             playButton,
             timeLabel,
             posLabel,
-            xLabel,
-            yLabel
         )
         calculateSliderDrag(sliderPoint, sliderLine, sliderLine.startX, sliderLine.endX)
     }

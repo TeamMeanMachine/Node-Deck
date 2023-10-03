@@ -19,11 +19,10 @@ import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.lib.units.asMeters
 import org.team2471.frc.lib.units.feet
 import org.team2471.frc.lib.units.inches
+import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.posLabel
 import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.sliderLine
 import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.sliderPointPos
 import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.timeLabel
-import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.xLabel
-import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.yLabel
 import org.team2471.frc.nodeDeck.dynamicPanes.SettingsPane.sizeInput
 import org.team2471.frc.nodeDeck.dynamicResources.*
 
@@ -139,9 +138,12 @@ object FieldPane {
             )
             timeLabel.text = "${genTransAnimation.currentTime.toSeconds().roundTo(1)}/${genTransAnimation.duration.toSeconds().roundTo(1)}"
 
-            xLabel.text = "X: ${if (SideBarPane.isOdomRobotSelected == true) odometryPath2D.getPosition(newValue.toSeconds()).x.roundTo(1) else if (SideBarPane.isOdomRobotSelected == false) generatedPath2D.getPosition(newValue.toSeconds()).x.roundTo(1) else 0.0} ft"
 
-            yLabel.text = "Y: ${if (SideBarPane.isOdomRobotSelected == true) odometryPath2D.getPosition(newValue.toSeconds()).y.roundTo(1) else if (SideBarPane.isOdomRobotSelected == false) generatedPath2D.getPosition(newValue.toSeconds()).y.roundTo(1) else 0.0} ft"
+            posLabel.text = "Position: X: ${
+                if (SideBarPane.isOdomRobotSelected == true) odometryPath2D.getPosition(newValue.toSeconds()).x.roundTo(1) else if (SideBarPane.isOdomRobotSelected == false) generatedPath2D.getPosition(newValue.toSeconds()).x.roundTo(1) else 0.0
+            } ft Y: ${
+                if (SideBarPane.isOdomRobotSelected == true) odometryPath2D.getPosition(newValue.toSeconds()).y.roundTo(1) else if (SideBarPane.isOdomRobotSelected == false) generatedPath2D.getPosition(newValue.toSeconds()).y.roundTo(1) else 0.0
+            } ft"
 
             genRobotImage.rotate = generatedPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds())
 
