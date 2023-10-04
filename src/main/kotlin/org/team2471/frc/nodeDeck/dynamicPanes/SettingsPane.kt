@@ -1,6 +1,7 @@
 package org.team2471.frc.nodeDeck.dynamicPanes
 
 import chairlib.javafx.scaleImageToHeight
+import com.google.gson.Gson
 import javafx.collections.FXCollections.observableArrayList
 import javafx.collections.ObservableList
 import javafx.geometry.Insets
@@ -21,10 +22,16 @@ import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldImageScale
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.genRobotImage
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.odomRobotImage
 import org.team2471.frc.nodeDeck.dynamicResources.ppc
+import java.io.File
+import java.lang.reflect.Type
 
 
 object SettingsPane {
     var settingsPane = Pane()
+
+    var gson = Gson()
+    val settingsFile = File("src/main/resources/prev-settings.json")
+    var settings: MutableMap<String, String> = gson.fromJson(settingsFile.readText(), MutableMap::class.java) as MutableMap<String, String>
 
     val settingsPopup = Popup()
 
@@ -34,13 +41,11 @@ object SettingsPane {
 
     private val sizeLabel = Label("Robot Size (cm):")
 
-    val sizeInput = TextField("81.3")
+    val sizeInput = TextField(settings["robotSize"].toString())
 
     private val differentiationLabel = Label("Gen/Odom Differentiation Method:")
 
     val differentiationDropdown = ComboBox(observableArrayList("Generated Ghosted", "Odometry Ghosted"))
-
-
 
     init  {
         settingsPane.background = settingsBackground
@@ -60,7 +65,11 @@ object SettingsPane {
         differentiationDropdown.style = "-fx-font-size: ${DynamicTab.fontSize * 1.5}"
         differentiationDropdown.background = lightSettingsBackground
         differentiationDropdown.layoutY += (275 * fieldImageScale)
-        differentiationDropdown.selectionModel.selectFirst()
+        if (settings["differentiationMethod"].toString() == differentiationDropdown.items.first()) {
+            differentiationDropdown.selectionModel.selectFirst()
+        } else {
+            differentiationDropdown.selectionModel.selectLast()
+        }
 
         genRobotImage.opacity = 0.5
         odomRobotImage.opacity = 1.0
@@ -79,13 +88,18 @@ object SettingsPane {
         sizeInput.setOnAction {
             if (sizeInput.text.toDouble() > 125.0) {
                 sizeInput.text = "125.0"
+            } else if (sizeInput.text.toDouble() < 20) {
+                sizeInput.text = "20"
             }
+            settings["robotSize"] = sizeInput.text
+            settingsFile.writeText(gson.toJson(settings))
             FieldPane.genRobotImage = scaleImageToHeight(FieldPane.genRobotImage, (sizeInput.text.toDouble() * ppc))
             FieldPane.odomRobotImage = scaleImageToHeight(FieldPane.odomRobotImage, (sizeInput.text.toDouble() * ppc))
         }
 
         differentiationDropdown.valueProperty().addListener{ _, _, newValue ->
-            println("Hi-------------------------------")
+            settings["differentiationMethod"] = newValue
+            settingsFile.writeText(gson.toJson(settings))
             if (newValue == "Generated Ghosted") {
                 genRobotImage.opacity = 0.5
                 odomRobotImage.opacity = 1.0

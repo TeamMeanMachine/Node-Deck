@@ -169,5 +169,3 @@ fun Double.roundTo(numFractionDigits: Int): Double {
     val factor = 10.0.pow(numFractionDigits.toDouble())
     return (this * factor).roundToInt() / factor
 }
-
-

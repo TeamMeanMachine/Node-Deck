@@ -63,7 +63,6 @@ object FilePane {
 
     }
 
-    // TODO: Fix refresh button to call filePaneUpdate
     fun filePaneUpdate() {
         var yPos = 0.0
         val yPosIncrement = 100 * FieldPane.fieldImageScale
