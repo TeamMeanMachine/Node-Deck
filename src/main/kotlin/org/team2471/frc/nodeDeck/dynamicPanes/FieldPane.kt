@@ -139,12 +139,7 @@ object FieldPane {
             )
             timeLabel.text = "${genTransAnimation.currentTime.toSeconds().roundTo(1)}/${genTransAnimation.duration.toSeconds().roundTo(1)}"
 
-
-            posLabel.text = "Position: X: ${
-                if (SideBarPane.isOdomRobotSelected == true) odometryPath2D.getPosition(newValue.toSeconds()).x.roundTo(1) else if (SideBarPane.isOdomRobotSelected == false) generatedPath2D.getPosition(newValue.toSeconds()).x.roundTo(1) else 0.0
-            } ft Y: ${
-                if (SideBarPane.isOdomRobotSelected == true) odometryPath2D.getPosition(newValue.toSeconds()).y.roundTo(1) else if (SideBarPane.isOdomRobotSelected == false) generatedPath2D.getPosition(newValue.toSeconds()).y.roundTo(1) else 0.0
-            } ft"
+            setPositionLabel(newValue)
 
             genRobotImage.rotate = generatedPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds()).degrees.tmm.toScreen.asDegrees
 

@@ -13,10 +13,13 @@ import javafx.scene.layout.Pane
 import javafx.scene.shape.Circle
 import javafx.scene.shape.Line
 import javafx.scene.shape.StrokeLineCap
+import javafx.util.Duration
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldImageScale
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldPane
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.genTransAnimation
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.isAnimationPlaying
+import org.team2471.frc.nodeDeck.dynamicResources.roundTo
+import org.team2471.frc.nodeDeck.dynamicResources.tmmCoords
 
 object PropertiesPane {
     var propertiesPane = Pane()
@@ -100,4 +103,34 @@ object PropertiesPane {
     }
 
 
+}
+
+fun setPositionLabel(newValue: Duration) {
+    PropertiesPane.posLabel.text = "Position: X: ${
+        if (SideBarPane.isOdomRobotSelected == true) 
+            if (SettingsPane.coordTypeDropdown.value == "TMM") 
+                FieldPane.odometryPath2D.getPosition(newValue.toSeconds()).x.roundTo(1) 
+            else
+                FieldPane.odometryPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().x.roundTo(1) 
+        else if (SideBarPane.isOdomRobotSelected == false)
+            if (SettingsPane.coordTypeDropdown.value == "TMM")
+                FieldPane.generatedPath2D.getPosition(newValue.toSeconds()).x.roundTo(1)
+            else
+                FieldPane.generatedPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().x.roundTo(1)
+        else 
+            "N/A"
+    } ft Y: ${
+        if (SideBarPane.isOdomRobotSelected == true)
+            if (SettingsPane.coordTypeDropdown.value == "TMM")
+                FieldPane.odometryPath2D.getPosition(newValue.toSeconds()).y.roundTo(1)
+            else
+                FieldPane.odometryPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().y.roundTo(1)
+        else if (SideBarPane.isOdomRobotSelected == false)
+            if (SettingsPane.coordTypeDropdown.value == "TMM")
+                FieldPane.generatedPath2D.getPosition(newValue.toSeconds()).y.roundTo(1)
+            else
+                FieldPane.generatedPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().y.roundTo(1)
+        else 
+            "N/A"
+    } ft"
 }

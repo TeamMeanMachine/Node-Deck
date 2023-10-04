@@ -20,6 +20,7 @@ import org.team2471.frc.nodeDeck.DynamicTab.tabPane
 import org.team2471.frc.nodeDeck.NodeDeck
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldImageScale
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.genRobotImage
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.genTransAnimation
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.odomRobotImage
 import org.team2471.frc.nodeDeck.dynamicResources.ppc
 import java.io.File
@@ -43,6 +44,10 @@ object SettingsPane {
 
     val sizeInput = TextField(settings["robotSize"].toString())
 
+    private val coordTypeLabel = Label("Coordinate Type:")
+
+    val coordTypeDropdown = ComboBox(observableArrayList("TMM", "WPI"))
+
     private val differentiationLabel = Label("Gen/Odom Differentiation Method:")
 
     val differentiationDropdown = ComboBox(observableArrayList("Generated Ghosted", "Odometry Ghosted"))
@@ -58,13 +63,26 @@ object SettingsPane {
         sizeInput.background = lightSettingsBackground
         sizeInput.layoutY += 75 * fieldImageScale
 
+        coordTypeLabel.style = "-fx-font-weight: bold; -fx-font-size: ${DynamicTab.fontSize * 1.5} px"
+        coordTypeLabel.textFill = Color.WHITE
+        coordTypeLabel.layoutY += 200 * fieldImageScale
+
+        coordTypeDropdown.style = "-fx-font-size: ${DynamicTab.fontSize * 1.5}"
+        coordTypeDropdown.background = lightSettingsBackground
+        coordTypeDropdown.layoutY += (275 * fieldImageScale)
+        if (settings["coordinateType"].toString() == coordTypeDropdown.items.first()) {
+            coordTypeDropdown.selectionModel.selectFirst()
+        } else {
+            coordTypeDropdown.selectionModel.selectLast()
+        }
+
         differentiationLabel.style = "-fx-font-weight: bold; -fx-font-size: ${DynamicTab.fontSize * 1.5} px"
         differentiationLabel.textFill = Color.WHITE
-        differentiationLabel.layoutY += 200 * fieldImageScale
+        differentiationLabel.layoutY += 400 * fieldImageScale
 
         differentiationDropdown.style = "-fx-font-size: ${DynamicTab.fontSize * 1.5}"
         differentiationDropdown.background = lightSettingsBackground
-        differentiationDropdown.layoutY += (275 * fieldImageScale)
+        differentiationDropdown.layoutY += (475 * fieldImageScale)
         if (settings["differentiationMethod"].toString() == differentiationDropdown.items.first()) {
             differentiationDropdown.selectionModel.selectFirst()
         } else {
@@ -77,6 +95,8 @@ object SettingsPane {
         settingsPane.children.addAll(
             sizeLabel,
             sizeInput,
+            coordTypeLabel,
+            coordTypeDropdown,
             differentiationLabel,
             differentiationDropdown
         )
@@ -95,6 +115,12 @@ object SettingsPane {
             settingsFile.writeText(gson.toJson(settings))
             FieldPane.genRobotImage = scaleImageToHeight(FieldPane.genRobotImage, (sizeInput.text.toDouble() * ppc))
             FieldPane.odomRobotImage = scaleImageToHeight(FieldPane.odomRobotImage, (sizeInput.text.toDouble() * ppc))
+        }
+
+        coordTypeDropdown.valueProperty().addListener { _, _, newValue ->
+            settings["coordinateType"] = newValue
+            settingsFile.writeText(gson.toJson(settings))
+            setPositionLabel(genTransAnimation.duration)
         }
 
         differentiationDropdown.valueProperty().addListener{ _, _, newValue ->
