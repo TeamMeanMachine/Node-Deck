@@ -20,7 +20,6 @@ import org.team2471.frc.lib.units.asMeters
 import org.team2471.frc.lib.units.degrees
 import org.team2471.frc.lib.units.feet
 import org.team2471.frc.lib.units.inches
-import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.posLabel
 import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.sliderLine
 import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.sliderPointPos
 import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.timeLabel
@@ -37,7 +36,7 @@ object FieldPane {
     var genRobotImage = ImageView(Image("robot.png"))
     var odomRobotImage = ImageView(Image("robot.png"))
 
-    val genTransAnimation = PathTransition()
+    val newValue = PathTransition()
 
     val odomTransAnimation = PathTransition()
 
@@ -49,12 +48,6 @@ object FieldPane {
     var odometryPath2D = Path2D("Generated")
 
     val fieldImageScale = fieldImage.fitHeight / 1462.0
-
-    val genRobotPos: Position
-        get() = Vector2(genRobotImage.x, genRobotImage.y).screenCoords(genRobotImage.fitWidth, fieldImageScale)
-
-    val odomRobotPos: Position
-        get() = Vector2(odomRobotImage.x, odomRobotImage.y).screenCoords(odomRobotImage.fitWidth, fieldImageScale)
 
 
     var isAnimationPlaying: BooleanProperty = SimpleBooleanProperty(false)
@@ -125,19 +118,19 @@ object FieldPane {
 
         isAnimationPlaying.addListener { _, _, new ->
             if (new) {
-                genTransAnimation.play()
+                newValue.play()
                 odomTransAnimation.play()
             } else {
-                genTransAnimation.pause()
+                newValue.pause()
                 odomTransAnimation.pause()
             }
         }
 
-        genTransAnimation.currentTimeProperty().addListener { _, _, newValue ->
+        newValue.currentTimeProperty().addListener { _, _, newValue ->
             sliderPointPos.set(
-                ((genTransAnimation.currentTime.toMillis() / genTransAnimation.duration.toMillis()) * (sliderLine.endX - sliderLine.startX)) + (120 * fieldImageScale)
+                ((this.newValue.currentTime.toMillis() / this.newValue.duration.toMillis()) * (sliderLine.endX - sliderLine.startX)) + (120 * fieldImageScale)
             )
-            timeLabel.text = "${genTransAnimation.currentTime.toSeconds().roundTo(1)}/${genTransAnimation.duration.toSeconds().roundTo(1)}"
+            timeLabel.text = "${this.newValue.currentTime.toSeconds().roundTo(1)}/${this.newValue.duration.toSeconds().roundTo(1)}"
 
             setPositionLabel(newValue)
 
@@ -180,9 +173,9 @@ object FieldPane {
     }
 
     fun updateGenAnimation() {
-        genTransAnimation.path = generatedPath
-        genTransAnimation.duration = Duration(generatedPath2D.duration * 1000)
-        genTransAnimation.node = genRobotImage
+        newValue.path = generatedPath
+        newValue.duration = Duration(generatedPath2D.duration * 1000)
+        newValue.node = genRobotImage
 
 
 

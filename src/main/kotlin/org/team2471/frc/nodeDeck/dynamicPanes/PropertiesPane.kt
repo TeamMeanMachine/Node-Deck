@@ -14,12 +14,17 @@ import javafx.scene.shape.Circle
 import javafx.scene.shape.Line
 import javafx.scene.shape.StrokeLineCap
 import javafx.util.Duration
+import org.team2471.frc.lib.math.round
+import org.team2471.frc.lib.units.*
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldImageScale
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.fieldPane
-import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.genTransAnimation
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.generatedPath2D
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.isAnimationPlaying
-import org.team2471.frc.nodeDeck.dynamicResources.roundTo
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.odometryPath2D
+import org.team2471.frc.nodeDeck.dynamicPanes.SettingsPane.settings
+import org.team2471.frc.nodeDeck.dynamicPanes.SideBarPane.isOdomRobotSelected
 import org.team2471.frc.nodeDeck.dynamicResources.tmmCoords
+import org.team2471.frc.nodeDeck.dynamicResources.toUnit
 
 object PropertiesPane {
     var propertiesPane = Pane()
@@ -104,33 +109,36 @@ object PropertiesPane {
 
 
 }
-
 fun setPositionLabel(newValue: Duration) {
     PropertiesPane.posLabel.text = "Position: X: ${
-        if (SideBarPane.isOdomRobotSelected == true) 
-            if (SettingsPane.coordTypeDropdown.value == "TMM") 
-                FieldPane.odometryPath2D.getPosition(newValue.toSeconds()).x.roundTo(1) 
+        if (isOdomRobotSelected == true)
+            if (settings["coordinateType"] == "WPI")
+                settings["coordinateUnits"]?.let { odometryPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().x.meters.toUnit(it).round(1) }
             else
-                FieldPane.odometryPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().x.roundTo(1) 
-        else if (SideBarPane.isOdomRobotSelected == false)
-            if (SettingsPane.coordTypeDropdown.value == "TMM")
-                FieldPane.generatedPath2D.getPosition(newValue.toSeconds()).x.roundTo(1)
+                settings["coordinateUnits"]?.let { odometryPath2D.getPosition(newValue.toSeconds()).x.feet.toUnit(it).round(1) }
+        else if (isOdomRobotSelected == false)
+            if (settings["coordinateType"] == "WPI")
+                settings["coordinateUnits"]?.let { generatedPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().x.meters.toUnit(it).round(1) }
             else
-                FieldPane.generatedPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().x.roundTo(1)
+                settings["coordinateUnits"]?.let { generatedPath2D.getPosition(newValue.toSeconds()).x.feet.toUnit(it).round(1) }
         else 
             "N/A"
-    } ft Y: ${
-        if (SideBarPane.isOdomRobotSelected == true)
-            if (SettingsPane.coordTypeDropdown.value == "TMM")
-                FieldPane.odometryPath2D.getPosition(newValue.toSeconds()).y.roundTo(1)
+    } ${
+        settings["coordinateUnits"]
+    }, Y: ${
+        if (isOdomRobotSelected == true)
+            if (settings["coordinateType"] == "WPI")
+                settings["coordinateUnits"]?.let { odometryPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().y.meters.toUnit(it).round(1) }
             else
-                FieldPane.odometryPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().y.roundTo(1)
-        else if (SideBarPane.isOdomRobotSelected == false)
-            if (SettingsPane.coordTypeDropdown.value == "TMM")
-                FieldPane.generatedPath2D.getPosition(newValue.toSeconds()).y.roundTo(1)
+                settings["coordinateUnits"]?.let { odometryPath2D.getPosition(newValue.toSeconds()).y.feet.toUnit(it).round(1) }
+        else if (isOdomRobotSelected == false)
+            if (settings["coordinateType"] == "WPI")
+                settings["coordinateUnits"]?.let { generatedPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().y.meters.toUnit(it).round(1) }
             else
-                FieldPane.generatedPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().y.roundTo(1)
-        else 
+                settings["coordinateUnits"]?.let { generatedPath2D.getPosition(newValue.toSeconds()).y.feet.toUnit(it).round(1) }
+        else
             "N/A"
-    } ft"
+    } ${
+        settings["coordinateUnits"]
+    }"
 }

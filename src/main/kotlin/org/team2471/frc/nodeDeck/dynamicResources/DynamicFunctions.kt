@@ -6,9 +6,8 @@ import javafx.scene.shape.*
 import javafx.util.Duration
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion_profiling.Path2D
-import org.team2471.frc.lib.units.radians
-import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.genTransAnimation
-import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.isAnimationPlaying
+import org.team2471.frc.lib.units.*
+import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.newValue
 import org.team2471.frc.nodeDeck.dynamicPanes.FieldPane.odomTransAnimation
 import org.team2471.frc.nodeDeck.dynamicPanes.PropertiesPane.sliderPointPos
 import org.team2471.frc.nodeDeck.dynamicPanes.SettingsPane
@@ -60,7 +59,7 @@ fun calculateSliderDrag(point: Circle, line: Line, minX: Double, maxX: Double): 
     // Triggers the calculation when the mouse is dragging the point on the slider
     point.setOnMouseDragged { event ->
         if (!SettingsPane.settingsPopup.isShowing) {
-            genTransAnimation.pause()
+            newValue.pause()
             odomTransAnimation.pause()
             if (event.button == MouseButton.PRIMARY) {
                 // Changes the position of the slider so that it is at the same position as the mouse, taking into account the minimum and maximum X values
@@ -75,16 +74,16 @@ fun calculateSliderDrag(point: Circle, line: Line, minX: Double, maxX: Double): 
                 odomTransAnimation.pause()
                 odomTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX)) * odomTransAnimation.duration.toMillis()))
                 // Starts the generated animation and jumps to the right duration based off of where the slider is positioned
-                genTransAnimation.play()
-                genTransAnimation.pause()
-                genTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX)) * genTransAnimation.duration.toMillis()))
+                newValue.play()
+                newValue.pause()
+                newValue.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX)) * newValue.duration.toMillis()))
 
             }
         }
     }
     line.setOnMouseDragged { event ->
         if (!SettingsPane.settingsPopup.isShowing) {
-            genTransAnimation.pause()
+            newValue.pause()
             odomTransAnimation.pause()
 
             if (event.button == MouseButton.PRIMARY) {
@@ -100,9 +99,9 @@ fun calculateSliderDrag(point: Circle, line: Line, minX: Double, maxX: Double): 
                     odomTransAnimation.pause()
                     odomTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX)) * odomTransAnimation.duration.toMillis()))
                     // Starts the generated animation and jumps to the right duration based off of where the slider is positioned
-                    genTransAnimation.play()
-                    genTransAnimation.pause()
-                    genTransAnimation.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX)) * genTransAnimation.duration.toMillis()))
+                    newValue.play()
+                    newValue.pause()
+                    newValue.jumpTo(Duration(((sliderPointPos.get() - minX) / (maxX - minX)) * newValue.duration.toMillis()))
 
                 }
             }
@@ -168,4 +167,18 @@ fun Path2D.toLinearFXPath(): Path? {
 fun Double.roundTo(numFractionDigits: Int): Double {
     val factor = 10.0.pow(numFractionDigits.toDouble())
     return (this * factor).roundToInt() / factor
+}
+
+fun Length.toUnit(unit: String): Double {
+    if (unit.lowercase() == "feet" || unit.lowercase() == "ft") {
+        return this.asFeet
+    } else if (unit.lowercase() == "inches" || unit.lowercase() == "in") {
+        return this.asInches
+    } else if (unit.lowercase() == "meters" || unit.lowercase() == "m") {
+        return this.asMeters
+    } else if (unit.lowercase() == "centimeters" || unit.lowercase() == "cm") {
+        return this.asCm
+    } else {
+        return this.asFeet
+    }
 }
