@@ -133,6 +133,7 @@ object FieldPane {
             timeLabel.text = "${this.newValue.currentTime.toSeconds().roundTo(1)}/${this.newValue.duration.toSeconds().roundTo(1)}"
 
             setPositionLabel(newValue)
+            setOffsetLabel(newValue)
 
             genRobotImage.rotate = generatedPath2D.getAbsoluteHeadingDegreesAt(newValue.toSeconds()).degrees.tmm.toScreen.asDegrees
 

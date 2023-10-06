@@ -138,12 +138,15 @@ object SettingsPane {
             settings["coordinateType"] = newValue
             settingsFile.writeText(gson.toJson(settings))
             setPositionLabel(FieldPane.newValue.duration)
+            setOffsetLabel(FieldPane.newValue.duration)
         }
 
         unitDropdown.valueProperty().addListener { _, _, newValue ->
             settings["coordinateUnits"] = newValue
             settingsFile.writeText(gson.toJson(settings))
+            setOffsetLabel(FieldPane.newValue.duration)
             setPositionLabel(FieldPane.newValue.duration)
+
         }
 
         differentiationDropdown.valueProperty().addListener{ _, _, newValue ->

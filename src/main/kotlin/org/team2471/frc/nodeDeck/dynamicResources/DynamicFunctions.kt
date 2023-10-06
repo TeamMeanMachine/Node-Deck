@@ -169,16 +169,19 @@ fun Double.roundTo(numFractionDigits: Int): Double {
     return (this * factor).roundToInt() / factor
 }
 
-fun Length.toUnit(unit: String): Double {
-    if (unit.lowercase() == "feet" || unit.lowercase() == "ft") {
+fun Length.toUnit(unit: String?): Double {
+    if (unit == null) {
         return this.asFeet
+    }
+    return if (unit.lowercase() == "feet" || unit.lowercase() == "ft") {
+        this.asFeet
     } else if (unit.lowercase() == "inches" || unit.lowercase() == "in") {
-        return this.asInches
+        this.asInches
     } else if (unit.lowercase() == "meters" || unit.lowercase() == "m") {
-        return this.asMeters
+        this.asMeters
     } else if (unit.lowercase() == "centimeters" || unit.lowercase() == "cm") {
-        return this.asCm
+        this.asCm
     } else {
-        return this.asFeet
+        this.asFeet
     }
 }

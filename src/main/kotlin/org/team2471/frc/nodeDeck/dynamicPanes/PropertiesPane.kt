@@ -34,9 +34,7 @@ object PropertiesPane {
 
     var timeLabel = Label("0.0/0.0")
     var posLabel = Label("Position: X: Y:")
-    var offsetLabel = Label("Position: ")
-    var xOffsetLabel = Label("X: ")
-    var yOffsetLabel = Label("Y: ")
+    var offsetLabel = Label("Odometry Offset: X: Y:")
 
     var posBox = TextField()
 
@@ -95,6 +93,9 @@ object PropertiesPane {
         posLabel.layoutY = 80 * fieldImageScale
         posLabel.style = "-fx-font-weight: bold; -fx-font-size: ${75 * fieldImageScale} px"
 
+        offsetLabel.layoutY = 160 * fieldImageScale
+        offsetLabel.style = "-fx-font-weight: bold; -fx-font-size: ${75 * fieldImageScale} px"
+
 
 
         propertiesPane.children.addAll(
@@ -103,6 +104,7 @@ object PropertiesPane {
             playButton,
             timeLabel,
             posLabel,
+            offsetLabel
         )
         calculateSliderDrag(sliderPoint, sliderLine, sliderLine.startX, sliderLine.endX)
     }
@@ -113,14 +115,14 @@ fun setPositionLabel(newValue: Duration) {
     PropertiesPane.posLabel.text = "Position: X: ${
         if (isOdomRobotSelected == true)
             if (settings["coordinateType"] == "WPI")
-                settings["coordinateUnits"]?.let { odometryPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().x.meters.toUnit(it).round(1) }
+                odometryPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().x.meters.toUnit(settings["coordinateUnits"]).round(1)
             else
-                settings["coordinateUnits"]?.let { odometryPath2D.getPosition(newValue.toSeconds()).x.feet.toUnit(it).round(1) }
+                odometryPath2D.getPosition(newValue.toSeconds()).x.feet.toUnit(settings["coordinateUnits"]).round(1)
         else if (isOdomRobotSelected == false)
             if (settings["coordinateType"] == "WPI")
-                settings["coordinateUnits"]?.let { generatedPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().x.meters.toUnit(it).round(1) }
+                generatedPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().x.meters.toUnit(settings["coordinateUnits"]).round(1) 
             else
-                settings["coordinateUnits"]?.let { generatedPath2D.getPosition(newValue.toSeconds()).x.feet.toUnit(it).round(1) }
+                generatedPath2D.getPosition(newValue.toSeconds()).x.feet.toUnit(settings["coordinateUnits"]).round(1) 
         else 
             "N/A"
     } ${
@@ -128,16 +130,34 @@ fun setPositionLabel(newValue: Duration) {
     }, Y: ${
         if (isOdomRobotSelected == true)
             if (settings["coordinateType"] == "WPI")
-                settings["coordinateUnits"]?.let { odometryPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().y.meters.toUnit(it).round(1) }
+                odometryPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().y.meters.toUnit(settings["coordinateUnits"]).round(1) 
             else
-                settings["coordinateUnits"]?.let { odometryPath2D.getPosition(newValue.toSeconds()).y.feet.toUnit(it).round(1) }
+                odometryPath2D.getPosition(newValue.toSeconds()).y.feet.toUnit(settings["coordinateUnits"]).round(1) 
         else if (isOdomRobotSelected == false)
             if (settings["coordinateType"] == "WPI")
-                settings["coordinateUnits"]?.let { generatedPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().y.meters.toUnit(it).round(1) }
+                generatedPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().y.meters.toUnit(settings["coordinateUnits"]).round(1) 
             else
-                settings["coordinateUnits"]?.let { generatedPath2D.getPosition(newValue.toSeconds()).y.feet.toUnit(it).round(1) }
+                generatedPath2D.getPosition(newValue.toSeconds()).y.feet.toUnit(settings["coordinateUnits"]).round(1) 
         else
             "N/A"
+    } ${
+        settings["coordinateUnits"]
+    }"
+}
+
+fun setOffsetLabel(newValue: Duration) {
+    PropertiesPane.offsetLabel.text = "Odometry Offset: X: ${
+        if (settings["coordinateType"] == "WPI")
+            (odometryPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().x.meters.toUnit(settings["coordinateUnits"]) - generatedPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().x.meters.toUnit(settings["coordinateUnits"])).round(1)
+        else
+            (odometryPath2D.getPosition(newValue.toSeconds()).x.feet.toUnit(settings["coordinateUnits"]) - generatedPath2D.getPosition(newValue.toSeconds()).x.feet.toUnit(settings["coordinateUnits"])).round(1)
+        } ${
+        settings["coordinateUnits"]
+    }, Y: ${
+        if (settings["coordinateType"] == "WPI")
+            (odometryPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().y.meters.toUnit(settings["coordinateUnits"]) - generatedPath2D.getPosition(newValue.toSeconds()).tmmCoords.toWpiCoords().y.meters.toUnit(settings["coordinateUnits"])).round(1)
+        else
+            (odometryPath2D.getPosition(newValue.toSeconds()).y.feet.toUnit(settings["coordinateUnits"]) - generatedPath2D.getPosition(newValue.toSeconds()).y.feet.toUnit(settings["coordinateUnits"])).round(1)
     } ${
         settings["coordinateUnits"]
     }"
