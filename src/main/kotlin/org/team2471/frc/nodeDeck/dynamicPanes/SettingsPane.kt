@@ -27,8 +27,8 @@ object SettingsPane {
     var settingsPane = Pane()
 
     var gson = Gson()
-    val settingsFile = File("src/main/resources/prev-settings.json")
-    var settings: MutableMap<String, String> = gson.fromJson(settingsFile.readText(), MutableMap::class.java) as MutableMap<String, String>
+    var settingsFile = File("src/main/resources/prev-settings.json")
+    var settings: MutableMap<String, String>
 
     val settingsPopup = Popup()
 
@@ -38,7 +38,7 @@ object SettingsPane {
 
     private val sizeLabel = Label("Robot Size (cm):")
 
-    val sizeInput = TextField(settings["robotSize"].toString())
+    val sizeInput = TextField()
 
     private val coordTypeLabel = Label("Coordinate Type:")
     val coordTypeDropdown = ComboBox(observableArrayList("TMM", "WPI"))
@@ -50,6 +50,14 @@ object SettingsPane {
     val differentiationDropdown = ComboBox(observableArrayList("Generated Ghosted", "Odometry Ghosted"))
 
     init  {
+        if(!settingsFile.exists()) {
+            settingsFile = File("prev-settings.json")
+        }
+        if(!settingsFile.exists()) {
+            settingsFile.createNewFile()
+            settingsFile.writeText("{\"robotSize\":\"81.3\",\"coordinateType\":\"TMM\",\"coordinateUnits\":\"Feet\",\"differentiationMethod\":\"Odometry Ghosted\",\"genPathColor\":\"\",\"odomPathColor\":\"\"}")
+        }
+        settings = gson.fromJson(settingsFile.readText(), MutableMap::class.java) as MutableMap<String, String>
         settingsPane.background = settingsBackground
 
         sizeLabel.style = "-fx-font-weight: bold; -fx-font-size: ${DynamicTab.fontSize * 1.5} px"
@@ -59,6 +67,7 @@ object SettingsPane {
         sizeInput.style = "-fx-font-size: ${DynamicTab.fontSize * 1.5} px"
         sizeInput.background = lightSettingsBackground
         sizeInput.layoutY += 75 * fieldImageScale
+        sizeInput.text = settings["robotSize"].toString()
 
         coordTypeLabel.style = "-fx-font-weight: bold; -fx-font-size: ${DynamicTab.fontSize * 1.5} px"
         coordTypeLabel.textFill = Color.WHITE

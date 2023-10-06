@@ -72,16 +72,16 @@ object NTClient {
         get() = demoSpeedEntry.getDouble(1.0) < 1.0
     var demoReachLimit: Double
         get() = demoReachLimitEntry.get()
-        set(value) = demoReachLimitEntry.set(value)
+        set(value) = if (!SettingsTab.readonlyToggle.isSelected) demoReachLimitEntry.set(value) else print("")
     var demoBoundary: Boolean
         get() = demoBoundaryEntry.get()
-        set(value) = demoBoundaryEntry.set(value)
+        set(value) = if (!SettingsTab.readonlyToggle.isSelected) demoBoundaryEntry.set(value) else print("")
     var demoBoundaryLimit: Double
         get() = demoBoundaryLimitEntry.get()
-        set(value) = demoBoundaryLimitEntry.set(value)
+        set(value) = if (!SettingsTab.readonlyToggle.isSelected) demoBoundaryLimitEntry.set(value) else print("")
     var tagLookingAt: Boolean
         get() = tagLookingAtEntry.get()
-        set(value) = tagLookingAtEntry.set(value)
+        set(value) = if (!SettingsTab.readonlyToggle.isSelected) tagLookingAtEntry.set(value) else print("")
 
     var formatter = SimpleDateFormat("dd-MM-yyyy_HH-mm-ss")
 
@@ -251,33 +251,35 @@ object NTClient {
         }
     }
     fun setTables() {
-        chargeInAutoEntry.set(AutoConfig.chargeInAuto)
-        finishWithPieceEntry.set(AutoConfig.finishWPiece)
-        startingPointEntry.set("${AutoConfig.startingPoint}")
-        selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
-        amountOfPiecesInAutoEntry.set(AutoInterface.amountOfPieces.toLong())
-        (AutoInterface.realNodeNumber(AutoInterface.first))?.let { autoOneEntry.set(it) }
-        (AutoInterface.realNodeNumber(AutoInterface.second))?.let { autoTwoEntry.set(it) }
-        (AutoInterface.realNodeNumber(AutoInterface.third))?.let { autoThreeEntry.set(it) }
-        (AutoInterface.realNodeNumber(AutoInterface.fourth))?.let { autoFourEntry.set(it) }
-        (AutoInterface.realNodeNumber(AutoInterface.fifth))?.let { autoFiveEntry.set(it) }
-        if (demoSpeedEntry.getDouble(1.0) != prevDemoSpeed) {
-            DemoTab.demoSpeedInput.text = demoSpeedEntry.getDouble(1.0).toString()
+        if (!SettingsTab.readonlyToggle.isSelected) {
+            chargeInAutoEntry.set(AutoConfig.chargeInAuto)
+            finishWithPieceEntry.set(AutoConfig.finishWPiece)
+            startingPointEntry.set("${AutoConfig.startingPoint}")
+            selectedNodeEntry.set(NodeDeck.selectedNode.toLong())
+            amountOfPiecesInAutoEntry.set(AutoInterface.amountOfPieces.toLong())
+            (AutoInterface.realNodeNumber(AutoInterface.first))?.let { autoOneEntry.set(it) }
+            (AutoInterface.realNodeNumber(AutoInterface.second))?.let { autoTwoEntry.set(it) }
+            (AutoInterface.realNodeNumber(AutoInterface.third))?.let { autoThreeEntry.set(it) }
+            (AutoInterface.realNodeNumber(AutoInterface.fourth))?.let { autoFourEntry.set(it) }
+            (AutoInterface.realNodeNumber(AutoInterface.fifth))?.let { autoFiveEntry.set(it) }
+            if (demoSpeedEntry.getDouble(1.0) != prevDemoSpeed) {
+                DemoTab.demoSpeedInput.text = demoSpeedEntry.getDouble(1.0).toString()
+            }
+            if (demoReachLimit != prevReachLimit) {
+                DemoTab.reachLimitInput.text = demoReachLimit.toString()
+            }
+            if (demoBoundaryLimit != prevDemoBoundaryLimit) {
+                DemoTab.reachLimitInput.text = demoReachLimit.toString()
+            }
+            SettingsTab.updateArmModeLabel()
+            SettingsTab.updateArmModeButtons()
+            isFloorConeEntry.set(LongFormat.isFloorCone)
+            AutoConfig.showNodeAutoChanger()
+            DemoTab.updateDemoButtons()
+            prevReachLimit = demoReachLimit
+            prevDemoSpeed = demoSpeedEntry.getDouble(1.0)
+            prevDemoBoundaryLimit = demoBoundaryLimit
         }
-        if (demoReachLimit != prevReachLimit) {
-            DemoTab.reachLimitInput.text = demoReachLimit.toString()
-        }
-        if (demoBoundaryLimit != prevDemoBoundaryLimit) {
-            DemoTab.reachLimitInput.text = demoReachLimit.toString()
-        }
-        SettingsTab.updateArmModeLabel()
-        SettingsTab.updateArmModeButtons()
-        isFloorConeEntry.set(LongFormat.isFloorCone)
-        AutoConfig.showNodeAutoChanger()
-        DemoTab.updateDemoButtons()
-        prevReachLimit = demoReachLimit
-        prevDemoSpeed = demoSpeedEntry.getDouble(1.0)
-        prevDemoBoundaryLimit = demoBoundaryLimit
     }
     fun setNodeDeckAuto() {
         SmartDashboard.putString("Autos/selected", "NodeDeck")

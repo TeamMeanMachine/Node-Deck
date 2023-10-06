@@ -4,8 +4,10 @@ import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
+import javafx.scene.control.RadioButton
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
+import javafx.scene.control.ToggleGroup
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.TilePane
 
@@ -19,6 +21,10 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
     val toggleTypeButton = ToggleButton("Toggle Type Button")
     val armModeLabel = Label()
     val armModeGrid = GridPane()
+    val readonlyToggleGroup = ToggleGroup()
+    val writeableToggle = RadioButton("Writeable")
+    val readonlyToggle = RadioButton("Read Only")
+
 //    val armModeLabel = Label("sets the arm shoulder motor to coast mode", armCoastButton)
     val ipLabel = Label("roboRIO IP Address:")
     val ndSettingsLabel = Label("NodeDeck Settings:")
@@ -47,12 +53,16 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
         toggleTypeButton.style = "-fx-font-size: $fontSize px"
         toggleTypeButtonLabel.style = "-fx-font-size: $fontSize px"
 
+        writeableToggle.toggleGroup = readonlyToggleGroup
+        readonlyToggle.toggleGroup = readonlyToggleGroup
+//        readonlyToggle.isSelected = true
+        writeableToggle.isSelected = true
 
         armModeGrid.addRow(0, armBrakeButtton, armCoastButton, armModeLabel)
         armModeGrid.alignment = Pos.CENTER
 
         SettingsTab.alignment = Pos.TOP_CENTER
-        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton, ndSettingsLabel, toggleTypeButtonLabel, robotSettingsLabel, armModeGrid)
+        SettingsTab.children.addAll(ipLabel, ipInput, connectButton, robotIpButton, lHostButton, ndSettingsLabel, writeableToggle, readonlyToggle, toggleTypeButtonLabel, robotSettingsLabel, armModeGrid)
         ipInput.setOnAction {
             NTClient.connect()
         }
@@ -68,7 +78,7 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
             NTClient.connect()
         }
         armCoastButton.setOnAction {
-            if (NTClient.networkTableInstance.isConnected) {
+            if (NTClient.networkTableInstance.isConnected && !readonlyToggle.isSelected) {
                 NTClient.shoulderCoastModeEntry.set(true)
                 NTClient.setTables()
                 updateArmModeButtons()
@@ -76,7 +86,7 @@ object SettingsTab : TilePane(Orientation.VERTICAL) {
             }
         }
         armBrakeButtton.setOnAction {
-            if (NTClient.networkTableInstance.isConnected) {
+            if (NTClient.networkTableInstance.isConnected && !readonlyToggle.isSelected) {
                 NTClient.shoulderBrakeModeEntry.set(true)
                 NTClient.setTables()
                 updateArmModeButtons()
